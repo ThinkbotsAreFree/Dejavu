@@ -1,0 +1,21 @@
+{
+    "name": "dejavu",
+    "version": "0.0.1",
+    "license": "undefined",
+    "main": "dejavu.js",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ThinkbotsAreFree/dejavu.git"
+    },
+    "scripts": {
+        "start": "node dejavu.js"
+    },
+    "dependencies": {
+        "colors": "*",
+        "enolib": "*",
+        "enotype": "*",
+        "readdir": "*",
+        "signale": "*",
+        "vorpal": "*"
+    }
+}
