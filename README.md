@@ -6,4 +6,4 @@ A Javascript AGI project → [thinkbots.are.free.fr/ **Dejavu**](http://thinkbot
 
 ### Installation
 
-Download the zip and type `npm install`.
+Download the zip and type `npm install`
