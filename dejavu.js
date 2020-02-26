@@ -5,17 +5,18 @@
 
 const fs = require("fs");
 
-const vorpal = require('vorpal')();
-const {Signale} = require('signale');
-const colors = require('colors');
+const vorpal = require("vorpal")();
+const {Signale} = require("signale");
+const colors = require("colors");
 
-console.log("[Dejavu]\n".brightGreen);
+console.log("[Dejavu]\n".brightMagenta);
+
 
 
 const sys = {};
 
 sys.brain =  {};
-sys.action = {};
+sys.prism = require("prism.js");
 
 
 
@@ -35,7 +36,7 @@ tryF = function(fun) {
 
 
 vorpal
-.catch('[words...]', 'Catches incorrect commands')
+.catch('[words...]', 'Incorrect command!')
 .action(function (args, callback) {
     this.log(args.words.join(' ') + ' is not a valid command.');
     callback();
@@ -43,9 +44,9 @@ vorpal
 
 
 
-vorpal.command('echo [command]')
+vorpal.command('echo [data]', "Outputs its argument.")
 .action(function(args, callback) {
-    this.log(args.command);
+    this.log(args.data);
     callback();
 });
 
@@ -60,7 +61,7 @@ vorpal.command('save as <filepath>', "Saves piped content in a file.")
 
 
 
-vorpal.command('save', "Saves piped content in the previous file.")
+vorpal.command('save', "Saves piped content in the same file.")
 .action(function(args, callback) {
     fs.writeFileSync(sys.filepath, args.stdin, "utf8");
     callback();
@@ -69,13 +70,13 @@ vorpal.command('save', "Saves piped content in the previous file.")
 
 
 vorpal
-.command('list <what>', 'Outputs the content of: '+Object.keys(sys).join(' / ')+'.')
+.command('list <object>', 'Outputs items found in: '+Object.keys(sys).join(', ')+'.')
 .autocomplete(Object.keys(sys))
 .action(tryF(function(args, callback) {
 
-    var list = Object.keys(sys[args.what]).map(item => '- '+item).join('\n');
+    var list = Object.keys(sys[args.object]).map(item => '- '+item).join('\n');
 
-    systemLog.success("Items found in "+args.what);
+    systemLog.success("Items found in "+args.object);
     this.log(list);
 
     callback();
@@ -157,7 +158,7 @@ vorpal
 
 
 vorpal
-.command('serialize lobe <name>', "Outputs a complete lobe.")
+.command('serialize lobule <name>', "Outputs a complete lobule.")
 .action(tryF(function(args, callback) {
 
     var body = sys.brain[args.name].serialize();
@@ -171,14 +172,14 @@ vorpal
 
 
 vorpal
-.command('plug', "Plug a lobe's input into another lobe's output or metaOutput.")
-.option('-i, --input <ilobe...>', "Specifies the observing lobes.")
-.option('-o, --output <olobe...>', "Specifies the observed lobes.")
+.command('plug', "Plug a lobule's input into another lobule's output or metaOutput.")
+.option('-i, --input <ilobule...>', "Specifies the observing lobules.")
+.option('-o, --output <olobule...>', "Specifies the observed lobules.")
 .option('-m, --meta', "Plug to metaOutput.")
 .action(tryF(function(args, callback) {
 
-    if (!args.options.input) throw new Error("Observing lobe missing")
-    if (!args.options.output) throw new Error("Observed lobe missing")
+    if (!args.options.input) throw new Error("Observing lobule missing")
+    if (!args.options.output) throw new Error("Observed lobule missing")
 
     sys.brain[args.options.input].plug([args.options.output], args.options.meta);
 
@@ -190,14 +191,14 @@ vorpal
 
 
 vorpal
-.command('unplug', "Unplug a lobe's input from another lobe's output or metaOutput.")
-.option('-i, --input <ilobe...>', "Specifies the observing lobes.")
-.option('-o, --output <olobe...>', "Specifies the observed lobes.")
+.command('unplug', "Unplug a lobule's input from another lobule's output or metaOutput.")
+.option('-i, --input <ilobule...>', "Specifies the observing lobules.")
+.option('-o, --output <olobule...>', "Specifies the observed lobules.")
 .option('-m, --meta', "Unplug from metaOutput.")
 .action(tryF(function(args, callback) {
 
-    if (!args.options.input) throw new Error("Observing lobe missing")
-    if (!args.options.output) throw new Error("Observed lobe missing")
+    if (!args.options.input) throw new Error("Observing lobule missing")
+    if (!args.options.output) throw new Error("Observed lobule missing")
 
     sys.brain[args.options.input].unplug([args.options.output], args.options.meta);
 
@@ -222,7 +223,7 @@ vorpal
 
 
 
-vorpal.delimiter('|>').show();
+vorpal.delimiter('i›').show();
 
 
 
@@ -261,40 +262,40 @@ var serialize = {};
 
 
 
-serialize.defaultSerializer = function(lobe) {
+serialize.defaultSerializer = function(lobule) {
 
     var result = `
 
-## Lobe
+## Lobule
 
-name: ${lobe.name}
+name: ${lobule.name}
 
 -- description
-${lobe.description}
+${lobule.description}
 -- description
 
-observedOutputs: ${lobe.input.observedOutputs.map(item => "\n- "+item)}
+observedOutputs: ${lobule.input.observedOutputs.map(item => "\n- "+item)}
 
-observedMetaOutputs: ${lobe.input.observedMetaOutputs.map(item => "\n- "+item)}
+observedMetaOutputs: ${lobule.input.observedMetaOutputs.map(item => "\n- "+item)}
 
 output:
-currentValue = ${JSON.stringify(lobe.output.currentValue)}
-futureValue =  ${JSON.stringify(lobe.output.futureValue)}
+currentValue = ${JSON.stringify(lobule.output.currentValue)}
+futureValue =  ${JSON.stringify(lobule.output.futureValue)}
 
-metaInput: ${Object.keys(lobe.metaInput).map(key => '\n'+key+" = "+lobe.metaInput[key])}
+metaInput: ${Object.keys(lobule.metaInput).map(key => '\n'+key+" = "+lobule.metaInput[key])}
 
 metaOutput:
-currentValue = ${JSON.stringify(lobe.metaOutput.currentValue)}
-futureValue =  ${JSON.stringify(lobe.metaOutput.futureValue)}
+currentValue = ${JSON.stringify(lobule.metaOutput.currentValue)}
+futureValue =  ${JSON.stringify(lobule.metaOutput.futureValue)}
 
-initializer: ${lobe.initializer}
-serializer:  ${lobe.serializer}
+initializer: ${lobule.initializer}
+serializer:  ${lobule.serializer}
 
-actions: ${lobe.actions.map(item => "\n- "+item)}
+prisms: ${lobule.prisms.map(item => "\n- "+item)}
 
 ### stateHistory
 
-${lobe.states.map(state => "#### state\n\n"+JSON.stringify(state, null, 4)).join('\n\n')}
+${lobule.states.map(state => "#### state\n\n"+JSON.stringify(state, null, 4)).join('\n\n')}
 
     `;
 
@@ -308,15 +309,15 @@ ${lobe.states.map(state => "#### state\n\n"+JSON.stringify(state, null, 4)).join
 
 
 
-sys.Lobe = function(name) {           // must be serializable
+sys.Lobule = function(name) {           // must be serializable
 
-    if (sys.brain[name]) throw new Error("Lobe name already in use");
+    if (sys.brain[name]) throw new Error("Lobule name already in use");
 
     this.name = name;           // must be unique
     this.description = name;
 
     this.input = {
-        observedOutputs : [],   // list of lobe names
+        observedOutputs : [],   // list of lobule names
         observedMetaOutputs: []
     };
     this.output = {
@@ -328,7 +329,7 @@ sys.Lobe = function(name) {           // must be serializable
     this.initializer = "defaultInitializer";
     this.serializer = "defaultSerializer";
 
-    this.actions = [];          // array of function names
+    this.prisms = [];          // array of function names
     this.states = [];           // history of the state object, 0 is current
 
     this.metaInput = {          // control panel
@@ -345,63 +346,64 @@ sys.Lobe = function(name) {           // must be serializable
 
 
 
-sys.Lobe.prototype.setDescription = function(text) {
+sys.Lobule.prototype.setDescription = function(text) {
 
     this.description = text;
 }
 
 
 
-sys.Lobe.prototype.plug = function(names, meta) {
+sys.Lobule.prototype.plug = function(names, meta) {
 
-    names.forEach(lobe => {
-        if (!sys.brain[lobe]) throw new Error("Unknown lobe name: "+lobe)
+    names.forEach(lobule => {
+        if (!sys.brain[lobule]) throw new Error("Unknown lobule name: "+lobule)
     });
 
-    names.forEach(lobe => {
+    names.forEach(lobule => {
         var a;
 
         a = this.input[meta ? "observedMetaOutputs" : "observedOutputs"]
-        if (!a.includes(lobe)) a.push(lobe);
+        if (!a.includes(lobule)) a.push(lobule);
         
-        a = sys.brain[lobe][meta ? "metaOutput" : "output"].observedBy;
+        a = sys.brain[lobule][meta ? "metaOutput" : "output"].observedBy;
         if (!a.includes(this.name)) a.push(this.name);
     });
 }
 
 
 
-sys.Lobe.prototype.unplug = function(names, meta) {
+sys.Lobule.prototype.unplug = function(names, meta) {
 
     this.input[meta ? "observedMetaOutputs" : "observedOutputs"] =
-        this.input[meta ? "observedMetaOutputs" : "observedOutputs"].filter(lobe => !names.includes(lobe));
+        this.input[meta ? "observedMetaOutputs" : "observedOutputs"].filter(lobule => !names.includes(lobule));
 
-    names.forEach(lobe => {
+    names.forEach(lobule => {
         
-        sys.brain[lobe][meta ? "metaOutput" : "output"].observedBy =
-            sys.brain[lobe][meta ? "metaOutput" : "output"].observedBy.filter(name => name !== this.name);
+        sys.brain[lobule][meta ? "metaOutput" : "output"].observedBy =
+            sys.brain[lobule][meta ? "metaOutput" : "output"].observedBy.filter(name => name !== this.name);
     });
 }
 
 
 
-sys.Lobe.prototype.pushAction = function(act) {
+sys.Lobule.prototype.pushPrism = function(act) {
 
-    if (!action[act]) throw new Error("Unknown action name: "+act);
-    this.actions.push(act);
+    if (!prism[act]) throw new Error("Unknown prism name: "+act);
+    this.prisms.push(act);
 }
 
 
 
-sys.Lobe.prototype.setActions = function(acts) {
+sys.Lobule.prototype.setPrisms = function(acts) {
 
-    this.actions = [];
-    acts.forEach(this.pushAction);
+    this.prisms = [];
+    acts.forEach(act => { if (!prism[act]) throw new Error("Unknown prism name: "+act); });
+    acts.forEach(this.pushPrism);
 }
 
 
 
-sys.Lobe.prototype.serialize = function() {
+sys.Lobule.prototype.serialize = function() {
 
     return serialize[this.serializer](this);
 }
@@ -412,5 +414,5 @@ sys.Lobe.prototype.serialize = function() {
 
 
 
-new sys.Lobe("lobe1");
-new sys.Lobe("lobe2");
+new sys.Lobule("lobule1");
+new sys.Lobule("lobule2");
