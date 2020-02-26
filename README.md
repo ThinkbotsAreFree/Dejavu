@@ -7,5 +7,3 @@ A Javascript AGI project → [thinkbots.are.free.fr/ **Dejavu**](http://thinkbot
 ### Installation
 
 Get the zip and type `npm install`
-
-![catcat](http://thinkbots.are.free.fr/Dejavu/dejavu-small.jpg)
