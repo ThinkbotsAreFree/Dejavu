@@ -8,4 +8,4 @@ A Javascript AGI project → [thinkbots.are.free.fr/ **Dejavu**](http://thinkbot
 
 Get the zip and type `npm install`
 
-<div style="text-align: right"> ![cat cat](http://thinkbots.are.free.fr/Dejavu/dejavu-small.jpg) </div>
+<div style="text-align: right"><img src="http://thinkbots.are.free.fr/Dejavu/dejavu-small.jpg"></div>
