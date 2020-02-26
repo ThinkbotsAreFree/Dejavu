@@ -16,7 +16,7 @@ console.log("[Dejavu]\n".brightMagenta);
 const sys = {};
 
 sys.brain =  {};
-sys.prism = require("prism.js");
+sys.prism = require("./prism.js");
 
 
 
@@ -210,6 +210,19 @@ vorpal
 
 
 vorpal
+.command('set-prism <lobule> <prisms...>', "Sets the behavior of a lobule.")
+.action(tryF(function(args, callback) {
+
+    sys.brain[args.lobule].setPrisms(args.prisms);
+
+    systemLog.success("Prisms of "+args.lobule+": "+args.prisms.join(' '));
+
+    callback();
+}));
+
+
+
+vorpal
 .mode('javascript', "Enters into a Javascript REPL session.")
 .delimiter('js>')
 .init(function(args, callback){
@@ -329,7 +342,7 @@ sys.Lobule = function(name) {           // must be serializable
     this.initializer = "defaultInitializer";
     this.serializer = "defaultSerializer";
 
-    this.prisms = [];          // array of function names
+    this.prisms = [];           // array of function names
     this.states = [];           // history of the state object, 0 is current
 
     this.metaInput = {          // control panel
@@ -388,7 +401,7 @@ sys.Lobule.prototype.unplug = function(names, meta) {
 
 sys.Lobule.prototype.pushPrism = function(act) {
 
-    if (!prism[act]) throw new Error("Unknown prism name: "+act);
+    if (!sys.prism[act]) throw new Error("Unknown prism name: "+act);
     this.prisms.push(act);
 }
 
@@ -397,8 +410,8 @@ sys.Lobule.prototype.pushPrism = function(act) {
 sys.Lobule.prototype.setPrisms = function(acts) {
 
     this.prisms = [];
-    acts.forEach(act => { if (!prism[act]) throw new Error("Unknown prism name: "+act); });
-    acts.forEach(this.pushPrism);
+    acts.forEach(act => { if (!sys.prism[act]) throw new Error("Unknown prism name: "+act); });
+    for (let a=0; a<acts.length; a++) this.pushPrism(acts[a]);
 }
 
 
