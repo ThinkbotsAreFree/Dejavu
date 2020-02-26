@@ -1,4 +1,4 @@
 # Dejavu
 A Javascript AGI project.
 
-http://thinkbots.are.free.fr/Dejavu/
+[thinkbots.are.free.fr/Dejavu](http://thinkbots.are.free.fr/Dejavu/)
