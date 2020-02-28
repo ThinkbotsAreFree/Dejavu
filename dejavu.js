@@ -104,6 +104,7 @@ vorpal.command('load brain [filepath]', "Loads a whole brain in memory.eno or fr
 
 vorpal.command('quit', "Saves brain and quit.")
 .action(tryF(function(args, callback) {
+    vorpal.hide();
     vorpal.exec("save brain").then(function(data){
         return vorpal.exec('exit');
     });
@@ -140,6 +141,29 @@ vorpal
 
     systemLog.success("Path found: sys"+args.path.map(p => '.'+p).join(''));
     this.log(args.options.stringify ? json : here);
+
+    callback();
+}));
+
+
+
+vorpal
+.command('table [path...]', "Shows a table of the JSON found at <path> in sys.")
+.option('-p, --properties <prop...>', 'Select properties to show.')
+.action(tryF(function(args, callback) {
+
+    args.path = args.path || [];
+    var here = sys;
+    for (var p=0; p<args.path.length; p++) here = here[args.path[p]];
+
+    systemLog.success("Path found: sys"+args.path.map(p => '.'+p).join(''));
+
+    if (typeof args.options.properties === "string") args.options.properties = [args.options.properties];
+    
+    vorpal.hide();
+    if (args.options.properties) console.table(here, args.options.properties);
+    else console.table(here);
+    vorpal.show();
 
     callback();
 }));
@@ -266,6 +290,19 @@ vorpal
 
 
 vorpal
+.command('step [times]', "Make the brain interpret 1 or more steps.")
+.action(tryF(function(args, callback) {
+
+    args.times = args.times || 1;
+
+    for (var s=0; s<args.times; s++) sys.step();
+
+    callback();
+}));
+
+
+
+vorpal
 .mode('javascript', "Enters into a Javascript REPL session.")
 .delimiter('js>')
 .init(function(args, callback){
@@ -337,7 +374,7 @@ sys.initialize.defaultInitializer = function(enoSection) {
     lobule.prisms = enoSection.list("prisms").requiredStringValues();
 
     lobule.states =
-        enoSection.section("stateHistory").fields("state").map(field => JSON.parse(field.requiredStringValue));
+        enoSection.section("stateHistory").fields("state").map(field => JSON.parse(field.requiredStringValue()));
 
     return lobule;
 }
@@ -526,10 +563,12 @@ sys.Lobule.prototype.serialize = function() {
 
 sys.step = function step() {
 
-    for (var lobule in sys.brain) {
+    for (var lobuleName in sys.brain) {
+
+        var lobule = sys.brain[lobuleName];
 
         var effect = {};
-        var state = JSON.parse(JSON.stringify(lobules.states[0]));
+        var state = lobule.states.length ? JSON.parse(JSON.stringify(lobule.states[0])) : {};
         
         state.input = {
             observedOutputs: {},
@@ -542,14 +581,14 @@ sys.step = function step() {
         for (var om of lobule.input.observedMetaOutputs)
             state.input.observedMetaOutputs[om] = sys.brain[om].metaOutput.currentValue;
 
-        for (var prism in lobule.prisms) {
+        for (var prism of lobule.prisms) {
 
             ({ state, effect } = sys.prism[prism](state, effect, lobule.states));
         }
 
-        lobule.output.futureValue = JSON.parse(JSON.stringify(state.output));
+        lobule.output.futureValue = state.output ? JSON.parse(JSON.stringify(state.output)) : {};
 
-        lobule.unshift(state);
+        lobule.states.unshift(state);
         if (lobule.states.length > lobule.historyLength) lobule.states.pop();
     }
 

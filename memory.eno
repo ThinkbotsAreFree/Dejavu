@@ -31,11 +31,48 @@ futureValue =  {}
 observedBy =   []
 
 prisms: 
+- setX0
 - incrX
 - incrX
-- decrX
+- incrX
 
 ### stateHistory
+
+-- state
+{
+    "input": {
+        "observedOutputs": {
+            "lobule2": {}
+        },
+        "observedMetaOutputs": {}
+    },
+    "x": 9
+}
+-- state
+
+-- state
+{
+    "input": {
+        "observedOutputs": {
+            "lobule2": {}
+        },
+        "observedMetaOutputs": {}
+    },
+    "x": 6
+}
+-- state
+
+-- state
+{
+    "input": {
+        "observedOutputs": {
+            "lobule2": {}
+        },
+        "observedMetaOutputs": {}
+    },
+    "x": 3
+}
+-- state
 
 
     
@@ -69,9 +106,39 @@ futureValue =  {}
 observedBy =   []
 
 prisms: 
-- decrX
+- setX0
 
 ### stateHistory
+
+-- state
+{
+    "input": {
+        "observedOutputs": {},
+        "observedMetaOutputs": {}
+    },
+    "x": 0
+}
+-- state
+
+-- state
+{
+    "input": {
+        "observedOutputs": {},
+        "observedMetaOutputs": {}
+    },
+    "x": 0
+}
+-- state
+
+-- state
+{
+    "input": {
+        "observedOutputs": {},
+        "observedMetaOutputs": {}
+    },
+    "x": 0
+}
+-- state
 
 
     

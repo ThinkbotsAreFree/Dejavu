@@ -6,7 +6,7 @@ module.exports = {
 
     "setX0": function(state, effect, stateHistory) {
 
-        state.x = 0;
+        if (!state.x) state.x = 0;
 
         return {
             state: state,
