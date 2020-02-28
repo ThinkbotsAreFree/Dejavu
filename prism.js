@@ -1,35 +1,18 @@
-module.exports = {
 
 
 
 
 
-    "incrX": function(state, effect, stateHistory) {
+const path = require("path");
+const readDir = require('readdir');
 
-        state.x += 1;
+var filesArray = readDir.readSync(path.join(__dirname, "prism"), ["**.js"]);
 
-        return {
-            state: state,
-            effect: effect
-        }
-    },
+filesArray.forEach(filename => {
 
-
-
-
-
-    "decrX": function(state, effect, stateHistory) {
-
-        state.x -= 1;
-
-        return {
-            state: state,
-            effect: effect
-        }
-    },
+    Object.assign(module.exports, require(path.join(__dirname, "prism", filename)));
+});
 
 
 
 
-
-};

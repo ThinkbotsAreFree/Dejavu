@@ -1,24 +1,77 @@
+# brain
 
 
+## lobule
+
+name: lobule1
+lobe: test-lobe
+initializer: defaultInitializer
+serializer:  defaultSerializer
+
+-- description
+lobule1
+-- description
+
+observedOutputs: 
+- lobule2
+
+observedMetaOutputs: 
+
+output:
+currentValue = {}
+futureValue =  {}
+observedBy =   []
+
+metaInput: 
+historyLength = 10
+
+metaOutput:
+currentValue = {}
+futureValue =  {}
+observedBy =   []
+
+prisms: 
+- incrX
+- incrX
+- decrX
+
+### stateHistory
 
 
+    
+
+## lobule
+
+name: lobule2
+lobe: test-lobe
+initializer: defaultInitializer
+serializer:  defaultSerializer
+
+-- description
+lobule2
+-- description
+
+observedOutputs: 
+
+observedMetaOutputs: 
+
+output:
+currentValue = {}
+futureValue =  {}
+observedBy =   ["lobule1"]
+
+metaInput: 
+historyLength = 10
+
+metaOutput:
+currentValue = {}
+futureValue =  {}
+observedBy =   []
+
+prisms: 
+- decrX
+
+### stateHistory
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    

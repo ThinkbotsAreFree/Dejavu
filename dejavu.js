@@ -8,14 +8,18 @@ const fs = require("fs");
 const vorpal = require("vorpal")();
 const {Signale} = require("signale");
 const colors = require("colors");
+const enolib = require('enolib');
 
-console.log("[Dejavu]\n".brightMagenta);
+const {launch} = require("./file-ui.js");
+
+console.log("[Dejavu]".brightMagenta);
 
 
 
 const sys = {};
 
-sys.brain =  {};
+sys.brain = {};
+sys.lobe =  {};
 sys.prism = require("./prism.js");
 
 
@@ -53,19 +57,58 @@ vorpal.command('echo [data]', "Outputs its argument.")
 
 
 vorpal.command('save as <filepath>', "Saves piped content in a file.")
-.action(function(args, callback) {
+.action(tryF(function(args, callback) {
     sys.filepath = args.filepath;
     fs.writeFileSync(args.filepath, args.stdin, "utf8");
+    
+    systemLog.success("Saved in "+args.filepath);
     callback();
-});
+}));
 
 
 
 vorpal.command('save', "Saves piped content in the same file.")
-.action(function(args, callback) {
+.action(tryF(function(args, callback) {
     fs.writeFileSync(sys.filepath, args.stdin, "utf8");
+    
+    systemLog.success("Saved in "+sys.filepath);
     callback();
-});
+}));
+
+
+
+vorpal.command('save brain [filepath]', "Saves the whole brain in memory.eno or to a specified file.")
+.action(tryF(function(args, callback) {
+    var brainSerialized = sys.serializeBrain();
+    args.filepath = args.filepath || "memory.eno";
+    fs.writeFileSync(args.filepath, brainSerialized, "utf8");
+    
+    systemLog.success("Saved as "+args.filepath);
+    callback();
+}));
+
+
+
+vorpal.command('load brain [filepath]', "Loads a whole brain in memory.eno or from a specified file.")
+.option('-s, --silent', 'Hides the success message.')
+.action(tryF(function(args, callback) {
+    args.filepath = args.filepath || "memory.eno";
+    var fileContent = fs.readFileSync(args.filepath, 'utf8');
+    sys.brain = {};
+    sys.initializeBrain(enolib.parse(fileContent));
+    if (!args.options.silent) systemLog.success("Loaded "+args.filepath);
+    callback();
+}));
+
+
+
+vorpal.command('quit', "Saves brain and quit.")
+.action(tryF(function(args, callback) {
+    vorpal.exec("save brain").then(function(data){
+        return vorpal.exec('exit');
+    });
+    callback();
+}));
 
 
 
@@ -236,10 +279,6 @@ vorpal
 
 
 
-vorpal.delimiter('i›').show();
-
-
-
 vorpal.write = vorpal.log;
 
 var systemLog = new Signale({
@@ -249,20 +288,58 @@ var systemLog = new Signale({
 
 
 
-systemLog.success("Ready");
-
-
-
 // Initializers ********************************************************************************
 
 
 
-var initialize = {};
+sys.initializeBrain = function initializeBrain(enodoc) {
+
+    enodoc.section("brain").sections("lobule").forEach(enoSection => {
+
+        sys.initialize[enoSection.field("initializer").requiredStringValue()](enoSection);
+    });
+}
 
 
 
-initialize.defaultInitializer = function() {
+sys.initialize = {};
 
+
+
+sys.initialize.defaultInitializer = function(enoSection) {
+
+    var lobule = new sys.Lobule(
+        enoSection.field("name").requiredStringValue(),
+        enoSection.field("lobe").requiredStringValue());
+
+    lobule.initializer = enoSection.field("initializer").optionalStringValue() || "defaultInitializer";
+    lobule.serializer = enoSection.field("serializer").optionalStringValue() || "defaultSerializer";
+
+    lobule.description = enoSection.field("description").optionalStringValue() || lobule.description;
+
+    lobule.input = {
+        observedOutputs: enoSection.list("observedOutputs").requiredStringValues(),
+        observedMetaOutputs: enoSection.list("observedMetaOutputs").requiredStringValues()
+    };
+
+    lobule.output = {
+        currentValue: JSON.parse(enoSection.fieldset("output").entry("currentValue").requiredStringValue()),
+        futureValue: JSON.parse(enoSection.fieldset("output").entry("futureValue").requiredStringValue()),
+        observedBy: JSON.parse(enoSection.fieldset("output").entry("observedBy").requiredStringValue()),
+    };
+
+    lobule.metaOutput = {
+        currentValue: JSON.parse(enoSection.fieldset("metaOutput").entry("currentValue").requiredStringValue()),
+        futureValue: JSON.parse(enoSection.fieldset("metaOutput").entry("futureValue").requiredStringValue()),
+        observedBy: JSON.parse(enoSection.fieldset("metaOutput").entry("observedBy").requiredStringValue()),
+    };
+
+    lobule.prisms = enoSection.list("prisms").requiredStringValues();
+
+    lobule.states =
+        enoSection.section("stateHistory").fields("state").map(field => JSON.parse(field.requiredStringValue));
+
+    return lobule;
 }
 
 
@@ -271,17 +348,28 @@ initialize.defaultInitializer = function() {
 
 
 
-var serialize = {};
+sys.serializeBrain = function serializeBrain() {
+
+    var fileContent = '# brain\n\n';
+    fileContent += Object.keys(sys.brain).map(lobule => sys.brain[lobule].serialize()).join('\n');
+    return fileContent;
+}
 
 
 
-serialize.defaultSerializer = function(lobule) {
+sys.serialize = {};
+
+
+
+sys.serialize.defaultSerializer = function(lobule) {
 
     var result = `
-
-## Lobule
+## lobule
 
 name: ${lobule.name}
+lobe: ${lobule.lobe}
+initializer: ${lobule.initializer}
+serializer:  ${lobule.serializer}
 
 -- description
 ${lobule.description}
@@ -294,22 +382,20 @@ observedMetaOutputs: ${lobule.input.observedMetaOutputs.map(item => "\n- "+item)
 output:
 currentValue = ${JSON.stringify(lobule.output.currentValue)}
 futureValue =  ${JSON.stringify(lobule.output.futureValue)}
+observedBy =   ${JSON.stringify(lobule.output.observedBy)}
 
 metaInput: ${Object.keys(lobule.metaInput).map(key => '\n'+key+" = "+lobule.metaInput[key])}
 
 metaOutput:
 currentValue = ${JSON.stringify(lobule.metaOutput.currentValue)}
 futureValue =  ${JSON.stringify(lobule.metaOutput.futureValue)}
+observedBy =   ${JSON.stringify(lobule.metaOutput.observedBy)}
 
-initializer: ${lobule.initializer}
-serializer:  ${lobule.serializer}
-
-prisms: ${lobule.prisms.map(item => "\n- "+item)}
+prisms: ${lobule.prisms.map(item => "\n- "+item).join('')}
 
 ### stateHistory
 
-${lobule.states.map(state => "#### state\n\n"+JSON.stringify(state, null, 4)).join('\n\n')}
-
+${lobule.states.map(state => "-- state\n"+JSON.stringify(state, null, 4)+"\n-- state\n\n").join('')}
     `;
 
     return result;
@@ -322,12 +408,14 @@ ${lobule.states.map(state => "#### state\n\n"+JSON.stringify(state, null, 4)).jo
 
 
 
-sys.Lobule = function(name) {           // must be serializable
+sys.Lobule = function(name, lobe) {
 
     if (sys.brain[name]) throw new Error("Lobule name already in use");
 
     this.name = name;           // must be unique
     this.description = name;
+    
+    this.setLobe(lobe);
 
     this.input = {
         observedOutputs : [],   // list of lobule names
@@ -355,6 +443,15 @@ sys.Lobule = function(name) {           // must be serializable
     };
 
     sys.brain[name] = this;
+}
+
+
+
+sys.Lobule.prototype.setLobe = function(lobe) {
+
+    if (!sys.lobe[lobe]) sys.lobe[lobe] = [];
+    sys.lobe[lobe].push(this.name);
+    this.lobe = lobe;
 }
 
 
@@ -418,14 +515,71 @@ sys.Lobule.prototype.setPrisms = function(acts) {
 
 sys.Lobule.prototype.serialize = function() {
 
-    return serialize[this.serializer](this);
+    return sys.serialize[this.serializer](this);
 }
+
+
+
+// Execution ********************************************************************************
+
+
+
+sys.step = function step() {
+
+    for (var lobule in sys.brain) {
+
+        var effect = {};
+        var state = JSON.parse(JSON.stringify(lobules.states[0]));
+        
+        state.input = {
+            observedOutputs: {},
+            observedMetaOutputs : {}
+        };
+
+        for (var oo of lobule.input.observedOutputs)
+            state.input.observedOutputs[oo] = sys.brain[oo].output.currentValue;
+
+        for (var om of lobule.input.observedMetaOutputs)
+            state.input.observedMetaOutputs[om] = sys.brain[om].metaOutput.currentValue;
+
+        for (var prism in lobule.prisms) {
+
+            ({ state, effect } = sys.prism[prism](state, effect, lobule.states));
+        }
+
+        lobule.output.futureValue = JSON.parse(JSON.stringify(state.output));
+
+        lobule.unshift(state);
+        if (lobule.states.length > lobule.historyLength) lobule.states.pop();
+    }
+
+    for (var lobule in sys.brain) {
+
+        lobule.currentValue = lobule.futureValue;
+        lobule.futureValue = {};
+    }
+}
+
+
+
+// Start ********************************************************************************
+
+
+
+vorpal.exec("load brain --silent").then(function(data) {
+
+    systemLog.success("Ready");
+});
+
+
+
+vorpal.delimiter('i›').show();
 
 
 
 // Test ********************************************************************************
 
+//new sys.Lobule("lobule1");
+//new sys.Lobule("lobule2");
 
 
-new sys.Lobule("lobule1");
-new sys.Lobule("lobule2");
