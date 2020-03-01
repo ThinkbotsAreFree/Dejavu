@@ -1,0 +1,73 @@
+
+
+
+Ontology draft
+
+
+
+Relation                Slave       Master
+--------                -----       ------
+
+Meaning                 entity      message
+InflectedForm           message     message
+Definition              message     message
+Context                 entity      message
+Synonym                 message     message
+Antonym                 message     message
+Derivative              message     message
+
+Special                 concept     concept
+Class                   concept     entity
+Member                  entity      collection
+Part                    entity      entity
+Substance               entity      entity
+Aspect                  instance    entity
+Symbol                  entity      entity
+
+Location                region      worldThing
+Neighbor                worldThing  worldThing
+Cause                   event       event
+Subevent                event       event
+Beginning               event       event
+End                     event       event
+Prerequisite            event       event
+Obstacle                event       event
+
+Desire                  entity      agent
+Intention               action      agent
+Creation                entity      agent
+Motivation              entity      action
+Interface               action      entity
+WayToDo                 action      action
+Purpose                 action      object
+Capacity                event       object
+
+
+
+Concept                 Description
+-------                 -----------
+
+entity                  anything
+
+    timeThing           an interaction between entities
+
+        period          a part of time
+        change          a modification of an entity
+        event           a change associated to a period
+        action          an event associated to an agent
+
+    mindThing           an entity that lives inside of a mind
+
+        concept         a template
+        instance        a template applied to an entity
+        collection      a list of entities
+        relation        a link between entities
+
+    worldThing          an entity that lives outside of a mind
+
+        region          a part of the world
+        object          a tangible physical object
+        agent           an object capable of subjectivity
+        message         an information
+
+
