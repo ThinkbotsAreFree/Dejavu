@@ -5,6 +5,11 @@ Ontology draft
 
 
 
+"Slave is Relation of Master"
+"Master has Relation Slave"
+
+
+
 Relation                Slave       Master
 --------                -----       ------
 
