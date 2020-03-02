@@ -3,6 +3,15 @@
 
 
 
+/*
+ *  This is meant to be an text interface in VS Code
+ *  Content changes are shown instantly because VS Code hot-reload files
+ *  On server-side, we can watch file to use it as input
+ * 
+ */
+
+
+
 function getCommandLine() {
     switch (process.platform) { 
         case 'darwin' : return 'open';

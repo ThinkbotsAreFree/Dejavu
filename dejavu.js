@@ -10,7 +10,8 @@ const {Signale} = require("signale");
 const colors = require("colors");
 const enolib = require('enolib');
 
-const {launch} = require("./file-ui.js");
+const { launch } = require("./file-ui.js");
+const cn = require("./consnet.js")(vorpal);
 
 console.log("[Dejavu]".brightMagenta);
 
@@ -21,6 +22,8 @@ const sys = {};
 sys.brain = {};
 sys.lobe =  {};
 sys.prism = require("./prism.js");
+
+sys.consnet = new cn.Consnet({ enableLog: true });
 
 
 
@@ -56,7 +59,7 @@ vorpal.command('echo [data]', "Outputs its argument.")
 
 
 
-vorpal.command('save as <filepath>', "Saves piped content in a file.")
+vorpal.command('save as <filepath>', "Saves piped content to a file.")
 .action(tryF(function(args, callback) {
     sys.filepath = args.filepath;
     fs.writeFileSync(args.filepath, args.stdin, "utf8");
@@ -77,7 +80,7 @@ vorpal.command('save', "Saves piped content in the same file.")
 
 
 
-vorpal.command('save brain [filepath]', "Saves the whole brain in memory.eno or to a specified file.")
+vorpal.command('save brain [filepath]', "Saves the whole brain to memory.eno or to a specified file.")
 .action(tryF(function(args, callback) {
     var brainSerialized = sys.serializeBrain();
     args.filepath = args.filepath || "memory.eno";
@@ -89,7 +92,7 @@ vorpal.command('save brain [filepath]', "Saves the whole brain in memory.eno or 
 
 
 
-vorpal.command('load brain [filepath]', "Loads a whole brain in memory.eno or from a specified file.")
+vorpal.command('load brain [filepath]', "Loads a whole brain from memory.eno or from a specified file.")
 .option('-s, --silent', 'Hides the success message.')
 .action(tryF(function(args, callback) {
     args.filepath = args.filepath || "memory.eno";
@@ -277,7 +280,7 @@ vorpal
 
 
 vorpal
-.command('set-prism <lobule> <prisms...>', "Sets the behavior of a lobule.")
+.command('set-prism-chain <lobule> <prisms...>', "Sets the behavior of a lobule.")
 .action(tryF(function(args, callback) {
 
     sys.brain[args.lobule].setPrisms(args.prisms);
@@ -304,13 +307,27 @@ vorpal
 
 vorpal
 .mode('javascript', "Enters into a Javascript REPL session.")
-.delimiter('js>')
+.delimiter('js:')
 .init(function(args, callback){
     this.log("Javascript mode on. Type code to evaluate, end with 'exit'.");
     callback();
 })
 .action(tryF(function(command, callback) {
     this.log(eval(command));
+    callback();
+}));
+
+
+
+vorpal
+.mode('consnet', "Enters into a Consnet REPL session.")
+.delimiter('cn:')
+.init(function(args, callback){
+    this.log("Consnet mode on. Type code to evaluate, end with 'exit'.");
+    callback();
+})
+.action(tryF(function(command, callback) {
+    sys.consnet.execute.call(sys.consnet, command);
     callback();
 }));
 
@@ -569,23 +586,28 @@ sys.step = function step() {
 
         var effect = {};
         var state = lobule.states.length ? JSON.parse(JSON.stringify(lobule.states[0])) : {};
-        
+
+        // input is part of the state
         state.input = {
             observedOutputs: {},
             observedMetaOutputs : {}
         };
 
+        // load observed values (save by lobule name)
         for (var oo of lobule.input.observedOutputs)
             state.input.observedOutputs[oo] = sys.brain[oo].output.currentValue;
 
+        // load observed meta-values (save by lobule name)
         for (var om of lobule.input.observedMetaOutputs)
             state.input.observedMetaOutputs[om] = sys.brain[om].metaOutput.currentValue;
 
+        // run the prism chain
         for (var prism of lobule.prisms) {
 
             ({ state, effect } = sys.prism[prism](state, effect, lobule.states));
         }
 
+        // output is part of the state
         lobule.output.futureValue = state.output ? JSON.parse(JSON.stringify(state.output)) : {};
 
         lobule.states.unshift(state);

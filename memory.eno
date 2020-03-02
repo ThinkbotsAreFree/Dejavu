@@ -9,7 +9,7 @@ initializer: defaultInitializer
 serializer:  defaultSerializer
 
 -- description
-lobule1
+Just a test documentation line
 -- description
 
 observedOutputs: 
