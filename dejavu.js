@@ -1,5 +1,33 @@
 
-// UI ********************************************************************************
+
+
+const newId  = (function(){
+    var current = "0";
+    var addOne = function(s) {		
+        let newNumber = '';
+        let continueAdding = true;		
+        for (let i = s.length - 1; i>= 0; i--) {			
+            if (continueAdding) {				
+                let num = parseInt(s[i], 10) + 1;			
+                if (num < 10) {					
+                    newNumber += num;
+                    continueAdding = false;					
+                } else {					
+                    newNumber += '0';
+                    if (i==0) newNumber += '1';
+                }				
+            } else {  			
+                newNumber +=s[i];
+            }
+        }		
+        return newNumber.split("").reverse().join("");
+    }	
+    return function(prefix) {
+        prefix = prefix || '';
+        current = addOne(current);
+        return prefix+current;
+    };
+})();
 
 
 
@@ -11,7 +39,7 @@ const colors = require("colors");
 const enolib = require('enolib');
 
 const { launch } = require("./file-ui.js");
-const cn = require("./consnet.js")(vorpal);
+const cn = require("./consnet.js")(vorpal, newId);
 
 console.log("[Dejavu]".brightMagenta);
 
@@ -24,6 +52,10 @@ sys.lobe =  {};
 sys.prism = require("./prism.js");
 
 sys.consnet = new cn.Consnet({ enableLog: true });
+
+
+
+// UI ********************************************************************************
 
 
 
@@ -585,7 +617,9 @@ sys.step = function step() {
         var lobule = sys.brain[lobuleName];
 
         var effect = {};
-        var state = lobule.states.length ? JSON.parse(JSON.stringify(lobule.states[0])) : {};
+        var state = lobule.states.length ?
+            new cn.Consnet({ clone: lobule.states[0] }) :
+            new cn.Consnet();
 
         // input is part of the state
         state.input = {

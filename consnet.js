@@ -2,38 +2,7 @@ const parser = require("./consnet-parser.js");
 
 
 
-module.exports = function(vorpal) {
-
-
-
-
-    const newId  = (function(){
-        var current = "0";
-        var addOne = function(s) {		
-            let newNumber = '';
-            let continueAdding = true;		
-            for (let i = s.length - 1; i>= 0; i--) {			
-                if (continueAdding) {				
-                    let num = parseInt(s[i], 10) + 1;			
-                    if (num < 10) {					
-                        newNumber += num;
-                        continueAdding = false;					
-                    } else {					
-                        newNumber += '0';
-                        if (i==0) newNumber += '1';
-                    }				
-                } else {  			
-                    newNumber +=s[i];
-                }
-            }		
-            return newNumber.split("").reverse().join("");
-        }	
-        return function(prefix) {
-            prefix = prefix || '';
-            current = addOne(current);
-            return prefix+current;
-        };
-    })();
+module.exports = function(vorpal, newId) {
 
 
 
@@ -46,7 +15,11 @@ module.exports = function(vorpal) {
             value: {}
         };
 
-        this.enableLog = opt.enableLog;
+        opt = opt || {};
+
+        this.enableLog = opt.enableLog ? true : false;
+
+        if (opt.clone) Object.assign(this.net, opt.clone.net);
     }
 
 
@@ -90,7 +63,7 @@ module.exports = function(vorpal) {
         var l = this.process.call(this, data[1].left),
             r = this.process.call(this, data[1].right);
     
-        return this.pair(l, r, data[0]);
+        return this.newPair(l, r, data[0]);
     
     };
 
@@ -110,7 +83,7 @@ module.exports = function(vorpal) {
         var fact = parser.parse(cmd);
 
         this.assert.call(this, fact);
-    }
+    };
 
 
 
@@ -121,12 +94,12 @@ module.exports = function(vorpal) {
             var l = this.process.call(this, data.left),
                 r = this.process.call(this, data.right);
             
-            return this.pair(l, r);
+            return this.newPair(l, r);
         }
 
         if (data.type === "structure") {
 
-            if (!this.authorizedCommands.includes(data.head)) throw new Error("Uknown identifier: "+data.head);
+            if (!this.authorizedCommands.includes(data.head)) throw new Error("Uknown command: "+data.head);
             return this[data.head].call(this, data.content);
         }
 
@@ -138,13 +111,15 @@ module.exports = function(vorpal) {
         }
 
         return data;
-    }
+    };
 
 
 
-    Consnet.prototype.pair = function(left, right, name) {
+    Consnet.prototype.newPair = function(left, right, name) {
 
         var id = name || newId('p');
+
+        if (this.net.pair[id]) return;
 
         this.net.pair[id] = {
             left: left,
@@ -170,7 +145,96 @@ module.exports = function(vorpal) {
         this.net.right[right].push(id);
 
         return id;
-    }
+    };
+
+
+
+    Consnet.prototype.merge = function(cn2) {
+
+        var code = codify(this.net)+' '+codify(cn2.net);
+
+        var tmp = new Consnet({enableLog: false});
+
+        tmp.execute(code);
+
+        this.net = JSON.parse(JSON.stringify(tmp.net));
+    };
+
+
+
+    Consnet.prototype.linkItemsToGroup = function(group, linkType, itemList) {
+
+        for (var i = 0; i<itemList.length; i++)
+            this.execute(`[${linkType} [${group} ${itemList[i]}]]`);
+    };
+
+
+
+    Consnet.prototype.findItemsInGroup = function(group, linkType, itemsFound, strategy) {
+
+        var result = [];
+
+        var listPairsWithGroupOnLeft = this.net.left[group];
+
+        for (var lpwgol=0; lpwgol<listPairsWithGroupOnLeft.length; lpwgol++) {
+
+            var pairWithGroupOnLeft = listPairsWithGroupOnLeft[lpwgol];
+
+            var candidate = this.net.pair[pairWithGroupOnLeft].right;
+
+            if (strategy === "intersection")
+                if (itemsFound && !itemsFound.includes(candidate)) continue;
+
+            if (strategy === "union")
+                if (itemsFound && itemsFound.includes(candidate)) continue;
+
+            var listPairsItsOnRightOf = this.net.pair[pairWithGroupOnLeft].rightOf;
+
+            for (var lpioro=0; lpioro<listPairsItsOnRightOf.length; lpioro++) {
+
+                var potentialLink = this.net.pair[listPairsItsOnRightOf[lpioro]];
+
+                if (potentialLink.left === linkType)
+                
+                    result.push(candidate);
+            }
+        }
+        return result;
+    };
+
+
+
+    Consnet.prototype.findItemsInGroupsMulti = function(criteria, strategy) {
+
+        var itemsFound = false;
+
+        for (var c=0; c<criteria.length; c++) {
+
+            var found = this.findItemsInGroup(
+                criteria[c].group,
+                criteria[c].linkType,
+                itemsFound,
+                strategy
+            );
+            if (strategy === "intersection") itemsFound = found;
+            if (strategy === "union") itemsFound = (itemsFound || []).concat(found);
+        }
+        return itemsFound;
+    };
+
+
+
+    Consnet.prototype.findItemsInGroupsIntersection = function(criteria) {
+
+        return this.findItemsInGroupsMulti(criteria, "intersection");
+    };
+
+
+
+    Consnet.prototype.findItemsInGroupsUnion = function(criteria) {
+
+        return this.findItemsInGroupsMulti(criteria, "union");
+    };
 
 
 
