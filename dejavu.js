@@ -337,11 +337,23 @@ vorpal
 
 
 
+function initJS() {
+
+    n = new cn.Consnet({enableLog: true});
+
+    n.execute('[a [b [c {"d":5}]]]');
+
+    n.dump();
+}
+
+
+
 vorpal
 .mode('javascript', "Enters into a Javascript REPL session.")
 .delimiter('js:')
 .init(function(args, callback){
     this.log("Javascript mode on. Type code to evaluate, end with 'exit'.");
+    initJS();
     callback();
 })
 .action(tryF(function(command, callback) {

@@ -24,7 +24,7 @@ module.exports = function(vorpal, newId) {
 
 
 
-    Consnet.prototype.assert = function(fact) {
+    Consnet.prototype.perform = function(fact) {
 
         for (var f=0; f<fact.length; f++) {
 
@@ -70,7 +70,7 @@ module.exports = function(vorpal, newId) {
 
 
     Consnet.prototype.authorizedCommands = [
-        "assert",
+        "perform",
         "show",
         "dump",
         "pair"
@@ -82,7 +82,7 @@ module.exports = function(vorpal, newId) {
 
         var fact = parser.parse(cmd);
 
-        this.assert.call(this, fact);
+        this.perform.call(this, fact);
     };
 
 
@@ -162,15 +162,15 @@ module.exports = function(vorpal, newId) {
 
 
 
-    Consnet.prototype.linkItemsToGroup = function(group, linkType, itemList) {
+    Consnet.prototype.linkItemsToGroup = function(group, link, itemList) {
 
         for (var i = 0; i<itemList.length; i++)
-            this.execute(`[${linkType} [${group} ${itemList[i]}]]`);
+            this.execute(`[${link} [${group} ${itemList[i]}]]`);
     };
 
 
 
-    Consnet.prototype.findItemsInGroup = function(group, linkType, itemsFound, strategy) {
+    Consnet.prototype.findItemsInGroup = function(group, link, itemsFound, strategy) {
 
         var result = [];
 
@@ -194,7 +194,7 @@ module.exports = function(vorpal, newId) {
 
                 var potentialLink = this.net.pair[listPairsItsOnRightOf[lpioro]];
 
-                if (potentialLink.left === linkType)
+                if (potentialLink.left === link)
                 
                     result.push(candidate);
             }
@@ -212,7 +212,7 @@ module.exports = function(vorpal, newId) {
 
             var found = this.findItemsInGroup(
                 criteria[c].group,
-                criteria[c].linkType,
+                criteria[c].link,
                 itemsFound,
                 strategy
             );
@@ -234,6 +234,51 @@ module.exports = function(vorpal, newId) {
     Consnet.prototype.findItemsInGroupsUnion = function(criteria) {
 
         return this.findItemsInGroupsMulti(criteria, "union");
+    };
+
+
+
+    Consnet.prototype.delete = function(target, depth) {
+
+        vorpal.log("deleting "+target);
+        depth = depth || 0;
+
+        if (this.net.pair[target]) {
+
+            var l = this.net.pair[target].left,
+                r = this.net.pair[target].right;
+
+            // left
+            this.net.left[l] = this.net.left[l].filter(id => id !== target);
+            if (this.net.left[l].length === 0) delete this.net.left[l];
+
+            // right
+            this.net.right[r] = this.net.right[r].filter(id => id !== target);
+            if (this.net.right[r].length === 0) delete this.net.right[r];
+
+            if (depth > 0) { // forward deleting
+
+                this.delete(l, depth-1);
+                this.delete(r, depth-1);
+            }
+            
+            delete this.net.pair[target];
+        }
+
+        if (this.net.value[target]) {
+
+            delete this.net.value[target];
+        }
+
+        if (depth < 0) { // backward deleting
+
+            var lo = this.net.left[target];
+            if (lo) for (let o=0; o<lo.length; o++) this.delete(lo[o], depth-1);
+
+            var ro = this.net.right[target];
+            if (ro) for (let o=0; o<ro.length; o++) this.delete(ro[o], depth-1);
+        }
+        
     };
 
 
