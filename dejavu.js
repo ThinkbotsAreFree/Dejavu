@@ -444,7 +444,7 @@ sys.initialize.defaultInitializer = function(enoSection) {
                 var s = new cn.Consnet();
                 s.execute(section.list("net").requiredStringValues().join('\n'));
                 section.elements().filter(el => el.yieldsField()).forEach(field => {
-                    s[field.stringKey()] = JSON.parse(field.requiredStringValue());
+                    s[field.stringKey()] = JSON.parse(field.toField().requiredStringValue());
                 });
                 return s;
             }
@@ -700,7 +700,6 @@ sys.step = function step() {
 
         lobule.states.unshift(data.state);
 
-        vorpal.log(lobule.states);
         if (lobule.states.length > lobule.historyLength) lobule.states.pop();
     }
 
@@ -710,9 +709,6 @@ sys.step = function step() {
 
         lobule.output.currentValue =     lobule.output.futureValue;
         lobule.metaOutput.currentValue = lobule.metaOutput.futureValue;
-
-        // lobule.output.futureValue =      null;
-        // lobule.metaOutput.futureValue =  null;
     }
 }
 
