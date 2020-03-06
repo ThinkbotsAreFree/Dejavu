@@ -341,7 +341,7 @@ function initJS() {
 
     n = new cn.Consnet({enableLog: true});
 
-    n.execute('[a [b [c {"d":5}]]]');
+    n.linkItemsToGroup("family", "Member", ["dad", "mum", "sis", "bro"]);
 
     n.dump();
 }
@@ -421,21 +421,31 @@ sys.initialize.defaultInitializer = function(enoSection) {
     };
 
     lobule.output = {
-        currentValue: JSON.parse(enoSection.fieldset("output").entry("currentValue").requiredStringValue()),
-        futureValue: JSON.parse(enoSection.fieldset("output").entry("futureValue").requiredStringValue()),
+        currentValue: new cn.Consnet({
+            clone: JSON.parse(enoSection.fieldset("output").entry("currentValue").requiredStringValue()) }),
+        futureValue: new cn.Consnet({
+            clone: JSON.parse(enoSection.fieldset("output").entry("futureValue").requiredStringValue()) }),
         observedBy: JSON.parse(enoSection.fieldset("output").entry("observedBy").requiredStringValue()),
     };
 
     lobule.metaOutput = {
-        currentValue: JSON.parse(enoSection.fieldset("metaOutput").entry("currentValue").requiredStringValue()),
-        futureValue: JSON.parse(enoSection.fieldset("metaOutput").entry("futureValue").requiredStringValue()),
+        currentValue: new cn.Consnet({
+            clone: JSON.parse(enoSection.fieldset("metaOutput").entry("currentValue").requiredStringValue()) }),
+        futureValue: new cn.Consnet({
+            clone: JSON.parse(enoSection.fieldset("metaOutput").entry("futureValue").requiredStringValue()) }),
         observedBy: JSON.parse(enoSection.fieldset("metaOutput").entry("observedBy").requiredStringValue()),
     };
 
     lobule.prisms = enoSection.list("prisms").requiredStringValues();
 
     lobule.states =
-        enoSection.section("stateHistory").fields("state").map(field => JSON.parse(field.requiredStringValue()));
+        enoSection.section("stateHistory").fields("state").map(
+            field => {
+                var c = new cn.Consnet();
+                c.execute(field);
+                return c;
+            }
+        );
 
     return lobule;
 }
@@ -473,27 +483,27 @@ serializer:  ${lobule.serializer}
 ${lobule.description}
 -- description
 
-observedOutputs: ${lobule.input.observedOutputs.map(item => "\n- "+item)}
+observedOutputs: ${lobule.input.observedOutputs.map(item => "\n- "+item).join('')}
 
-observedMetaOutputs: ${lobule.input.observedMetaOutputs.map(item => "\n- "+item)}
+observedMetaOutputs: ${lobule.input.observedMetaOutputs.map(item => "\n- "+item).join('')}
 
 output:
-currentValue = ${JSON.stringify(lobule.output.currentValue)}
-futureValue =  ${JSON.stringify(lobule.output.futureValue)}
+currentValue = ${JSON.stringify({ net: lobule.output.currentValue.net })}
+futureValue =  ${JSON.stringify({ net: lobule.output.futureValue.net })}
 observedBy =   ${JSON.stringify(lobule.output.observedBy)}
 
 metaInput: ${Object.keys(lobule.metaInput).map(key => '\n'+key+" = "+lobule.metaInput[key])}
 
 metaOutput:
-currentValue = ${JSON.stringify(lobule.metaOutput.currentValue)}
-futureValue =  ${JSON.stringify(lobule.metaOutput.futureValue)}
+currentValue = ${JSON.stringify({ net: lobule.metaOutput.currentValue.net })}
+futureValue =  ${JSON.stringify({ net: lobule.metaOutput.futureValue.net })}
 observedBy =   ${JSON.stringify(lobule.metaOutput.observedBy)}
 
 prisms: ${lobule.prisms.map(item => "\n- "+item).join('')}
 
 ### stateHistory
 
-${lobule.states.map(state => "-- state\n"+JSON.stringify(state, null, 4)+"\n-- state\n\n").join('')}
+${lobule.states.map(state => "-- state\n"+cn.codify(state)+"\n-- state\n\n").join('')}
     `;
 
     return result;
@@ -520,9 +530,9 @@ sys.Lobule = function(name, lobe) {
         observedMetaOutputs: []
     };
     this.output = {
-        currentValue: {},       // observed
-        futureValue: {},        // calculated
-        observedBy: []          // backlink
+        currentValue: new cn.Consnet(),
+        futureValue: new cn.Consnet(),
+        observedBy: []
     };
 
     this.initializer = "defaultInitializer";
@@ -535,9 +545,9 @@ sys.Lobule = function(name, lobe) {
         historyLength: 10
     };
     this.metaOutput = {         // indicates what's being done
-        currentValue: {},       // observed
-        futureValue: {},        // calculated
-        observedBy: []          // backlink
+        currentValue: new cn.Consnet(),
+        futureValue: new cn.Consnet(),
+        observedBy: []
     };
 
     sys.brain[name] = this;
@@ -629,41 +639,52 @@ sys.step = function step() {
         var lobule = sys.brain[lobuleName];
 
         var effect = {};
-        var state = lobule.states.length ?
+        var data = {};
+
+        data.state = lobule.states.length ?
             new cn.Consnet({ clone: lobule.states[0] }) :
             new cn.Consnet();
 
-        // input is part of the state
-        state.input = {
+        data.history = lobule.states;
+
+        data.input = {
             observedOutputs: {},
             observedMetaOutputs : {}
         };
 
         // load observed values (save by lobule name)
         for (var oo of lobule.input.observedOutputs)
-            state.input.observedOutputs[oo] = sys.brain[oo].output.currentValue;
+            data.input.observedOutputs[oo] = sys.brain[oo].output.currentValue;
 
         // load observed meta-values (save by lobule name)
         for (var om of lobule.input.observedMetaOutputs)
-            state.input.observedMetaOutputs[om] = sys.brain[om].metaOutput.currentValue;
+            data.input.observedMetaOutputs[om] = sys.brain[om].metaOutput.currentValue;
 
+        data.metaInput = lobule.metaInput;
+
+        data.output =     new cn.Consnet();
+        data.metaOutput = new cn.Consnet();
+        
         // run the prism chain
         for (var prism of lobule.prisms) {
 
-            ({ state, effect } = sys.prism[prism](state, effect, lobule.states));
+            ({ data, effect } = sys.prism[prism](data, effect));
         }
 
-        // output is part of the state
-        lobule.output.futureValue = state.output ? JSON.parse(JSON.stringify(state.output)) : {};
+        lobule.output.futureValue =     data.output;
+        lobule.metaOutput.futureValue = data.metaOutput;
 
-        lobule.states.unshift(state);
+        lobule.states.unshift(data.state);
         if (lobule.states.length > lobule.historyLength) lobule.states.pop();
     }
 
     for (var lobule in sys.brain) {
 
-        lobule.currentValue = lobule.futureValue;
-        lobule.futureValue = {};
+        lobule.output.currentValue =     lobule.output.futureValue;
+        lobule.metaOutput.currentValue = lobule.metaOutput.futureValue;
+
+        lobule.output.futureValue =      null;
+        lobule.metaOutput.futureValue =  null;
     }
 }
 

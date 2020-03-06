@@ -21,7 +21,7 @@ Synonym                 message     message
 Antonym                 message     message
 Derivative              message     message
 
-Special                 concept     concept
+SpecialCase             concept     concept
 Class                   concept     entity
 Member                  entity      collection
 Part                    entity      entity
@@ -32,9 +32,12 @@ Symbol                  entity      entity
 Location                region      worldThing
 Neighbor                worldThing  worldThing
 Cause                   event       event
-Subevent                event       event
-Beginning               event       event
-End                     event       event
+PosteriorEvent          event       event
+NextEvent               event       event
+OverlappingEvent        event       event
+SubEvent                event       event
+FirstSubEvent           event       event
+LastSubEvent            event       event
 Prerequisite            event       event
 Obstacle                event       event
 

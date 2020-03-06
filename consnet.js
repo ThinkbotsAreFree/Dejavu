@@ -238,6 +238,10 @@ module.exports = function(vorpal, newId) {
 
 
 
+    // todo path
+
+
+
     Consnet.prototype.delete = function(target, depth) {
 
         vorpal.log("deleting "+target);

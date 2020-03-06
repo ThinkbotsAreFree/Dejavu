@@ -4,75 +4,34 @@
 ## lobule
 
 name: lobule1
-lobe: test-lobe
+lobe: undefined
 initializer: defaultInitializer
 serializer:  defaultSerializer
 
 -- description
-Just a test documentation line
+lobule1
 -- description
 
 observedOutputs: 
-- lobule2
 
 observedMetaOutputs: 
 
 output:
-currentValue = {}
-futureValue =  {}
+currentValue = {"net":{"pair":{},"left":{},"right":{},"value":{}}}
+futureValue =  {"net":{"pair":{},"left":{},"right":{},"value":{}}}
 observedBy =   []
 
 metaInput: 
 historyLength = 10
 
 metaOutput:
-currentValue = {}
-futureValue =  {}
+currentValue = {"net":{"pair":{},"left":{},"right":{},"value":{}}}
+futureValue =  {"net":{"pair":{},"left":{},"right":{},"value":{}}}
 observedBy =   []
 
 prisms: 
-- setX0
-- incrX
-- incrX
-- incrX
 
 ### stateHistory
-
--- state
-{
-    "input": {
-        "observedOutputs": {
-            "lobule2": {}
-        },
-        "observedMetaOutputs": {}
-    },
-    "x": 9
-}
--- state
-
--- state
-{
-    "input": {
-        "observedOutputs": {
-            "lobule2": {}
-        },
-        "observedMetaOutputs": {}
-    },
-    "x": 6
-}
--- state
-
--- state
-{
-    "input": {
-        "observedOutputs": {
-            "lobule2": {}
-        },
-        "observedMetaOutputs": {}
-    },
-    "x": 3
-}
--- state
 
 
     
@@ -80,7 +39,7 @@ prisms:
 ## lobule
 
 name: lobule2
-lobe: test-lobe
+lobe: undefined
 initializer: defaultInitializer
 serializer:  defaultSerializer
 
@@ -93,52 +52,21 @@ observedOutputs:
 observedMetaOutputs: 
 
 output:
-currentValue = {}
-futureValue =  {}
-observedBy =   ["lobule1"]
+currentValue = {"net":{"pair":{},"left":{},"right":{},"value":{}}}
+futureValue =  {"net":{"pair":{},"left":{},"right":{},"value":{}}}
+observedBy =   []
 
 metaInput: 
 historyLength = 10
 
 metaOutput:
-currentValue = {}
-futureValue =  {}
+currentValue = {"net":{"pair":{},"left":{},"right":{},"value":{}}}
+futureValue =  {"net":{"pair":{},"left":{},"right":{},"value":{}}}
 observedBy =   []
 
 prisms: 
-- setX0
 
 ### stateHistory
-
--- state
-{
-    "input": {
-        "observedOutputs": {},
-        "observedMetaOutputs": {}
-    },
-    "x": 0
-}
--- state
-
--- state
-{
-    "input": {
-        "observedOutputs": {},
-        "observedMetaOutputs": {}
-    },
-    "x": 0
-}
--- state
-
--- state
-{
-    "input": {
-        "observedOutputs": {},
-        "observedMetaOutputs": {}
-    },
-    "x": 0
-}
--- state
 
 
     
