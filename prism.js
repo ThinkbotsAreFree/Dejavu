@@ -6,7 +6,6 @@ const readDir = require('readdir');
 module.exports = function(sys) {
 
 
-
     var exp = {};
 
     var filesArray = readDir.readSync(path.join(__dirname, "prism"), ["**.js"]);

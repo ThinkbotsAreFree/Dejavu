@@ -6,36 +6,54 @@ module.exports = function(sys) {
 
 
 
-        "setX0": function(state, effect, stateHistory) {
+        "setX0": function(data, effect) {
 
-            if (!state.x) state.x = 0;
+            var inactive = true;
+
+            if (!data.state.x) {
+                data.state.x = 0;
+                inactive = false;
+            }
 
             return {
-                state: state,
+                data: data,
+                effect: effect,
+                inactive: inactive
+            }
+        },
+
+
+
+        "incrX": function(data, effect) {
+
+            data.state.x += 1;
+
+            return {
+                data: data,
                 effect: effect
             }
         },
 
 
 
-        "incrX": function(state, effect, stateHistory) {
+        "decrX": function(data, effect) {
 
-            state.x += 1;
+            data.state.x -= 1;
 
             return {
-                state: state,
+                data: data,
                 effect: effect
             }
         },
 
 
 
-        "decrX": function(state, effect, stateHistory) {
+        "outX": function(data, effect) {
 
-            state.x -= 1;
+            data.output.execute(`[x {"value": ${data.state.x}}]`);
 
             return {
-                state: state,
+                data: data,
                 effect: effect
             }
         },

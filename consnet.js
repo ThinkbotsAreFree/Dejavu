@@ -17,7 +17,7 @@ module.exports = function(vorpal, newId) {
 
         opt = opt || {};
 
-        this.enableLog = opt.enableLog ? true : false;
+        if (opt.enableLog) this.enableLog = true;
 
         if (opt.clone) Object.assign(this.net, opt.clone.net);
     }
@@ -238,7 +238,17 @@ module.exports = function(vorpal, newId) {
 
 
 
-    // todo path
+    Consnet.prototype.chainItems = function(itemList, link) {
+
+        if (itemList.length < 2) return;
+
+        for (var i=1; i<itemList.length; i++)
+            this.execute(`[${link} [${itemList[i-1]} ${itemList[i]}]]`);
+    };
+
+
+
+        // todo path
 
 
 
@@ -339,6 +349,8 @@ module.exports = function(vorpal, newId) {
         parse: parser.parse,
 
         stringify: stringify,
+
+        codify: codify,
 
         normalize: function(x) { return stringify(parser.parse(x)); },
 

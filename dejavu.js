@@ -49,7 +49,7 @@ const sys = {};
 
 sys.brain = {};
 sys.lobe =  {};
-sys.prism = require("./prism.js");
+sys.prism = require("./prism.js")(sys);
 
 sys.consnet = new cn.Consnet({ enableLog: true });
 
@@ -439,11 +439,14 @@ sys.initialize.defaultInitializer = function(enoSection) {
     lobule.prisms = enoSection.list("prisms").requiredStringValues();
 
     lobule.states =
-        enoSection.section("stateHistory").fields("state").map(
-            field => {
-                var c = new cn.Consnet();
-                c.execute(field);
-                return c;
+        enoSection.section("stateHistory").sections("state").map(
+            section => {
+                var s = new cn.Consnet();
+                s.execute(section.list("net").requiredStringValues().join('\n'));
+                section.elements().filter(el => el.yieldsField()).forEach(field => {
+                    s[field.stringKey()] = JSON.parse(field.requiredStringValue());
+                });
+                return s;
             }
         );
 
@@ -503,7 +506,20 @@ prisms: ${lobule.prisms.map(item => "\n- "+item).join('')}
 
 ### stateHistory
 
-${lobule.states.map(state => "-- state\n"+cn.codify(state)+"\n-- state\n\n").join('')}
+${lobule.states.map(state => {
+
+    var result = "#### state\n\n";
+
+    var code = cn.codify(state);
+
+    if (code.length > 0) {
+        result = "net:\n";
+        result += code.split('\n').map(line => "- "+line+'\n').join('')+'\n';
+    }
+    result += Object.keys(state).map(key => (key === "net") ? '' : key+": "+state[key]+'\n').join('');
+
+    return result+'\n';
+}).join('')}
     `;
 
     return result;
@@ -638,8 +654,10 @@ sys.step = function step() {
 
         var lobule = sys.brain[lobuleName];
 
-        var effect = {};
-        var data = {};
+        var effect = {},
+            data = {},
+            inactive = false,
+            activationChain = [];
 
         data.state = lobule.states.length ?
             new cn.Consnet({ clone: lobule.states[0] }) :
@@ -662,29 +680,39 @@ sys.step = function step() {
 
         data.metaInput = lobule.metaInput;
 
-        data.output =     new cn.Consnet();
-        data.metaOutput = new cn.Consnet();
+        data.output = new cn.Consnet();
         
         // run the prism chain
         for (var prism of lobule.prisms) {
 
-            ({ data, effect } = sys.prism[prism](data, effect));
+            ({ data, effect, inactive } = sys.prism[prism](data, effect));
+
+            if (!inactive) activationChain.push(prism);
         }
 
-        lobule.output.futureValue =     data.output;
+        data.metaOutput = new cn.Consnet();
+
+        // insert activationChain in metaOutput
+        data.metaOutput.chainItems(activationChain, "NextEvent");
+
+        lobule.output.futureValue =     new cn.Consnet({ clone: data.output });
         lobule.metaOutput.futureValue = data.metaOutput;
 
         lobule.states.unshift(data.state);
+
+        vorpal.log(lobule.states);
         if (lobule.states.length > lobule.historyLength) lobule.states.pop();
     }
 
-    for (var lobule in sys.brain) {
+    for (var lobuleName in sys.brain) {
+
+        var lobule = sys.brain[lobuleName];
 
         lobule.output.currentValue =     lobule.output.futureValue;
         lobule.metaOutput.currentValue = lobule.metaOutput.futureValue;
 
-        lobule.output.futureValue =      null;
-        lobule.metaOutput.futureValue =  null;
+        // lobule.output.futureValue =      null;
+        // lobule.metaOutput.futureValue =  null;
     }
 }
 
