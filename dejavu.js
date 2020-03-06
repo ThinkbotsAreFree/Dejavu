@@ -492,15 +492,15 @@ observedMetaOutputs: ${lobule.input.observedMetaOutputs.map(item => "\n- "+item)
 
 output:
 currentValue = ${JSON.stringify({ net: lobule.output.currentValue.net })}
-futureValue =  ${JSON.stringify({ net: lobule.output.futureValue.net })}
-observedBy =   ${JSON.stringify(lobule.output.observedBy)}
+futureValue = ${JSON.stringify({ net: lobule.output.futureValue.net })}
+observedBy = ${JSON.stringify(lobule.output.observedBy)}
 
 metaInput: ${Object.keys(lobule.metaInput).map(key => '\n'+key+" = "+lobule.metaInput[key])}
 
 metaOutput:
 currentValue = ${JSON.stringify({ net: lobule.metaOutput.currentValue.net })}
-futureValue =  ${JSON.stringify({ net: lobule.metaOutput.futureValue.net })}
-observedBy =   ${JSON.stringify(lobule.metaOutput.observedBy)}
+futureValue = ${JSON.stringify({ net: lobule.metaOutput.futureValue.net })}
+observedBy = ${JSON.stringify(lobule.metaOutput.observedBy)}
 
 prisms: ${lobule.prisms.map(item => "\n- "+item).join('')}
 
@@ -659,9 +659,16 @@ sys.step = function step() {
             inactive = false,
             activationChain = [];
 
-        data.state = lobule.states.length ?
-            new cn.Consnet({ clone: lobule.states[0] }) :
-            new cn.Consnet();
+        if (lobule.states.length > 0) {
+
+            data.state = new cn.Consnet({ clone: lobule.states[0] });
+            Object.keys(lobule.states[0]).forEach(key => {
+                if (key !== "net") data.state[key] = JSON.parse(JSON.stringify(lobule.states[0][key]));
+            });
+
+        } else {
+            data.state = new cn.Consnet();
+        }
 
         data.history = lobule.states;
 

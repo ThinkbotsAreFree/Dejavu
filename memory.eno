@@ -17,27 +17,35 @@ observedOutputs:
 observedMetaOutputs: 
 
 output:
-currentValue = {"net":{"pair":{"p26":{"left":"x","right":"v25","leftOf":[],"rightOf":[]}},"left":{"x":["p26"]},"right":{"v25":["p26"]},"value":{"v25":{"value":1}}}}
-futureValue =  {"net":{"pair":{"p26":{"left":"x","right":"v25","leftOf":[],"rightOf":[]}},"left":{"x":["p26"]},"right":{"v25":["p26"]},"value":{"v25":{"value":1}}}}
-observedBy =   []
+currentValue = {"net":{"pair":{},"left":{},"right":{},"value":{}}}
+futureValue = {"net":{"pair":{},"left":{},"right":{},"value":{}}}
+observedBy = []
 
 metaInput: 
 historyLength = 10
 
 metaOutput:
-currentValue = {"net":{"pair":{"p27":{"left":"setX0","right":"incrX","leftOf":[],"rightOf":["p28"]},"p28":{"left":"NextEvent","right":"p27","leftOf":[],"rightOf":[]},"p29":{"left":"incrX","right":"incrX","leftOf":[],"rightOf":["p30"]},"p30":{"left":"NextEvent","right":"p29","leftOf":[],"rightOf":[]},"p31":{"left":"incrX","right":"decrX","leftOf":[],"rightOf":["p32"]},"p32":{"left":"NextEvent","right":"p31","leftOf":[],"rightOf":[]},"p33":{"left":"decrX","right":"outX","leftOf":[],"rightOf":["p34"]},"p34":{"left":"NextEvent","right":"p33","leftOf":[],"rightOf":[]},"p35":{"left":"outX","right":"incrX","leftOf":[],"rightOf":["p36"]},"p36":{"left":"NextEvent","right":"p35","leftOf":[],"rightOf":[]}},"left":{"setX0":["p27"],"NextEvent":["p28","p30","p32","p34","p36"],"incrX":["p29","p31"],"decrX":["p33"],"outX":["p35"]},"right":{"incrX":["p27","p29","p35"],"p27":["p28"],"p29":["p30"],"decrX":["p31"],"p31":["p32"],"outX":["p33"],"p33":["p34"],"p35":["p36"]},"value":{}}}
-futureValue =  {"net":{"pair":{"p27":{"left":"setX0","right":"incrX","leftOf":[],"rightOf":["p28"]},"p28":{"left":"NextEvent","right":"p27","leftOf":[],"rightOf":[]},"p29":{"left":"incrX","right":"incrX","leftOf":[],"rightOf":["p30"]},"p30":{"left":"NextEvent","right":"p29","leftOf":[],"rightOf":[]},"p31":{"left":"incrX","right":"decrX","leftOf":[],"rightOf":["p32"]},"p32":{"left":"NextEvent","right":"p31","leftOf":[],"rightOf":[]},"p33":{"left":"decrX","right":"outX","leftOf":[],"rightOf":["p34"]},"p34":{"left":"NextEvent","right":"p33","leftOf":[],"rightOf":[]},"p35":{"left":"outX","right":"incrX","leftOf":[],"rightOf":["p36"]},"p36":{"left":"NextEvent","right":"p35","leftOf":[],"rightOf":[]}},"left":{"setX0":["p27"],"NextEvent":["p28","p30","p32","p34","p36"],"incrX":["p29","p31"],"decrX":["p33"],"outX":["p35"]},"right":{"incrX":["p27","p29","p35"],"p27":["p28"],"p29":["p30"],"decrX":["p31"],"p31":["p32"],"outX":["p33"],"p33":["p34"],"p35":["p36"]},"value":{}}}
-observedBy =   []
+currentValue = {"net":{"pair":{"p5":{"left":"incrX","right":"incrX","leftOf":[],"rightOf":["p6"]},"p6":{"left":"NextEvent","right":"p5","leftOf":[],"rightOf":[]}},"left":{"incrX":["p5"],"NextEvent":["p6"]},"right":{"incrX":["p5"],"p5":["p6"]},"value":{}}}
+futureValue = {"net":{"pair":{"p5":{"left":"incrX","right":"incrX","leftOf":[],"rightOf":["p6"]},"p6":{"left":"NextEvent","right":"p5","leftOf":[],"rightOf":[]}},"left":{"incrX":["p5"],"NextEvent":["p6"]},"right":{"incrX":["p5"],"p5":["p6"]},"value":{}}}
+observedBy = []
 
 prisms: 
-- setX0
 - incrX
-- incrX
-- decrX
-- outX
 - incrX
 
 ### stateHistory
+
+#### state
+
+x: 8
+
+#### state
+
+x: 6
+
+#### state
+
+x: 4
 
 #### state
 
@@ -71,20 +79,29 @@ observedMetaOutputs:
 
 output:
 currentValue = {"net":{"pair":{},"left":{},"right":{},"value":{}}}
-futureValue =  {"net":{"pair":{},"left":{},"right":{},"value":{}}}
-observedBy =   []
+futureValue = {"net":{"pair":{},"left":{},"right":{},"value":{}}}
+observedBy = []
 
 metaInput: 
 historyLength = 10
 
 metaOutput:
 currentValue = {"net":{"pair":{},"left":{},"right":{},"value":{}}}
-futureValue =  {"net":{"pair":{},"left":{},"right":{},"value":{}}}
-observedBy =   []
+futureValue = {"net":{"pair":{},"left":{},"right":{},"value":{}}}
+observedBy = []
 
 prisms: 
 
 ### stateHistory
+
+#### state
+
+
+#### state
+
+
+#### state
+
 
 #### state
 
