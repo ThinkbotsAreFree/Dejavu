@@ -1,8 +1,12 @@
 
 
 
+const sys = {};
+
+
+
 const newId  = (function(){
-    var current = "0";
+    sys.currentId = "0";
     var addOne = function(s) {		
         let newNumber = '';
         let continueAdding = true;		
@@ -24,8 +28,8 @@ const newId  = (function(){
     }	
     return function(prefix) {
         prefix = prefix || '';
-        current = addOne(current);
-        return prefix+current;
+        sys.currentId = addOne(sys.currentId);
+        return prefix+sys.currentId;
     };
 })();
 
@@ -44,8 +48,6 @@ const cn = require("./consnet.js")(vorpal, newId);
 console.log("[Dejavu]".brightMagenta);
 
 
-
-const sys = {};
 
 sys.brain = {};
 sys.lobe =  {};
@@ -392,6 +394,9 @@ var systemLog = new Signale({
 
 sys.initializeBrain = function initializeBrain(enodoc) {
 
+    var idGen = enodoc.section("brain").field("IDGEN").optionalStringValue();
+    if (idGen) sys.currentId = idGen;
+
     enodoc.section("brain").sections("lobule").forEach(enoSection => {
 
         sys.initialize[enoSection.field("initializer").requiredStringValue()](enoSection);
@@ -461,7 +466,7 @@ sys.initialize.defaultInitializer = function(enoSection) {
 
 sys.serializeBrain = function serializeBrain() {
 
-    var fileContent = '# brain\n\n';
+    var fileContent = "# brain\n\nIDGEN: "+newId()+"\n\n";
     fileContent += Object.keys(sys.brain).map(lobule => sys.brain[lobule].serialize()).join('\n');
     return fileContent;
 }
@@ -573,6 +578,7 @@ sys.Lobule = function(name, lobe) {
 
 sys.Lobule.prototype.setLobe = function(lobe) {
 
+    lobe = lobe || "default";
     if (!sys.lobe[lobe]) sys.lobe[lobe] = [];
     sys.lobe[lobe].push(this.name);
     this.lobe = lobe;
@@ -701,13 +707,14 @@ sys.step = function step() {
 
         // insert activationChain in metaOutput
         data.metaOutput.chainItems(activationChain, "NextEvent");
+        data.metaOutput.linkItemsToGroup("ActivationChain", "Abstraction", activationChain);
 
         lobule.output.futureValue =     new cn.Consnet({ clone: data.output });
         lobule.metaOutput.futureValue = data.metaOutput;
 
         lobule.states.unshift(data.state);
 
-        if (lobule.states.length > lobule.historyLength) lobule.states.pop();
+        while (lobule.states.length > lobule.metaInput.historyLength) lobule.states.pop();
     }
 
     for (var lobuleName in sys.brain) {

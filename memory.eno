@@ -1,10 +1,12 @@
 # brain
 
+IDGEN: 165
+
 
 ## lobule
 
 name: lobule1
-lobe: undefined
+lobe: default
 initializer: defaultInitializer
 serializer:  defaultSerializer
 
@@ -25,11 +27,12 @@ metaInput:
 historyLength = 10
 
 metaOutput:
-currentValue = {"net":{"pair":{"p5":{"left":"incrX","right":"incrX","leftOf":[],"rightOf":["p6"]},"p6":{"left":"NextEvent","right":"p5","leftOf":[],"rightOf":[]}},"left":{"incrX":["p5"],"NextEvent":["p6"]},"right":{"incrX":["p5"],"p5":["p6"]},"value":{}}}
-futureValue = {"net":{"pair":{"p5":{"left":"incrX","right":"incrX","leftOf":[],"rightOf":["p6"]},"p6":{"left":"NextEvent","right":"p5","leftOf":[],"rightOf":[]}},"left":{"incrX":["p5"],"NextEvent":["p6"]},"right":{"incrX":["p5"],"p5":["p6"]},"value":{}}}
+currentValue = {"net":{"pair":{"p33":{"left":"incrX","right":"incrX","leftOf":[],"rightOf":["p34"]},"p34":{"left":"NextEvent","right":"p33","leftOf":[],"rightOf":[]},"p35":{"left":"ActivationChain","right":"incrX","leftOf":[],"rightOf":["p36"]},"p36":{"left":"Abstraction","right":"p35","leftOf":[],"rightOf":[]},"p37":{"left":"ActivationChain","right":"incrX","leftOf":[],"rightOf":["p38"]},"p38":{"left":"Abstraction","right":"p37","leftOf":[],"rightOf":[]}},"left":{"incrX":["p33"],"NextEvent":["p34"],"ActivationChain":["p35","p37"],"Abstraction":["p36","p38"]},"right":{"incrX":["p33","p35","p37"],"p33":["p34"],"p35":["p36"],"p37":["p38"]},"value":{}}}
+futureValue = {"net":{"pair":{"p33":{"left":"incrX","right":"incrX","leftOf":[],"rightOf":["p34"]},"p34":{"left":"NextEvent","right":"p33","leftOf":[],"rightOf":[]},"p35":{"left":"ActivationChain","right":"incrX","leftOf":[],"rightOf":["p36"]},"p36":{"left":"Abstraction","right":"p35","leftOf":[],"rightOf":[]},"p37":{"left":"ActivationChain","right":"incrX","leftOf":[],"rightOf":["p38"]},"p38":{"left":"Abstraction","right":"p37","leftOf":[],"rightOf":[]}},"left":{"incrX":["p33"],"NextEvent":["p34"],"ActivationChain":["p35","p37"],"Abstraction":["p36","p38"]},"right":{"incrX":["p33","p35","p37"],"p33":["p34"],"p35":["p36"],"p37":["p38"]},"value":{}}}
 observedBy = []
 
 prisms: 
+- setX0
 - incrX
 - incrX
 
@@ -37,27 +40,43 @@ prisms:
 
 #### state
 
-x: 8
+x: 104
 
 #### state
 
-x: 6
+x: 102
 
 #### state
 
-x: 4
+x: 100
 
 #### state
 
-x: 2
+x: 98
 
 #### state
 
-x: 2
+x: 96
 
 #### state
 
-x: 2
+x: 94
+
+#### state
+
+x: 92
+
+#### state
+
+x: 90
+
+#### state
+
+x: 88
+
+#### state
+
+x: 86
 
 
     
@@ -65,7 +84,7 @@ x: 2
 ## lobule
 
 name: lobule2
-lobe: undefined
+lobe: default
 initializer: defaultInitializer
 serializer:  defaultSerializer
 
@@ -86,31 +105,55 @@ metaInput:
 historyLength = 10
 
 metaOutput:
-currentValue = {"net":{"pair":{},"left":{},"right":{},"value":{}}}
-futureValue = {"net":{"pair":{},"left":{},"right":{},"value":{}}}
+currentValue = {"net":{"pair":{"p39":{"left":"ActivationChain","right":"decrX","leftOf":[],"rightOf":["p40"]},"p40":{"left":"Abstraction","right":"p39","leftOf":[],"rightOf":[]}},"left":{"ActivationChain":["p39"],"Abstraction":["p40"]},"right":{"decrX":["p39"],"p39":["p40"]},"value":{}}}
+futureValue = {"net":{"pair":{"p39":{"left":"ActivationChain","right":"decrX","leftOf":[],"rightOf":["p40"]},"p40":{"left":"Abstraction","right":"p39","leftOf":[],"rightOf":[]}},"left":{"ActivationChain":["p39"],"Abstraction":["p40"]},"right":{"decrX":["p39"],"p39":["p40"]},"value":{}}}
 observedBy = []
 
 prisms: 
+- setX0
+- decrX
 
 ### stateHistory
 
 #### state
 
+x: -47
 
 #### state
 
+x: -46
 
 #### state
 
+x: -45
 
 #### state
 
+x: -44
 
 #### state
 
+x: -43
 
 #### state
 
+x: -42
+
+#### state
+
+x: -41
+
+#### state
+
+x: -40
+
+#### state
+
+x: -39
+
+#### state
+
+x: -38
 
 
     

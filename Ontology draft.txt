@@ -22,7 +22,7 @@ Antonym                 message     message
 Derivative              message     message
 
 SpecialCase             concept     concept
-Class                   concept     entity
+Abstraction             concept     entity
 Member                  entity      collection
 Part                    entity      entity
 Substance               entity      entity
