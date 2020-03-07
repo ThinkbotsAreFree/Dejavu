@@ -327,6 +327,19 @@ vorpal
 
 
 vorpal
+.command('meta-input <lobule> <key> <value>', "modifies the metaInput a lobule.")
+.action(tryF(function(args, callback) {
+
+    sys.brain[args.lobule].metaInput[args.key] = JSON.parse(args.value);
+
+    systemLog.success("metaInput of "+args.lobule+": "+JSON.stringify(sys.brain[args.lobule].metaInput));
+
+    callback();
+}));
+
+
+
+vorpal
 .command('step [times]', "Make the brain interpret 1 or more steps.")
 .action(tryF(function(args, callback) {
 
@@ -366,14 +379,20 @@ vorpal
 
 
 vorpal
-.mode('consnet', "Enters into a Consnet REPL session.")
-.delimiter('cn:')
+.mode('consnet [lobule]', "Enters into a Consnet REPL session.")
+.delimiter("cn:")
 .init(function(args, callback){
     this.log("Consnet mode on. Type code to evaluate, end with 'exit'.");
+    if (args.lobule)
+        sys.consnet = sys.brain[args.lobule].states[0];
+    else
+        sys.consnet = new cn.Consnet({ enableLog: true });
     callback();
 })
 .action(tryF(function(command, callback) {
+    sys.consnet.enableLog = true;
     sys.consnet.execute.call(sys.consnet, command);
+    delete sys.consnet.enableLog;
     callback();
 }));
 
@@ -515,10 +534,10 @@ ${lobule.states.map(state => {
 
     var result = "#### state\n\n";
 
-    var code = cn.codify(state);
+    var code = cn.codify(state.net).trim();
 
     if (code.length > 0) {
-        result = "net:\n";
+        result += "net:\n";
         result += code.split('\n').map(line => "- "+line+'\n').join('')+'\n';
     }
     result += Object.keys(state).map(key => (key === "net") ? '' : key+": "+state[key]+'\n').join('');
