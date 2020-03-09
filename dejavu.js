@@ -369,6 +369,8 @@ function initJS() {
     there is a woman's man.
     a solution is better than a problem.
     it is not impossible that a woman is more good than a man.
+    is it provable that a man is worse than a woman?
+    this man is the smallest man.
     `);
     console.log(x);
     console.log(dce.stringify(x));

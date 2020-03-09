@@ -4,6 +4,26 @@
 const parser = require("./english-parser.js");
 
 
+var superlative = {
+
+    "good": "best",
+    "new": "newest",
+    "long": "longest",
+    "great": "greatest",
+    "little": "littlest",
+    "old": "oldest",
+    "big": "biggest",
+    "high": "highest",
+    "low": "lowest",
+    "small": "smallest",
+    "large": "largest",
+    "early": "earliest",
+    "young": "youngest",
+    "few": "fewest",
+    "bad": "worst"
+};
+
+
 var metaAssertionQuestion = {
     "true": { sign: "positive", tail: "true", base: "truth", value: true },
     "not true": { sign: "negative", tail: "true", base: "truth", value: false },
@@ -384,6 +404,19 @@ var variantToConjugation = {
     ed: "ed"
 };
 
+var variantToConjugationBe = {
+    1: 1,
+    2: 2,
+    3: 3,
+    4: 4,
+    5: 5,
+    6: 6,
+    default: 3,
+    third: 3,
+    ing: "ing",
+    ed: "ed"
+};
+
 
 
 var isQuestion = false;
@@ -412,7 +445,7 @@ function stringify(node) {
         result += stringify(node.existing);
 
         if (Array.isArray(node.complement)) result += node.complement.map(stringify).join(' ');
-        if (node.complement) result += stringify(node.complement);
+        else if (node.complement) result += stringify(node.complement);
 
         isQuestion = true;
 
@@ -448,7 +481,7 @@ function stringify(node) {
 
         result = ' '+stringify(node.subject)+' '+stringify(node.link)+' '+stringify(node.verb)+' ';
         if (Array.isArray(node.complement)) result += node.complement.map(stringify).join(' ');
-        if (node.complement) result += stringify(node.complement);
+        else if (node.complement) result += stringify(node.complement);
 
         return result;
     }
@@ -458,7 +491,10 @@ function stringify(node) {
     if (node.type === "Verb") {
 
         result = ' '+stringify(node.auxiliary)+' ';
-        result += conjugation[node.verb.infinitive][variantToConjugation[node.verb.variant]]+' ';
+        if (node.verb.infinitive === "to be")
+            result += conjugation[node.verb.infinitive][variantToConjugationBe[node.verb.variant]]+' ';
+        else
+            result += conjugation[node.verb.infinitive][variantToConjugation[node.verb.variant]]+' ';
         
         return result;
     }
@@ -491,7 +527,7 @@ function stringify(node) {
         result = ' '+stringify(node.subject)+' '+stringify(node.verb)+' ';
         console.log("COMPLEMENT", node.complement);
         if (Array.isArray(node.complement)) result += node.complement.map(stringify).join(' ');
-        if (node.complement) result += stringify(node.complement);
+        else if (node.complement) result += stringify(node.complement);
         
         return result;
     }
@@ -530,12 +566,12 @@ function stringify(node) {
         }
 
         if (Array.isArray(node.adverb)) result += node.adverb.map(stringify).join(' ');
-        if (node.adverb) result += stringify(node.adverb);
+        else if (node.adverb) result += stringify(node.adverb);
 
         result += ' '+stringify(node.existing)+' ';
 
         if (Array.isArray(node.complement)) result += node.complement.map(stringify).join(' ');
-        if (node.complement) result += stringify(node.complement);
+        else if (node.complement) result += stringify(node.complement);
 
         return result;
     }
@@ -629,6 +665,32 @@ function stringify(node) {
 
 
 
+    if (node.type === "QuestionInit") {
+
+        return " is it "+metaAQ["s:"+node.meta.sign+" t:"+node.meta.tail]+" that "+stringify(node.fact)+' ';
+    }
+
+
+
+    if (node.type === "Superlative") {
+
+        console.log("SUPER", node);
+        if (node.direction === "most") {
+            if (superlative[node.adjective]) return " the "+superlative[node.adjective]+' '+stringify(node.target)+' ';
+            return " the most "+node.adjective+' '+stringify(node.target)+' ';
+        }
+        return " the least "+node.adjective+' '+stringify(node.target)+' ';
+    }
+
+
+
+    if (node.type === "Complement") {
+
+        var link = node.link === "direct" ? '' : node.link;
+        return ' '+link+' '+stringify(node.item)+' ';
+    }
+
+
 
     if (typeof node === "string") return node;
     return JSON.stringify(node);
@@ -668,7 +730,7 @@ module.exports = {
             isQuestion = false;
 
             sentence = tree[t];
-            //console.log("sentence", sentence);
+            console.log("sentence", sentence);
 
             sentence = stringify(sentence).trim();
             sentence = sentence.charAt(0).toUpperCase() + sentence.slice(1);
@@ -683,7 +745,10 @@ module.exports = {
         return result.trim();
     },
 
-    parse: function(txt) { return parser.parse('; '+comparativeToLong(txt.toLowerCase())); }
+    parse: function(txt) {
+        //console.log(comparativeToLong(txt.toLowerCase()));
+        return parser.parse('; '+comparativeToLong(txt.toLowerCase()));
+    }
 
 };
 

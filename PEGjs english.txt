@@ -589,6 +589,7 @@ metaQuestion
 / "is it not impossible " _
 / "is it necessary " _
 / "is it not necessary " _
+/ "is it provable " _
 / "is it not provable " _
 / "is it true " _
 / "is it not false " _) "that " _ fact:(sentence/item) _ {
@@ -718,14 +719,6 @@ superlative
         form: f
     };
 }
-/ f:"the best" _ {
-	return {
-    	type: "Superlative",
-        adjective: "good",
-        direction: "most",
-        form: f
-    };
-}
 / f:"the fewest" _ {
 	return {
     	type: "Superlative",
@@ -783,7 +776,15 @@ itemSentence
 
 
 sentence
-= !metaAssertion subject:item _ verb:verb _ a:(adjective/comparison/superlative) _ {
+= !metaAssertion subject:item _ verb:be _ a:(complement*/superlative/adjective/comparison) _ {
+	return {
+    	type: "Sentence",
+    	subject: subject,
+        verb: verb,
+        complement: a
+    };
+}
+/ !metaAssertion subject:item _ verb:verb _ a:(adjective/comparison/superlative) _ {
 	return {
     	type: "Sentence",
     	subject: subject,
@@ -1074,6 +1075,17 @@ verb
     };
 }
 // $[^ \t\r\n\"\(\)\[\]\'\.\;]+
+
+be
+= v:$(
+  ("is" / "are" / "am" / "being" / "been")
+) _ { 
+	return {
+    	type: "Verb",
+        verb: verbDef[v],
+        form: v
+    };
+}
 
 
 auxiliary
