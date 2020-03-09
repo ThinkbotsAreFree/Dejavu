@@ -530,6 +530,14 @@ comparison
     };
 }
 
+/ c:comparative _ "than" _ i:item _ {
+	return {
+    	type: "Comparison",
+        comparative: c,
+        target: i
+    };
+}
+
 / "as" _ a:adjective _ "as" _ i:item _ {
 	return {
     	type: "Comparison",
@@ -724,6 +732,22 @@ superlative
     };
 }
 
+comparative
+= "better"
+/ "newer"
+/ "longer"
+/ "greater"
+/ "older"
+/ "bigger"
+/ "higher"
+/ "lower"
+/ "smaller"
+/ "larger"
+/ "earlier"
+/ "younger"
+/ "fewer"
+/ "worse"
+
 
 adjective
 = a:$(
@@ -764,7 +788,7 @@ itemSentence
 
 
 sentence
-= !metaAssertion subject:item _ verb:verb _ a:(adjective/comparison/superlative) _ {
+= !metaAssertion subject:item _ verb:verb _ !comparison a:(adjective/comparative/superlative) _ {
 	return {
     	type: "Sentence",
     	subject: subject,
@@ -780,7 +804,6 @@ sentence
         complement: comp
     };
 }
-
 / metaAssertion
 / rule
 / metaQuestion
@@ -1089,7 +1112,6 @@ aux
 / "may " _
 ) {
 	return Object.assign(auxiDef[a], {
-    	type: "Aux",
     	form: a.trim()
     });
 }

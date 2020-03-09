@@ -364,8 +364,12 @@ function initJS() {
     for every man is there a woman;
     is there a man who works?
     a man has to work.
+    there are (a man and a woman) who have to work.
+    for many problems there is at least a solution.
+    there is a woman's man.
+    a woman is better than a man.
     `);
-    //console.log(x);
+    console.log(x);
     console.log(dce.stringify(x));
 }
 

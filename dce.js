@@ -5,6 +5,29 @@ const parser = require("./english-parser.js");
 
 
 
+var comparativeLongToShort = {
+    "more good": "better",
+    "more new": "newer",
+    "more long": "longer",
+    "more grate": "greater",
+    "more old": "older",
+    "more big": "bigger",
+    "more high": "higher",
+    "more low": "lower",
+    "more small": "smaller",
+    "more large": "larger",
+    "more early": "earlier",
+    "more young": "younger",
+    "more few": "fewer",
+    "more bad": "worse"
+};
+
+var comparativeShortToLong = {};
+
+for (var c in comparativeLongToShort) comparativeShortToLong[comparativeLongToShort[c]] = c;
+
+
+
 var auxrDef = {
     "not be": { base: "be", sign: "negative" },
     "not provably not": { base: "prove", sign: "negative", tail: "negative" },
@@ -365,7 +388,8 @@ function stringify(node) {
 
         result += stringify(node.existing);
 
-        result += node.complement.map(stringify).join(' ');
+        if (Array.isArray(node.complement)) result += node.complement.map(stringify).join(' ');
+        if (node.complement) result += stringify(node.complement);
 
         isQuestion = true;
 
@@ -377,6 +401,14 @@ function stringify(node) {
     if (node.type === "UniversalGroup" || node.type === "UniversalIndividual") {
 
         return ' '+stringify(node.quantor)+' '+stringify(node.topic)+' '+stringify(node.fact)+' ';
+
+    }
+
+
+
+    if (node.type === "Context") {
+
+        return ' '+node.context+' '+stringify(node.topic)+' '+stringify(node.fact)+' '+(node.of ? "of " : '');
 
     }
 
@@ -392,7 +424,8 @@ function stringify(node) {
     if (node.type === "RelativeClause") {
 
         result = ' '+stringify(node.subject)+' '+stringify(node.link)+' '+stringify(node.verb)+' ';
-        result += node.complement.map(stringify).join(' ');
+        if (Array.isArray(node.complement)) result += node.complement.map(stringify).join(' ');
+        if (node.complement) result += stringify(node.complement);
 
         return result;
     }
@@ -423,18 +456,172 @@ function stringify(node) {
 
 
 
+    if (node.type === "Aux") {
+
+        return ' '+auxi(node.base, node.person, node.sign, node.numberCategory)+' ';
+    }
+
+
+
     if (node.type === "Sentence") {
 
         result = ' '+stringify(node.subject)+' '+stringify(node.verb)+' ';
-        result += node.complement.map(stringify).join(' ');
+        console.log("COMPLEMENT", node.complement);
+        if (Array.isArray(node.complement)) result += node.complement.map(stringify).join(' ');
+        if (node.complement) result += stringify(node.complement);
         
         return result;
     }
 
 
 
+    if (node.type === "Existential") {
+
+        if (node.numberCategory === "singular") {
+
+            if (node.sign === "positive")
+
+                result += "there is ";
+
+            else { // negative
+
+                if (node.followedByDeterminer)
+                    result += "there isn't ";
+                else
+                    result += "there is no ";
+            }
+
+        } else { // plural
+
+            if (node.sign === "positive")
+
+                result += "there are ";
+
+            else { // negative
+
+                if (node.followedByDeterminer)
+                    result += "there aren't ";
+                else
+                    result += "there are no ";
+            }
+        }
+
+        if (Array.isArray(node.adverb)) result += node.adverb.map(stringify).join(' ');
+        if (node.adverb) result += stringify(node.adverb);
+
+        result += ' '+stringify(node.existing)+' ';
+
+        if (Array.isArray(node.complement)) result += node.complement.map(stringify).join(' ');
+        if (node.complement) result += stringify(node.complement);
+
+        return result;
+    }
+
+
+
+    if (node.type === "NothingBut") {
+
+        return ' nothing but '+stringify(node.what)+' ';
+    }
+
+
+
+    if (node.type === "NobodyBut") {
+
+        return ' nobody but '+stringify(node.what)+' ';
+    }
+
+
+
+    if (node.type === "EachOf") {
+
+        return ' each of '+stringify(node.what)+' ';
+    }
+
+
+    if (node.type === "Link") {
+
+        result += ' ( ';
+        result += stringify(node.left)+' '+node.link+' '+stringify(node.right)+' ';
+        result += ' ) ';
+
+        return result;
+    }
+
+
+
+    if (node.type === "GeneralisedQuantor") {
+
+        return ' '+node.quantor+' '+stringify(node.quantity)+' ';
+    }
+
+
+
+    if (node.type === "Generic") {
+
+        return ' '+node.what+' ';
+    }
+
+
+
+    if (node.type === "Ownership") {
+
+        var g = (node.owner[node.owner.length-1] === 's') ? "'" : "'s"
+        return ' '+node.owner+g+' '+node.owned+' ';
+    }
+
+
+
+    if (node.type === "Possessive") {
+
+        return ' '+node.pronoun+' '+(node.own ? "own" : '')+' '+stringify(node.owned);
+    }
+
+
+
+    if (node.type === "Comparison") {
+
+        if (node.comparative) {
+
+            result = ' '+node.comparative+" than "+stringify(node.target)+' ';
+
+        } else if (node.comparison === "more" || node.comparison === "less") {
+
+            result = ' '+node.comparison+' '+stringify(node.adjective)+" than "+stringify(node.target)+' ';
+
+        } else {
+
+            result = " as "+stringify(node.adjective)+" as "+stringify(node.target);
+        }
+
+        return result;
+    }
+
+
+
+
     if (typeof node === "string") return node;
     return JSON.stringify(node);
+}
+
+
+
+function comparativeToShort(txt) {
+
+    for (var c in comparativeLongToShort)
+        txt = txt.replace(new RegExp(c, "g"), comparativeLongToShort[c]);
+
+    return txt;
+}
+
+
+
+function comparativeToLong(txt) {
+
+    for (var c in comparativeShortToLong)
+        txt = txt.replace(new RegExp(c, "g"), comparativeShortToLong[c]);
+
+    return txt;
 }
 
 
@@ -450,8 +637,10 @@ module.exports = {
 
             isQuestion = false;
 
-            sentence = stringify(tree[t]).trim();
+            sentence = tree[t];
             //console.log("sentence", sentence);
+
+            sentence = stringify(sentence).trim();
             sentence = sentence.charAt(0).toUpperCase() + sentence.slice(1);
 
             if (isQuestion)
@@ -460,11 +649,11 @@ module.exports = {
                 result += sentence+'.\n';
         }
 
-        result = result.replace(/ i /g, " I ").replace(/ +/g, ' ');
+        result = comparativeToShort(result).replace(/ i /g, " I ").replace(/ +/g, ' ');
         return result.trim();
     },
 
-    parse: function(txt) { return parser.parse('; '+txt.toLowerCase()); }
+    parse: function(txt) { return parser.parse('; '+comparativeToLong(txt.toLowerCase())); }
 
 };
 
