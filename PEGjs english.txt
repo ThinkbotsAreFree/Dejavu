@@ -1129,6 +1129,7 @@ auxrest
 / "have to" _
 / "be" _) {
     return {
+        type: "Auxrest",
         form: ar.trim(),
         auxr: auxrDef[ar.trim()]
     };

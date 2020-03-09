@@ -358,11 +358,15 @@ vorpal
 
 function initJS() {
 
-/*    n = new cn.Consnet({enableLog: true});
-
-    n.linkItemsToGroup("family", "Member", ["dad", "mum", "sis", "bro"]);
-
-    n.dump();*/
+    x = dce.parse(`
+    is there a man;
+    is there a woman;
+    for every man is there a woman;
+    is there a man who works?
+    a man has to work.
+    `);
+    //console.log(x);
+    console.log(dce.stringify(x));
 }
 
 
@@ -372,7 +376,7 @@ vorpal
 .delimiter('js:')
 .init(function(args, callback){
     this.log("Javascript mode on. Type code to evaluate, end with 'exit'.");
-    initJS();
+    tryF( initJS() );
     callback();
 })
 .action(tryF(function(command, callback) {

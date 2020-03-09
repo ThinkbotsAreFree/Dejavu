@@ -1509,7 +1509,13 @@ module.exports = /*
         peg$c991 = peg$literalExpectation("have to", false),
         peg$c992 = "be",
         peg$c993 = peg$literalExpectation("be", false),
-        peg$c994 = function(ar) { return ar.trim(); },
+        peg$c994 = function(ar) {
+            return {
+                type: "Auxrest",
+                form: ar.trim(),
+                auxr: auxrDef[ar.trim()]
+            };
+        },
 
         peg$currPos          = 0,
         peg$savedPos         = 0,
@@ -8486,6 +8492,9 @@ module.exports = /*
           s1 = peg$parseauxiliary();
           if (s1 === peg$FAILED) {
             s1 = peg$parseaux();
+            if (s1 === peg$FAILED) {
+              s1 = peg$parseauxrest();
+            }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$parse_();
@@ -10145,6 +10154,20 @@ module.exports = /*
     }
 
 
+
+    var auxrDef = {
+        "not be": { base: "be", sign: "negative" },
+        "not provably not": { base: "prove", sign: "negative", tail: "negative" },
+        "not provably": { base: "prove", sign: "negative" },
+        "not have to be": { base: "have to", sign: "negative", person: "other", tail: "be" },
+        "not have to": { base: "have to", sign: "negative", person: "other" },
+        "not": { base: "negative" },
+        "has to be": { base: "have to", sign: "positive", person: "third", tail: "be" },
+        "has to": { base: "have to", sign: "positive", person: "third" },
+        "have to be": { base: "have to", sign: "positive", person: "other", tail: "be" },
+        "have to": { base: "have to", sign: "positive", person: "other" },
+        "be": { base: "be", sign: "positive" }
+    };
 
     var verbDef = {
 
