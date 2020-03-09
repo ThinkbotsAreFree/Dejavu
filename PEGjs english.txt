@@ -1,4 +1,20 @@
 {
+    
+var metaAssertionQuestion = {
+    "true": { sign: "positive", tail: "true", base: "truth", value: true },
+    "not true": { sign: "negative", tail: "true", base: "truth", value: false },
+    "false": { sign: "positive", tail: "false", base: "truth", value: false },
+    "not false" : { sign: "negative", tail: "false", base: "truth", value: true },
+    "possible": { sign: "positive", tail: "possible", base: "possibility", value: true },
+    "not possible": { sign: "negative", tail: "possible", base: "possibility", value: false },
+    "impossible": { sign: "positive", tail: "impossible", base: "possibility", value: false },
+    "not impossible": { sign: "negative", tail: "impossible", base: "possibility", value: true },
+    "necessary": { sign: "positive", tail: "necessary", base: "necessity", value: true },
+    "not necessary": { sign: "negative", tail: "necessary", base: "necessity", value: false },
+    "provable": { sign: "positive", tail: "provable", base: "provability", value: true },
+    "not provable": { sign: "negative", tail: "provable", base: "provability", value: false },
+}
+
 
 var auxrDef = {
     "not be": { base: "be", sign: "negative" },
@@ -551,12 +567,14 @@ metaAssertion
 / "it is not impossible " _
 / "it is necessary " _
 / "it is not necessary " _
+/ "it is provable " _
 / "it is not provable " _
 / "it is true " _
-/ "it is not false " _) "that " _ fact:item _ {
+/ "it is not false " _) "that " _ fact:(sentence/item) _ {
 	return {
     	type: "SentenceInit",
-        init: si.trim(),
+        form: si.trim(),
+        meta: metaAssertionQuestion[si.trim().substring(6)],
         fact: fact
     };
 }
@@ -576,7 +594,8 @@ metaQuestion
 / "is it not false " _) "that " _ fact:(sentence/item) _ {
 	return {
     	type: "QuestionInit",
-        init: si.trim(),
+        form: si.trim(),
+        meta: metaAssertionQuestion[si.trim().substring(6)],
         fact: fact
     };
 }

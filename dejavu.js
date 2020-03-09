@@ -367,7 +367,8 @@ function initJS() {
     there are (a man and a woman) who have to work.
     for many problems there is at least a solution.
     there is a woman's man.
-    a woman is better than a man.
+    a solution is better than a problem.
+    it is not impossible that a woman is more good than a man.
     `);
     console.log(x);
     console.log(dce.stringify(x));

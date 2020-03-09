@@ -4,6 +4,29 @@
 const parser = require("./english-parser.js");
 
 
+var metaAssertionQuestion = {
+    "true": { sign: "positive", tail: "true", base: "truth", value: true },
+    "not true": { sign: "negative", tail: "true", base: "truth", value: false },
+    "false": { sign: "positive", tail: "false", base: "truth", value: false },
+    "not false" : { sign: "negative", tail: "false", base: "truth", value: true },
+    "possible": { sign: "positive", tail: "possible", base: "possibility", value: true },
+    "not possible": { sign: "negative", tail: "possible", base: "possibility", value: false },
+    "impossible": { sign: "positive", tail: "impossible", base: "possibility", value: false },
+    "not impossible": { sign: "negative", tail: "impossible", base: "possibility", value: true },
+    "necessary": { sign: "positive", tail: "necessary", base: "necessity", value: true },
+    "not necessary": { sign: "negative", tail: "necessary", base: "necessity", value: false },
+    "provable": { sign: "positive", tail: "provable", base: "provability", value: true },
+    "not provable": { sign: "negative", tail: "provable", base: "provability", value: false },
+}
+
+var metaAQ = {};
+
+for (var m in metaAssertionQuestion) {
+
+    metaAQ["s:"+metaAssertionQuestion[m].sign+" t:"+metaAssertionQuestion[m].tail] = m;
+}
+
+
 
 var comparativeLongToShort = {
     "more good": "better",
@@ -595,6 +618,13 @@ function stringify(node) {
         }
 
         return result;
+    }
+
+
+
+    if (node.type === "SentenceInit") {
+
+        return " it is "+metaAQ["s:"+node.meta.sign+" t:"+node.meta.tail]+" that "+stringify(node.fact)+' ';
     }
 
 
