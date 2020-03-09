@@ -45,6 +45,8 @@ const enolib = require('enolib');
 const { launch } = require("./file-ui.js");
 const cn = require("./consnet.js")(vorpal, newId);
 
+const dce = require("./dce.js");
+
 console.log("[Dejavu]".brightMagenta);
 
 
@@ -54,6 +56,8 @@ sys.lobe =  {};
 sys.prism = require("./prism.js")(sys);
 
 sys.consnet = new cn.Consnet({ enableLog: true });
+
+const graph = require("./graph.js")(sys);
 
 
 
@@ -354,11 +358,11 @@ vorpal
 
 function initJS() {
 
-    n = new cn.Consnet({enableLog: true});
+/*    n = new cn.Consnet({enableLog: true});
 
     n.linkItemsToGroup("family", "Member", ["dad", "mum", "sis", "bro"]);
 
-    n.dump();
+    n.dump();*/
 }
 
 
