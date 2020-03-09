@@ -1,5 +1,19 @@
 {
 
+var auxrDef = {
+    "not be": { base: "be", sign: "negative" },
+    "not provably not": { base: "prove", sign: "negative", tail: "negative" },
+    "not provably": { base: "prove", sign: "negative" },
+    "not have to be": { base: "have to", sign: "negative", person: "other", tail: "be" },
+    "not have to": { base: "have to", sign: "negative", person: "other" },
+    "not": { base: "negative" },
+    "has to be": { base: "have to", sign: "positive", person: "third", tail: "be" },
+    "has to": { base: "have to", sign: "positive", person: "third" },
+    "have to be": { base: "have to", sign: "positive", person: "other", tail: "be" },
+    "have to": { base: "have to", sign: "positive", person: "other" },
+    "be": { base: "be", sign: "positive" }
+};
+
 var verbDef = {
 
     "saying": { infinitive: "to say", variant: "ing" },
@@ -1024,7 +1038,7 @@ verb
 	v.adverbs = a;
 	return v;
 }
-/ a:(auxiliary/aux) _ v:verb _ {
+/ a:(auxiliary/aux/auxrest) _ v:verb _ {
 	v.auxiliary = a;
 	return v;
 }
@@ -1113,5 +1127,10 @@ auxrest
 / "has to" _
 / "have to be" _
 / "have to" _
-/ "be" _) { return ar.trim(); }
+/ "be" _) {
+    return {
+        form: ar.trim(),
+        auxr: auxrDef[ar.trim()]
+    };
+}
 
