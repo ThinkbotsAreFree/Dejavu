@@ -1,0 +1,1117 @@
+{
+
+var verbDef = {
+
+    "saying": { infinitive: "to say", variant: "ing" },
+    "says": { infinitive: "to say", variant: "third" },
+    "say": { infinitive: "to say", variant: "default" },
+    "said": { infinitive: "to say", variant: "ed" },
+ 
+    "getting": { infinitive: "to get", variant: "ing" },
+    "gets": { infinitive: "to get", variant: "third" },
+    "get": { infinitive: "to get", variant: "default" },
+    "gotten": { infinitive: "to get", variant: "ed" },
+    "got": { infinitive: "to get", variant: "ed" },
+ 
+    "making": { infinitive: "to make", variant: "ing" },
+    "makes": { infinitive: "to make", variant: "third" },
+    "make": { infinitive: "to make", variant: "default" },
+    "made": { infinitive: "to make", variant: "ed" },
+ 
+    "going": { infinitive: "to go", variant: "ing" },
+    "goes": { infinitive: "to go", variant: "third" },
+    "gone": { infinitive: "to go", variant: "ed" },
+    "go": { infinitive: "to go", variant: "default" },
+ 
+    "knowing": { infinitive: "to know", variant: "ing" },
+    "knows": { infinitive: "to know", variant: "third" },
+    "known": { infinitive: "to know", variant: "ed" },
+    "know": { infinitive: "to know", variant: "default" },
+ 
+    "takes": { infinitive: "to take", variant: "ing" },
+    "taking": { infinitive: "to take", variant: "third" },
+    "taken": { infinitive: "to take", variant: "ed" },
+    "take": { infinitive: "to take", variant: "default" },
+ 
+    "sees": { infinitive: "to see", variant: "ing" },
+    "seeing": { infinitive: "to see", variant: "third" },
+    "seen": { infinitive: "to see", variant: "ed" },
+    "see": { infinitive: "to see", variant: "default" },
+ 
+    "comes": { infinitive: "to come", variant: "third" },
+    "come": { infinitive: "to come", variant: "default" },
+    "coming": { infinitive: "to come", variant: "ing" },
+ 
+    "thinks": { infinitive: "to think", variant: "third" },
+    "thinking": { infinitive: "to think", variant: "ing" },
+    "think": { infinitive: "to think", variant: "default" },
+    "thought": { infinitive: "to think", variant: "ed" },
+ 
+    "looks": { infinitive: "to look", variant: "third" },
+    "looking": { infinitive: "to look", variant: "ing" },
+    "looked": { infinitive: "to look", variant: "ed" },
+    "look": { infinitive: "to look", variant: "default" },
+ 
+    "wants": { infinitive: "to want", variant: "third" },
+    "wanting": { infinitive: "to want", variant: "ing" },
+    "wanted": { infinitive: "to want", variant: "ed" },
+    "want": { infinitive: "to want", variant: "default" },
+ 
+    "gives": { infinitive: "to give", variant: "third" },
+    "giving": { infinitive: "to give", variant: "ing" },
+    "given": { infinitive: "to give", variant: "ed" },
+    "give": { infinitive: "to give", variant: "default" },
+ 
+    "uses": { infinitive: "to use", variant: "third" },
+    "using": { infinitive: "to use", variant: "ing" },
+    "used": { infinitive: "to use", variant: "ed" },
+    "use": { infinitive: "to use", variant: "default" },
+ 
+    "finds": { infinitive: "to find", variant: "third" },
+    "finding": { infinitive: "to find", variant: "ing" },
+    "found": { infinitive: "to find", variant: "ed" },
+    "find": { infinitive: "to find", variant: "default" },
+ 
+    "tells": { infinitive: "to tell", variant: "third" },
+    "telling": { infinitive: "to tell", variant: "ing" },
+    "told": { infinitive: "to tell", variant: "ed" },
+    "tell": { infinitive: "to tell", variant: "default" },
+ 
+    "asks": { infinitive: "to ask", variant: "third" },
+    "asking": { infinitive: "to ask", variant: "ing" },
+    "asked": { infinitive: "to ask", variant: "ed" },
+    "ask": { infinitive: "to ask", variant: "default" },
+ 
+    "works": { infinitive: "to work", variant: "third" },
+    "working": { infinitive: "to work", variant: "ing" },
+    "worked": { infinitive: "to work", variant: "ed" },
+    "work": { infinitive: "to work", variant: "default" },
+ 
+    "seems": { infinitive: "to seem", variant: "third" },
+    "seeming": { infinitive: "to seem", variant: "ing" },
+    "seemed": { infinitive: "to seem", variant: "ed" },
+    "seem": { infinitive: "to seem", variant: "default" },
+ 
+    "feels": { infinitive: "to feel", variant: "third" },
+    "feeling": { infinitive: "to feel", variant: "ing" },
+    "felt": { infinitive: "to feel", variant: "ed" },
+    "feel": { infinitive: "to feel", variant: "default" },
+ 
+    "tries": { infinitive: "to try", variant: "third" },
+    "trying": { infinitive: "to try", variant: "ing" },
+    "tried": { infinitive: "to try", variant: "ed" },
+    "try": { infinitive: "to try", variant: "default" },
+ 
+    "leaves": { infinitive: "to leave", variant: "third" },
+    "leave": { infinitive: "to leave", variant: "default" },
+    "leaving": { infinitive: "to leave", variant: "ing" },
+    "left": { infinitive: "to leave", variant: "ed" },
+ 
+    "calls": { infinitive: "to call", variant: "third" },
+    "calling": { infinitive: "to call", variant: "ing" },
+    "called": { infinitive: "to call", variant: "ed" },
+    "call": { infinitive: "to call", variant: "default" },
+ 
+    "believes": { infinitive: "to believe", variant: "third" },
+    "believing": { infinitive: "to believe", variant: "ing" },
+    "believed": { infinitive: "to believe", variant: "ed" },
+    "believe": { infinitive: "to believe", variant: "default" },
+ 
+    "is": { infinitive: "to be", variant: "default" },
+    "are": { infinitive: "to be", variant: "default" },
+    "am": { infinitive: "to be", variant: "default" },
+    "being": { infinitive: "to be", variant: "ing" },
+    "been": { infinitive: "to be", variant: "ed" },
+};
+
+
+var auxiDef = {
+    "does not ": {
+        base: "do",
+        person: "third",
+        sign: "negative",
+        numberCategory: "singular"
+    },
+    "does ": {
+        base: "do",
+        person: "third",
+        sign: "positive",
+        numberCategory: "singular"
+    },
+    "do not ": {
+        base: "do",
+        person: "other",
+        sign: "negative",
+        numberCategory: "unknown"
+    },
+    "do ": {
+        base: "do",
+        person: "other",
+        sign: "positive",
+        numberCategory: "unknown"
+    },
+    "are not ": {
+        base: "be",
+        person: "other",
+        sign: "negative",
+        numberCategory: "plural"
+    },
+    "are ": {
+        base: "be",
+        person: "other",
+        sign: "positive",
+        numberCategory: "plural",
+    },
+    "is not ": {
+        base: "be",
+        person: "unknown",
+        sign: "negative",
+        numberCategory: "singular"
+    },
+    "is ": {
+        base: "be",
+        person: "unknown",
+        sign: "positive",
+        numberCategory: "singular"
+    },
+    "be ": {
+        base: "be",
+        person: "infinitive",
+        sign: "positive",
+        numberCategory: "singular"
+    },
+    "must not ": {
+        base: "must",
+        person: "unknown",
+        sign: "negative",
+        numberCategory: "unknown"
+    },
+    "must ": {
+        base: "must",
+        person: "unknown",
+        sign: "positive",
+        numberCategory: "unknown"
+    },
+    "cannot ": {
+        base: "can",
+        person: "unknown",
+        sign: "negative",
+        numberCategory: "unknown"
+    },
+    "can ": {
+        base: "can",
+        person: "unknown",
+        sign: "positive",
+        numberCategory: "unknown"
+    },
+    "should not ": {
+        base: "should",
+        person: "unknown",
+        sign: "negative",
+        numberCategory: "unknown"
+    },
+    "should ": {
+        base: "should",
+        person: "unknown",
+        sign: "positive",
+        numberCategory: "unknown"
+    },
+    "may not ": {
+        base: "may",
+        person: "unknown",
+        sign: "negative",
+        numberCategory: "unknown"
+    },
+    "may ": {
+        base: "may",
+        person: "unknown",
+        sign: "positive",
+        numberCategory: "unknown"
+    }
+};
+
+}
+
+
+DCEtext
+= _ i:itemSentence* _ 
+('.' / ';' / '?') _ { return i; }
+
+
+_
+= [ \t\r\n]*
+
+
+item
+= i:itemContent _ l:(
+  "that"
+/ "which"
+/ "who"
+/ "whose"
+/ "where") _ verb:verb _ comp:complement* _ {
+	return {
+    	type: "RelativeClause",
+    	subject: i,
+        link: l,
+        verb: verb,
+        complement: comp
+    };
+}
+/ '(' _ i:itemContent _ ')' _ { return i; }
+/ itemContent
+
+
+itemContent
+= !adjective !possessivePronoun i:("you") { return i; }
+/ !adjective !possessivePronoun i:("it" / "he" / "she") { return i; }
+/ !adjective !possessivePronoun i:("we") { return i; }
+/ !adjective !possessivePronoun i:("they") { return i; }
+/ !adjective !possessivePronoun i:("i" / "I") { return i; }
+/ !adjective !possessivePronoun i:("one") { return i; }
+
+/ "myself"
+/ "yourself"
+/ "itself"
+/ "himself"
+/ "herself"
+/ "ourselves"
+/ "yourselves"
+/ "themselves"
+
+/ "me"
+/ "him" / "her"
+/ "us"
+/ "them"
+
+/possessivePronoun
+
+/ a:adjective+ _ i:item _ {
+	return {
+    	adjectives: a,
+        target: i
+    };
+}
+
+/ e:("there is no " / "there is " / "there are " / "there isn't " / "there aren't ") _ a:adverb* existing:item _ comp:complement* _ {
+	return {
+    	type: "Existential",
+        existing: existing,
+        adverb: a,
+        complement: comp,
+        numberCategory: e == "there is " || e == "there isn't " || "there is no" ? "singular" : "plural",
+        sign: e == "there is " || e == "there are " ? "positive" : "negative",
+        followedByDeterminer: e == "there is no " ? false : true
+    };
+}
+/ "nothing but" _ w:item {
+	return {
+    	type: "NothingBut",
+        what: w
+    };
+}
+/ "nobody but" _ w:item {
+	return {
+    	type: "NobodyBut",
+        what: w
+    };
+}
+/ "each of" _ w:item {
+	return {
+    	type: "EachOf",
+        what: w
+    };
+}
+/ '(' i1:item _ link:$(
+  "and "
+/ "or "
+/ "whose "
+/ "of "
+/ "to "
+)_ i2:item _ ')' _ {
+	return {
+    	type: "Link",
+        link: link.trim(),
+        left: i1,
+        right: i2
+    };
+}
+
+/ i:("for every " / "for all " / "for each of " / "for each ") _ topic:item _ fact:(sentence/item) {
+	return {
+    	type: i == "for every " || i == "for all " ? "UniversalGroup" : "UniversalIndividual",
+        quantor: i,
+        topic: topic,
+        fact: fact
+    };
+}
+
+/ i:("for some " / "for many " / "for several " / "for few " / "for none ") of:"of "? _ topic:item _ fact:(sentence/item) {
+	return {
+    	type: "Context",
+        context: i,
+        topic: topic,
+        fact: fact,
+        of: !!of
+    };
+}
+
+/ determiner: $("the " _
+/ "a " _
+/ "an " _
+/ "another " _
+/ "some " _
+/ "no " _
+/ "every " _
+/ "each " _
+/ "not every " _
+/ "not each " _
+/ "all " _
+/ "not all " _
+/ "how many " _
+/ "how much " _
+/ "this" _
+/ "that" _
+/ "these" _
+/ "those" _
+/ number _) determined:item {
+	return {
+    	type: "Determiner",
+        determiner: determiner.trim(),
+        determined: determined
+    };
+}
+
+/ gq:$("at most " _
+/ "at least " _
+/ "more than " _
+/ "less than " _
+/ "exactly " _) qy:item _ {
+	return {
+    	type: "GeneralisedQuantor",
+        quantor: gq.trim(),
+        quantity: qy,
+    };
+}
+
+/ comparison
+
+/ what:$("nothing" _
+/ "nobody" _
+/ "no one" _
+/ "nowhere" _
+/ "something" _
+/ "somebody" _
+/ "someone" _
+/ "somewhere" _
+/ "anything" _
+/ "anybody" _
+/ "anyone" _
+/ "anywhere" _
+/ "everything" _
+/ "everybody" _
+/ "everyone" _
+/ "not everywhere" _
+/ "not everything" _
+/ "not everybody" _
+/ "not everyone" _
+/ "not everywhere" _) {
+	return {
+    	type: "Generic",
+        item: what
+    };
+}
+
+/ owner:$[^ \t\r\n\"\(\)\[\]\']+ "' " _ owned:item {
+	return {
+    	type: "Ownership",
+        owner: owner,
+        owned: owned
+    };
+}
+
+/ owner:$[^ \t\r\n\"\(\)\[\]\']+ "'s " _ owned:item {
+	return {
+    	type: "Ownership",
+        owner: owner,
+        owned: owned
+    };
+}
+
+/ pp:$("its " _
+/ "his " _
+/ "her " _
+/ "his/her " _
+/ "her/his " _
+/ "their " _
+/ "your " _) "own "? _ owned:item {
+	return {
+    	type: "Possessive",
+        pronoun: pp.trim(),
+        owned: owned
+    };
+}
+
+/ s:superlative _ i:item _ {
+	s.target = i;
+	return s;
+}
+
+/ $(
+  ("times" / "time")
+/ ("persons" / "person")
+/ ("years" / "year")
+/ ("ways" / "way")
+/ ("days" / "day")
+/ ("things" / "thing")
+/ ("women" / "woman")
+/ ("men" / "man")
+/ ("worlds" / "world")
+/ ("lives" / "life")
+/ ("hands" / "hand")
+/ ("parts" / "part")
+/ ("children" / "child")
+/ ("eyes" / "eye")
+/ ("places" / "place")
+/ ("works" / "work")
+/ ("weeks" / "week")
+/ ("cases" / "case")
+/ ("points" / "point")
+/ ("truths" / "truth")
+/ ("teams" / "team")
+/ ("numbers" / "number")
+/ ("groups" / "group")
+/ ("problems" / "problem")
+/ ("solutions" / "solution")
+/ ("facts" / "fact")
+/ ("tests" / "test")
+/ ("beliefs" / "belief")
+
+/ "there"
+/ "here"
+/ "now"
+
+)
+// $[^ \t\r\n\"\(\)\[\]\'\.\;]+
+
+possessivePronoun
+= "mine"
+/ "yours"
+/ "his"
+/ "hers"
+/ "its"
+/ "ours"
+/ "theirs"
+/ "one's"
+
+
+
+comparison
+= c:("more"/"less") _ a:adjective _ "than" _ i:item _ {
+	return {
+    	type: "Comparison",
+        comparison: c,
+        adjective: a,
+        target: i
+    };
+}
+
+/ c:comparative _ "than" _ i:item _ {
+	return {
+    	type: "Comparison",
+        comparitive: c,
+        target: i
+    };
+}
+
+/ "as" _ a:adjective _ "as" _ i:item _ {
+	return {
+    	type: "Comparison",
+        comparison: "as",
+        adjective: a,
+        target: i
+    };
+}
+
+
+
+
+metaAssertion
+= si:$( "it is false " _
+/ "it is not true " _
+/ "it is possible " _
+/ "it is not possible " _
+/ "it is impossible " _
+/ "it is not impossible " _
+/ "it is necessary " _
+/ "it is not necessary " _
+/ "it is not provable " _
+/ "it is true " _
+/ "it is not false " _) "that " _ fact:item _ {
+	return {
+    	type: "SentenceInit",
+        init: si.trim(),
+        fact: fact
+    };
+}
+
+
+metaQuestion
+= si:$( "is it false " _
+/ "is it not true " _
+/ "is it possible " _
+/ "is it not possible " _
+/ "is it impossible " _
+/ "is it not impossible " _
+/ "is it necessary " _
+/ "is it not necessary " _
+/ "is it not provable " _
+/ "is it true " _
+/ "is it not false " _) "that " _ fact:(sentence/item) _ {
+	return {
+    	type: "QuestionInit",
+        init: si.trim(),
+        fact: fact
+    };
+}
+
+
+
+number
+= $([0-9] [0-9\.\-]*)
+
+
+superlative
+= "the" _ dir:("most"/"least") _ adj:adjective _ {
+	return {
+    	type: "Superlative",
+        adjective: adj,
+        direction: dir
+    };
+}
+/ f:"the best" _ {
+	return {
+    	type: "Superlative",
+        adjective: "good",
+        direction: "most",
+        form: f
+    };
+}
+/ f:"the newest" _ {
+	return {
+    	type: "Superlative",
+        adjective: "new",
+        direction: "most",
+        form: f
+    };
+}
+/ f:"the longest" _ {
+	return {
+    	type: "Superlative",
+        adjective: "long",
+        direction: "most",
+        form: f
+    };
+}
+/ f:"the greatest" _ {
+	return {
+    	type: "Superlative",
+        adjective: "great",
+        direction: "most",
+        form: f
+    };
+}
+/ f:"the littlest" _ {
+	return {
+    	type: "Superlative",
+        adjective: "little",
+        direction: "most",
+        form: f
+    };
+}
+/ f:"the oldest" _ {
+	return {
+    	type: "Superlative",
+        adjective: "old",
+        direction: "most",
+        form: f
+    };
+}
+/ f:"the biggest" _ {
+	return {
+    	type: "Superlative",
+        adjective: "big",
+        direction: "most",
+        form: f
+    };
+}
+/ f:"the highest" _ {
+	return {
+    	type: "Superlative",
+        adjective: "high",
+        direction: "most",
+        form: f
+    };
+}
+/ f:"the lowest" _ {
+	return {
+    	type: "Superlative",
+        adjective: "low",
+        direction: "most",
+        form: f
+    };
+}
+/ f:"the smallest" _ {
+	return {
+    	type: "Superlative",
+        adjective: "small",
+        direction: "most",
+        form: f
+    };
+}
+/ f:"the largest" _ {
+	return {
+    	type: "Superlative",
+        adjective: "large",
+        direction: "most",
+        form: f
+    };
+}
+/ f:"the earliest" _ {
+	return {
+    	type: "Superlative",
+        adjective: "early",
+        direction: "most",
+        form: f
+    };
+}
+/ f:"the youngest" _ {
+	return {
+    	type: "Superlative",
+        adjective: "young",
+        direction: "most",
+        form: f
+    };
+}
+/ f:"the best" _ {
+	return {
+    	type: "Superlative",
+        adjective: "good",
+        direction: "most",
+        form: f
+    };
+}
+/ f:"the fewest" _ {
+	return {
+    	type: "Superlative",
+        adjective: "few",
+        direction: "most",
+        form: f
+    };
+}
+/ f:"the worst" _ {
+	return {
+    	type: "Superlative",
+        adjective: "bad",
+        direction: "most",
+        form: f
+    };
+}
+
+comparative
+= "better"
+/ "newer"
+/ "longer"
+/ "greater"
+/ "older"
+/ "bigger"
+/ "higher"
+/ "lower"
+/ "smaller"
+/ "larger"
+/ "earlier"
+/ "younger"
+/ "fewer"
+/ "worse"
+
+
+adjective
+= a:$(
+  "good"
+/ "new"
+/ "first"
+/ "last"
+/ "long"
+/ "great"
+/ "little"
+/ "own"
+/ "other"
+/ "old"
+/ "right"
+/ "big"
+/ "high"
+/ "low"
+/ "different"
+/ "small"
+/ "large"
+/ "next"
+/ "early"
+/ "young"
+/ "important"
+/ "few"
+/ "public"
+/ "bad"
+/ "same"
+/ "able"
+/ "true"
+/ "false"
+) _ { return a; }
+
+
+itemSentence
+= ('.' / ';' / '?') _ s:sentence _ { return s; }
+/ ('.' / ';' / '?') _ i:item _ { return i; }
+
+
+sentence
+= !metaAssertion subject:item _ verb:verb _ !comparison a:(adjective/comparative/superlative) _ {
+	return {
+    	type: "Sentence",
+    	subject: subject,
+        verb: verb,
+        complement: a
+    };
+}
+/ !metaAssertion subject:item _ verb:verb _ comp:complement* _ {
+	return {
+    	type: "Sentence",
+    	subject: subject,
+        verb: verb,
+        complement: comp
+    };
+}
+/ metaAssertion
+/ rule
+/ metaQuestion
+/ whquestion
+/ existentialQuestion
+/ auxQuestion
+
+
+rule
+= "if" _ c:(sentence/item) _ "then" _ t:(sentence/item) _ "else" _ e:(sentence/item) _ {
+	return {
+    	type: "Rule",
+        condition: c,
+        thenPart: t,
+        elsePart: e
+    };
+}
+/ "if" _ c:(sentence/item) _ "then" _ t:(sentence/item) _ {
+	return {
+    	type: "Rule",
+        condition: c,
+        thenPart: t
+    };
+}
+
+
+auxQuestion
+= a:aux _ s:sentence _ {
+	return {
+    	type: "AuxQuestion",
+    	auxi: a,
+        content: s
+    };
+}
+
+
+existentialQuestion
+= e:("is there " / "are there " / "isn't there " / "aren't there ") _ existing:item _ comp:complement* _ {
+	return {
+    	type: "ExistentialQuestion",
+        existing: existing,
+        complement: comp,
+        numberCategory: e == "is there " || e == "isn't there " ? "singular" : "plural",
+        sign: e == "is there " || e == "are there " ? "positive" : "negative",
+    };
+}
+
+
+wh
+= w:$(
+  "what"
+/ "when"
+/ "where"
+/ "which"
+/ "who"
+/ "whom"
+/ "whose"
+/ "why"
+/ "how"
+/ "how far"
+/ "how long"
+/ "how many"
+/ "how much"
+/ "how old"
+/ "how come"
+) _ { return w; }
+
+
+whquestion
+= wh:wh _ topic:item _ auxi:aux _ comp:complement* _ ar:auxrest? _ v:verb? _ cl:complementLink? _ {
+	if (v && cl) v.complementLink = cl;
+    v = v || auxi;
+	return {
+    	type: "WHQuestion",
+    	question: wh,
+        topic: topic,
+        auxi: auxi,
+        auxr: ar,
+        verb: v,
+        complement: comp,
+        complementLink: cl
+    };
+}
+/ wh:wh _ auxi:aux _ comp:complement _ ar:auxrest? _ v:verb? _ cl:complementLink? _ {
+	if (v && cl) v.complementLink = cl;
+    v = v || auxi;
+	return {
+    	type: "WHQuestion",
+    	question: wh,
+        auxi: auxi,
+        auxr: ar,
+        verb: v,
+        subject: comp,
+        complementLink: cl
+    };
+}
+/ wh:wh _ e:existentialQuestion _ {
+	return {
+    	type: "WHQuestion",
+    	question: wh,
+        existing: e
+    };
+}
+/ wh:wh _ s:sentence _ {
+	return {
+    	type: "WHQuestion",
+    	question: wh,
+        sentence: s
+    };
+}
+
+
+complementLink
+= $(
+  "to"
+/ "from"
+/ "in"
+/ "on"
+/ "up"
+/ "down"
+/ "into"
+/ "onto"
+/ "up to"
+/ "down to"
+/ "as"
+/ "like"
+/ "about"
+/ "out of"
+/ "through"
+/ "by"
+/ "at"
+/ "for"
+/ "of"
+/ "over"
+/ "with"
+/ "after"
+/ "before"
+)
+
+
+complement
+= "that" _ s:sentence _ {
+	return {
+    	type: "ThatComplement",
+    	that: s,
+    };
+}
+/ "while" _ s:sentence _ {
+	return {
+    	type: "WhileComplement",
+    	what: s,
+    };
+}
+/ "until" _ s:sentence _ {
+	return {
+    	type: "UntilComplement",
+    	what: s,
+    };
+}
+/ "during" _ i:item _ {
+	return {
+    	type: "DuringComplement",
+    	what: i,
+    };
+}
+/ link:complementLink _ i:(verb/item) _ {
+	return {
+    	type: "Complement",
+    	link: link,
+        item: i
+    };
+}
+/ i:item _ {
+	return {
+    	type: "Complement",
+    	link: "direct",
+        item: i
+    };
+}
+
+
+adverb
+= a:$(
+  "accidentally"
+/ "actually"
+/ "always"
+/ "awkwardly"
+/ "beautifully"
+/ "briefly"
+/ "carefully"
+/ "certainly"
+/ "easily"
+/ "especially"
+/ "exactly"
+/ "frequently"
+/ "generally"
+/ "greatly"
+/ "happily"
+/ "helpfully"
+/ "honestly"
+/ "immediately"
+/ "lively"
+/ "mysteriously"
+/ "naturally"
+/ "often"
+/ "politely"
+/ "quickly"
+/ "randomly"
+/ "rapidly"
+/ "regularly"
+/ "seldom"
+/ "slowly"
+/ "suddenly"
+/ "thankfully"
+/ "unexpectedly"
+/ "unfortunately"
+/ "usefully"
+/ "voluntarily"
+/ "wrongly"
+/ "yesterday"
+) _ { return a; }
+
+
+verb
+= au:aux _ ad:adverb+ _ ar:auxrest _ v:verb {
+	v.adverbs = ad;
+    v.auxiliary = au.form+' '+ar;
+    v.aux = au;
+    v.auxr = ar;
+	return v;
+}
+/ a:adverb+ _ v:verb {
+	v.adverbs = a;
+	return v;
+}
+/ a:(auxiliary/aux) _ v:verb _ {
+	v.auxiliary = a;
+	return v;
+}
+/ a:auxiliary { return a; }
+/ a:aux { return a; }
+/ v:$(
+  ("saying" / "says" / "say" / "said")
+/ ("getting" / "gets" / "get" / "gotten" / "got")
+/ ("making" / "makes" / "make" / "made")
+/ ("going" / "goes" / "gone" / "go")
+/ ("knowing" / "knows" / "known" / "know")
+/ ("takes" / "taking" / "taken" / "take")
+/ ("sees" / "seeing" / "seen" / "see")
+/ ("comes" / "come" / "coming")
+/ ("thinks" / "thinking" / "think" / "thought")
+/ ("looks" / "looking" / "looked" / "look")
+/ ("wants" / "wanting" / "wanted" / "want")
+/ ("gives" / "giving" / "given" / "give")
+/ ("uses" / "using" / "used" / "use")
+/ ("finds" / "finding" / "found" / "find")
+/ ("tells" / "telling" / "told" / "tell")
+/ ("asks" / "asking" / "asked" / "ask")
+/ ("works" / "working" / "worked" / "work")
+/ ("seems" / "seeming" / "seemed" / "seem")
+/ ("feels" / "feeling" / "felt" / "feel")
+/ ("tries" / "trying" / "tried" / "try")
+/ ("leaves" / "leave" / "leaving" / "left")
+/ ("calls" / "calling" / "called" / "call")
+/ ("believes" / "believing" / "believed" / "believe")
+/ ("is" / "are" / "am" / "being" / "been")
+) _ { 
+	return {
+    	type: "Verb",
+        verb: verbDef[v],
+        form: v
+    };
+}
+// $[^ \t\r\n\"\(\)\[\]\'\.\;]+
+
+
+auxiliary
+= a:aux _ ar:auxrest _ {
+	return {
+    	type: "Auxiliary",
+    	auxiliary: a.form+' '+ar,
+        auxi: a,
+        auxr: ar
+    };
+}
+
+
+aux
+= a:$(
+  "does not " _
+/ "does " _
+/ "do not " _
+/ "do " _
+/ "are not " _
+/ "are " _
+/ "is not " _
+/ "is " _
+/ "be " _
+/ "must not " _
+/ "must " _
+/ "cannot " _
+/ "can " _
+/ "should not " _
+/ "should " _
+/ "may not " _
+/ "may " _
+) {
+	return Object.assign(auxiDef[a], {
+    	form: a.trim()
+    });
+}
+
+
+auxrest
+= ar:$("not be" _
+/ "not provably not" _
+/ "not provably" _
+/ "not have to be" _
+/ "not have to" _
+/ "not" _
+/ "has to be" _
+/ "has to" _
+/ "have to be" _
+/ "have to" _
+/ "be" _) { return ar.trim(); }
+
