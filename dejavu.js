@@ -355,10 +355,10 @@ vorpal
 }));
 
 
-
 function initJS() {
 
     x = dce.parse(`
+
     is there a man;
     is there a woman;
     for every man is there a woman;
@@ -367,19 +367,54 @@ function initJS() {
     there are (a man and a woman) who have to work.
     for many problems there is at least a solution.
     there is a woman's man.
-    a solution is better than a problem.
+    a solution is more good than a problem.
     it is not impossible that a woman is more good than a man.
-    is it provable that a man is worse than a woman?
+    is it provable that a man is more bad than a woman?
     this man is the smallest man.
     if there is a problem then there is a solution else there is no solution.
     does a man work on this problem?
     is there a man who works on this problem?
-    which problem does this man work on?
-    which man does work on this problem?
+    is there a man?
+    for every man is there a woman?
     which man is there?
+    are there (a man and a woman)?
+    is it true that a man works on a problem?
+    does a man work on the problem?
+    does a man always work on a problem?
+    a man always works on a problem.
+    which man does work on this problem?
+    which problem does this man work on?
+    there is a man who works on this problem.
+    does the man find a solution to the problem?
+    for each of these problems there is a solution.
+    for some of them there are more than 1 solution.
+    if there is a problem then there is a solution.
+    if there is a man who works on a problem then there is a solution else there is no solution.
+    a young man does not have to find a solution.
+    a man gives a solution to another man.
+    there is a solution which is found by a man.
+    a man wants to find a solution to each of these problems.
+    a man finds nothing but solutions.
+    one always finds at least 1 solution to a problem.
+    you get the man's solution.
+    this solution looks good.
+    this solution looks more good than mine.
+    you should not have to find a solution.
+    it is not provable that there is always a solution.
+    (the solution to a problem) is itself.
+    one can quickly find a solution to a problem.
+    a solution can always be found.
+    this one feels like the best solution.
+    
     `);
     console.log(x);
-    console.log(dce.stringify(x));
+    x = dce.stringify(x);
+    console.log(x);
+
+    x = dce.parse(x);
+    console.log(x);
+    x = dce.stringify(x);
+    console.log(x);
 }
 
 

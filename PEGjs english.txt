@@ -317,7 +317,8 @@ itemContent
 
 / a:adjective+ _ i:item _ {
 	return {
-    	adjectives: a,
+        type: "Adjective",
+    	adjective: a,
         target: i
     };
 }
@@ -351,13 +352,13 @@ itemContent
         what: w
     };
 }
-/ '(' i1:item _ link:$(
+/ '(' _ i1:item _ link:$(
   "and "
 / "or "
 / "whose "
 / "of "
 / "to "
-)_ i2:item _ ')' _ {
+) _ i2:item _ ')' _ {
 	return {
     	type: "Link",
         link: link.trim(),
@@ -828,19 +829,20 @@ rule
 
 
 auxQuestion
-= a:aux _ s:sentence _ {
+= aux:aux _ s:sentence _ {
 	return {
     	type: "AuxQuestion",
-    	auxi: a,
+    	auxi: aux,
         content: s
     };
 }
 
 
 existentialQuestion
-= e:("is there " / "are there " / "isn't there " / "aren't there ") _ existing:item _ comp:complement* _ {
+= e:("is there " / "are there " / "isn't there " / "aren't there ") _ a:adverb* _ existing:item _ comp:complement* _ {
 	return {
     	type: "ExistentialQuestion",
+        adverb: a,
         existing: existing,
         complement: comp,
         numberCategory: e == "is there " || e == "isn't there " ? "singular" : "plural",
@@ -926,35 +928,16 @@ complementLink
 / "with"
 / "after"
 / "before"
+
+/ "that"
+/ "while"
+/ "until"
+/ "during"
 )
 
 
 complement
-= "that" _ s:sentence _ {
-	return {
-    	type: "ThatComplement",
-    	that: s,
-    };
-}
-/ "while" _ s:sentence _ {
-	return {
-    	type: "WhileComplement",
-    	what: s,
-    };
-}
-/ "until" _ s:sentence _ {
-	return {
-    	type: "UntilComplement",
-    	what: s,
-    };
-}
-/ "during" _ i:item _ {
-	return {
-    	type: "DuringComplement",
-    	what: i,
-    };
-}
-/ link:complementLink _ i:(verb/item) _ {
+= link:complementLink _ i:(verb/item) _ {
 	return {
     	type: "Complement",
     	link: link,
@@ -1014,18 +997,28 @@ adverb
 
 verb
 = au:aux _ ad:adverb+ _ ar:auxrest _ v:verb {
-	v.adverbs = ad;
-    v.auxiliary = au.form+' '+ar;
+	v.adverb = ad;
+    v.auxiliary = au.form+' '+ar.form;
     v.aux = au;
     v.auxr = ar;
 	return v;
 }
 / a:adverb+ _ v:verb {
-	v.adverbs = a;
+	v.adverb = a;
 	return v;
 }
-/ a:(auxiliary/aux/auxrest) _ v:verb _ {
+/ a:auxiliary _ v:verb _ {
 	v.auxiliary = a;
+    v.aux = v.auxiliary.auxi;
+    v.auxr = v.auxiliary.auxr;
+	return v;
+}
+/ a:aux _ v:verb _ {
+	v.aux = a;
+	return v;
+}
+/ a:auxrest _ v:verb _ {
+	v.auxr = a;
 	return v;
 }
 / a:auxiliary { return a; }
@@ -1080,7 +1073,7 @@ auxiliary
 = a:aux _ ar:auxrest _ {
 	return {
     	type: "Auxiliary",
-    	auxiliary: a.form+' '+ar,
+    	auxiliary: a.form+' '+ar.form,
         auxi: a,
         auxr: ar
     };

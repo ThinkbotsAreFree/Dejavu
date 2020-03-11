@@ -442,7 +442,9 @@ function stringify(node) {
             result = (node.sign === "positive") ? " are there " : " aren't there ";
         }
 
-        result += stringify(node.existing);
+        if (Array.isArray(node.adverb)) result += node.adverb.map(stringify).join(' ');
+        
+        result += ' '+stringify(node.existing)+' ';
 
         if (Array.isArray(node.complement)) result += node.complement.map(stringify).join(' ');
         else if (node.complement) result += stringify(node.complement);
@@ -464,7 +466,7 @@ function stringify(node) {
 
     if (node.type === "Context") {
 
-        return ' '+node.context+' '+stringify(node.topic)+' '+stringify(node.fact)+' '+(node.of ? "of " : '');
+        return ' '+node.context+' '+(node.of ? "of " : '')+stringify(node.topic)+' '+stringify(node.fact)+' ';
 
     }
 
@@ -490,11 +492,14 @@ function stringify(node) {
 
     if (node.type === "Verb") {
 
-        result = ' '+stringify(node.auxiliary)+' ';
+        result = ' '+stringify(node.aux)+' ';
+        if (Array.isArray(node.adverb)) result += node.adverb.map(stringify).join(' ');
+        result += ' '+stringify(node.auxr)+' ';
+
         if (node.verb.infinitive === "to be")
-            result += conjugation[node.verb.infinitive][variantToConjugationBe[node.verb.variant]]+' ';
+            result += ' '+conjugation[node.verb.infinitive][variantToConjugationBe[node.verb.variant]]+' ';
         else
-            result += conjugation[node.verb.infinitive][variantToConjugation[node.verb.variant]]+' ';
+            result += ' '+conjugation[node.verb.infinitive][variantToConjugation[node.verb.variant]]+' ';
         
         return result;
     }
@@ -525,7 +530,6 @@ function stringify(node) {
     if (node.type === "Sentence") {
 
         result = ' '+stringify(node.subject)+' '+stringify(node.verb)+' ';
-        console.log("COMPLEMENT", node.complement);
         if (Array.isArray(node.complement)) result += node.complement.map(stringify).join(' ');
         else if (node.complement) result += stringify(node.complement);
         
@@ -674,7 +678,6 @@ function stringify(node) {
 
     if (node.type === "Superlative") {
 
-        console.log("SUPER", node);
         if (node.direction === "most") {
             if (superlative[node.adjective]) return " the "+superlative[node.adjective]+' '+stringify(node.target)+' ';
             return " the most "+node.adjective+' '+stringify(node.target)+' ';
@@ -705,7 +708,12 @@ function stringify(node) {
     if (node.type === "AuxQuestion") {
 
         isQuestion = true;
-        return ' '+stringify(node.auxi)+' '+stringify(node.content)+' ';
+        
+        result = ' '+stringify(node.auxi)+' ';
+        if (Array.isArray(node.adverb)) result += node.adverb.map(stringify).join(' ');
+        result += ' '+stringify(node.content)+' ';
+
+        return result;
     }
 
 
@@ -725,6 +733,13 @@ function stringify(node) {
         if (node.complementLink) result += stringify(node.complementLink)+' ';
 
         return result;
+    }
+
+
+
+    if (node.type === "Adjective") {
+
+        return ' '+node.adjective.map(stringify).join(' ')+' '+stringify(node.target)+' ';
     }
 
 
@@ -771,7 +786,7 @@ module.exports = {
             isQuestion = false;
 
             sentence = tree[t];
-            console.log("sentence", sentence);
+            //console.log("sentence", sentence);
 
             sentence = stringify(sentence).trim();
             sentence = sentence.charAt(0).toUpperCase() + sentence.slice(1);
