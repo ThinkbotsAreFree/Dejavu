@@ -627,6 +627,13 @@ function stringify(node) {
 
 
 
+    if (node.type === "Name") {
+
+        return ' "'+node.name+'" ';
+    }
+
+
+
     if (node.type === "Ownership") {
 
         var g = (node.owner[node.owner.length-1] === 's') ? "'" : "'s"
@@ -786,7 +793,6 @@ module.exports = {
             isQuestion = false;
 
             sentence = tree[t];
-            //console.log("sentence", sentence);
 
             sentence = stringify(sentence).trim();
             sentence = sentence.charAt(0).toUpperCase() + sentence.slice(1);
@@ -802,7 +808,7 @@ module.exports = {
     },
 
     parse: function(txt) {
-        //console.log(comparativeToLong(txt.toLowerCase()));
+        
         return parser.parse('; '+comparativeToLong(txt.toLowerCase()));
     }
 

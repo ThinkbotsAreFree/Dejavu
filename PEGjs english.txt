@@ -292,14 +292,8 @@ item
 
 
 itemContent
-= !adjective !possessivePronoun i:("you") { return i; }
-/ !adjective !possessivePronoun i:("it" / "he" / "she") { return i; }
-/ !adjective !possessivePronoun i:("we") { return i; }
-/ !adjective !possessivePronoun i:("they") { return i; }
-/ !adjective !possessivePronoun i:("i" / "I") { return i; }
-/ !adjective !possessivePronoun i:("one") { return i; }
 
-/ "myself"
+= "myself"
 / "yourself"
 / "itself"
 / "himself"
@@ -308,12 +302,7 @@ itemContent
 / "yourselves"
 / "themselves"
 
-/ "me"
-/ "him" / "her"
-/ "us"
-/ "them"
-
-/possessivePronoun
+/ possessivePronoun
 
 / a:adjective+ _ i:item _ {
 	return {
@@ -521,9 +510,35 @@ itemContent
 / "there"
 / "here"
 / "now"
-
 )
-// $[^ \t\r\n\"\(\)\[\]\'\.\;]+
+
+/ !adjective !possessivePronoun i:("you") { return i; }
+/ !adjective !possessivePronoun i:("it" / "he" / "she") { return i; }
+/ !adjective !possessivePronoun i:("we") { return i; }
+/ !adjective !possessivePronoun i:("they") { return i; }
+/ !adjective !possessivePronoun i:("i" / "I") { return i; }
+/ !adjective !possessivePronoun i:("one") { return i; }
+
+/ "me"
+/ "him" / "her"
+/ "us"
+/ "them"
+
+
+
+/ name
+
+
+name
+= '"' n:$[^ \t\r\n\"\(\)\[\]\'\.\;]+ '"' {
+	return {
+    	type: "Name",
+        name: n
+    };
+}
+
+
+
 
 possessivePronoun
 = "mine"

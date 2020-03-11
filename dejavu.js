@@ -405,6 +405,7 @@ function initJS() {
     one can quickly find a solution to a problem.
     a solution can always be found.
     this one feels like the best solution.
+    is there a "dog"?
     
     `);
     console.log(x);
@@ -449,6 +450,21 @@ vorpal
     sys.consnet.enableLog = true;
     sys.consnet.execute.call(sys.consnet, command);
     delete sys.consnet.enableLog;
+    callback();
+}));
+
+
+
+vorpal
+.mode('dce', "Enters into a DCE REPL session.")
+.delimiter("nl:")
+.init(function(args, callback){
+    this.log("Controlled Natural Language mode on. Type code to evaluate, end with 'exit'.");
+    callback();
+})
+.action(tryF(function(txt, callback) {
+
+    vorpal.log(JSON.stringify(dce.parse(txt), null, 4));
     callback();
 }));
 
