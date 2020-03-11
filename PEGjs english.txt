@@ -510,6 +510,63 @@ itemContent
 / "there"
 / "here"
 / "now"
+
+
+/ "jade"
+
+/ "time-thing" / "time-things"
+/ "mind-thing" / "mind-things"
+/ "world-thing" / "world-things"
+
+/ "period" / "periods"
+/ "change" / "changes"
+/ "event" / "events"
+/ "action" / "actions"
+
+/ "concept" / "concepts"
+/ "instance" / "instances"
+/ "collection" / "collections"
+/ "relation" / "relations"
+
+/ "area" / "areas"
+/ "object" / "objects"
+/ "agent" / "agents"
+/ "message" / "messages"
+
+/ "meaning" / "meanings"
+/ "inflected-form" / "inflected-forms"
+/ "definition" / "definitions"
+/ "context" / "contexts"
+/ "synonym" / "synonyms"
+/ "antonym" / "antonyms"
+/ "derivative" / "derivatives"
+/ "special-case" / "special-cases"
+/ "abstraction" / "abstractions"
+/ "member" / "members"
+/ "part" / "parts"
+/ "substance" / "substances"
+/ "aspect" / "aspects"
+/ "symbol" / "symbols"
+/ "location" / "locations"
+/ "neighbor" / "neighbors"
+/ "cause" / "causes"
+/ "posterior-event" / "posterior-events"
+/ "next-event" / "next-events"
+/ "overlapping-event" / "overlapping-events"
+/ "sub-event" / "sub-events"
+/ "first-sub-event" / "first-sub-events"
+/ "last-sub-event" / "last-sub-events"
+/ "prerequisite" / "prerequisites"
+/ "obstacle" / "obstacles"
+/ "desire" / "desires"
+/ "intention" / "intentions"
+/ "creation" / "creations"
+/ "motivation" / "motivations"
+/ "interface" / "interfaces"
+/ "way-to-do" / "ways-to-do"
+/ "purpose" / "purposes"
+/ "capacity" / "capacities"
+
 )
 
 / !adjective !possessivePronoun i:("you") { return i; }
