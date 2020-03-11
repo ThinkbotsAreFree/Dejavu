@@ -371,6 +371,12 @@ function initJS() {
     it is not impossible that a woman is more good than a man.
     is it provable that a man is worse than a woman?
     this man is the smallest man.
+    if there is a problem then there is a solution else there is no solution.
+    does a man work on this problem?
+    is there a man who works on this problem?
+    which problem does this man work on?
+    which man does work on this problem?
+    which man is there?
     `);
     console.log(x);
     console.log(dce.stringify(x));

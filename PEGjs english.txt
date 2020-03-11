@@ -870,7 +870,7 @@ wh
 
 
 whquestion
-= wh:wh _ topic:item _ auxi:aux _ comp:complement* _ ar:auxrest? _ v:verb? _ cl:complementLink? _ {
+= wh:wh _ topic:item _ auxi:aux _ !verb subject:complement? _ ar:auxrest? _ v:verb? _ comp:complement* _ cl:complementLink? _ {
 	if (v && cl) v.complementLink = cl;
     v = v || auxi;
 	return {
@@ -880,20 +880,8 @@ whquestion
         auxi: auxi,
         auxr: ar,
         verb: v,
+        subject: subject,
         complement: comp,
-        complementLink: cl
-    };
-}
-/ wh:wh _ auxi:aux _ comp:complement _ ar:auxrest? _ v:verb? _ cl:complementLink? _ {
-	if (v && cl) v.complementLink = cl;
-    v = v || auxi;
-	return {
-    	type: "WHQuestion",
-    	question: wh,
-        auxi: auxi,
-        auxr: ar,
-        verb: v,
-        subject: comp,
         complementLink: cl
     };
 }

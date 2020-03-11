@@ -692,6 +692,47 @@ function stringify(node) {
 
 
 
+    if (node.type === "Rule") {
+
+        result = " if "+stringify(node.condition)+" then "+stringify(node.thenPart)+' ';
+        if (node.elsePart) result += " else "+stringify(node.elsePart)+' ';
+
+        return result;
+    }
+
+
+
+    if (node.type === "AuxQuestion") {
+
+        isQuestion = true;
+        return ' '+stringify(node.auxi)+' '+stringify(node.content)+' ';
+    }
+
+
+
+    if (node.type === "WHQuestion") {
+
+        isQuestion = true;
+
+        if (node.existing) return ' '+node.question+' '+stringify(node.existing)+' ';
+        if (node.sentence) return ' '+node.question+' '+stringify(node.sentence)+' ';
+
+        result = ' '+node.question+' '+stringify(node.topic)+' '+stringify(node.auxi)+' ';
+        if (node.subject) result += stringify(node.subject)+' ';
+        if (node.auxr) result += stringify(node.auxr)+' ';
+        if (node.verb && node.auxi !== node.verb) result += stringify(node.verb)+' ';
+        if (Array.isArray(node.complement)) result += node.complement.map(stringify).join(' ');
+        if (node.complementLink) result += stringify(node.complementLink)+' ';
+
+        return result;
+    }
+
+
+
+
+
+
+
     if (typeof node === "string") return node;
     return JSON.stringify(node);
 }
