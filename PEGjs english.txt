@@ -265,7 +265,7 @@ var auxiDef = {
 
 DCEtext
 = _ i:itemSentence* _ 
-('.' / ';' / '?') _ { return i; }
+('.' / ';' / '?')? _ { return i; }
 
 
 _
@@ -441,7 +441,7 @@ itemContent
     };
 }
 
-/ owner:$[^ \t\r\n\"\(\)\[\]\']+ "' " _ owned:item {
+/ owner:name "' " _ owned:item {
 	return {
     	type: "Ownership",
         owner: owner,
@@ -449,7 +449,7 @@ itemContent
     };
 }
 
-/ owner:$[^ \t\r\n\"\(\)\[\]\']+ "'s " _ owned:item {
+/ owner:name "'s " _ owned:item {
 	return {
     	type: "Ownership",
         owner: owner,
@@ -587,7 +587,7 @@ itemContent
 
 
 name
-= '"' n:$[^ \t\r\n\"\(\)\[\]\'\.\;]+ '"' {
+= '[' n:$[^ \t\r\n\"\(\)\[\]\'\.\;]+ ']' {
 	return {
     	type: "Name",
         name: n
