@@ -629,7 +629,7 @@ function stringify(node) {
 
     if (node.type === "Name") {
 
-        return ' "'+node.name+'" ';
+        return ' ['+node.name+'] ';
     }
 
 
