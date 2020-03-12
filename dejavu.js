@@ -47,8 +47,6 @@ const cn = require("./consnet.js")(vorpal, newId);
 
 const dce = require("./dce.js");
 
-const mom = require("./forum.js");
-
 console.log("[Dejavu]".brightMagenta);
 
 
@@ -59,7 +57,10 @@ sys.prism = require("./prism.js")(sys);
 
 sys.consnet = new cn.Consnet({ enableLog: true });
 
-const graph = require("./graph.js")(sys);
+sys.newId = newId;
+sys.dce = dce;
+sys.mom = require("./forum.js")(sys);
+sys.graph = require("./graph.js")(sys);
 
 
 
@@ -359,6 +360,13 @@ vorpal
 
 function initJS() {
 
+    sys.mom.newCategory("test");
+    sys.mom.newTopic("user", "test", "this is a test message");
+}
+
+
+function initJS2() {
+
     x = dce.parse(`
 
     is there a man;
@@ -420,7 +428,7 @@ function initJS() {
     console.log(x);
 
     x = dce.parse(x);
-    console.log(x);
+    console.log(JSON.stringify(x, null, 4));
     x = dce.stringify(x);
     console.log(x);
 }
@@ -495,6 +503,9 @@ sys.initializeBrain = function initializeBrain(enodoc) {
     var idGen = enodoc.section("brain").field("IDGEN").optionalStringValue();
     if (idGen) sys.currentId = idGen;
 
+    var inDisc = enodoc.section("brain").field("INDISC").optionalStringValue();
+    if (inDisc) sys.mom.load(inDisc);
+
     enodoc.section("brain").sections("lobule").forEach(enoSection => {
 
         sys.initialize[enoSection.field("initializer").requiredStringValue()](enoSection);
@@ -564,7 +575,9 @@ sys.initialize.defaultInitializer = function(enoSection) {
 
 sys.serializeBrain = function serializeBrain() {
 
-    var fileContent = "# brain\n\nIDGEN: "+newId()+"\n\n";
+    var fileContent = "# brain\n\n";
+    fileContent += "IDGEN: "+newId()+"\n\n";
+    fileContent += "INDISC: "+sys.mom.save()+"\n\n";
     fileContent += Object.keys(sys.brain).map(lobule => sys.brain[lobule].serialize()).join('\n');
     return fileContent;
 }
@@ -791,6 +804,10 @@ sys.step = function step() {
 
         data.metaInput = lobule.metaInput;
 
+        // import inner discourse relevant messages
+        data.notifications = mom.getNotifications(lobule.lobe);
+
+        // prepare output
         data.output = new cn.Consnet();
         
         // run the prism chain
@@ -821,6 +838,8 @@ sys.step = function step() {
 
         lobule.output.currentValue =     lobule.output.futureValue;
         lobule.metaOutput.currentValue = lobule.metaOutput.futureValue;
+
+        mom.clearNotifications(lobule.lobe);
     }
 }
 
