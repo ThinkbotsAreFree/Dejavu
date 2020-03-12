@@ -354,9 +354,9 @@ var verbDef = {
     "believed": { infinitive: "to believe", variant: "ed" },
     "believe": { infinitive: "to believe", variant: "default" },
  
-    "is": { infinitive: "to be", variant: "default" },
-    "are": { infinitive: "to be", variant: "default" },
-    "am": { infinitive: "to be", variant: "default" },
+    "is": { infinitive: "to be", variant: 3 },
+    "are": { infinitive: "to be", variant: 2 },
+    "am": { infinitive: "to be", variant: 1 },
     "being": { infinitive: "to be", variant: "ing" },
     "been": { infinitive: "to be", variant: "ed" },
 };

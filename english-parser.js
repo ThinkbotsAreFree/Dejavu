@@ -1602,23 +1602,23 @@ module.exports = /*
         peg$c1110 = peg$literalExpectation("believed", false),
         peg$c1111 = "believe",
         peg$c1112 = peg$literalExpectation("believe", false),
-        peg$c1113 = "is",
-        peg$c1114 = peg$literalExpectation("is", false),
-        peg$c1115 = "are",
-        peg$c1116 = peg$literalExpectation("are", false),
-        peg$c1117 = "am",
-        peg$c1118 = peg$literalExpectation("am", false),
-        peg$c1119 = "being",
-        peg$c1120 = peg$literalExpectation("being", false),
-        peg$c1121 = "been",
-        peg$c1122 = peg$literalExpectation("been", false),
-        peg$c1123 = function(v) { 
+        peg$c1113 = function(v) { 
         	return {
             	type: "Verb",
                 verb: verbDef[v],
                 form: v
             };
         },
+        peg$c1114 = "is",
+        peg$c1115 = peg$literalExpectation("is", false),
+        peg$c1116 = "are",
+        peg$c1117 = peg$literalExpectation("are", false),
+        peg$c1118 = "am",
+        peg$c1119 = peg$literalExpectation("am", false),
+        peg$c1120 = "being",
+        peg$c1121 = peg$literalExpectation("being", false),
+        peg$c1122 = "been",
+        peg$c1123 = peg$literalExpectation("been", false),
         peg$c1124 = function(v, a) { 
         	return {
             	type: "Verb",
@@ -7830,16 +7830,16 @@ module.exports = /*
             if (s4 !== peg$FAILED) {
               s5 = peg$parse_();
               if (s5 !== peg$FAILED) {
-                s6 = [];
-                s7 = peg$parsecomplement();
-                while (s7 !== peg$FAILED) {
-                  s6.push(s7);
-                  s7 = peg$parsecomplement();
-                }
+                s6 = peg$parseadjective();
                 if (s6 === peg$FAILED) {
-                  s6 = peg$parsesuperlative();
+                  s6 = [];
+                  s7 = peg$parsecomplement();
+                  while (s7 !== peg$FAILED) {
+                    s6.push(s7);
+                    s7 = peg$parsecomplement();
+                  }
                   if (s6 === peg$FAILED) {
-                    s6 = peg$parseadjective();
+                    s6 = peg$parsesuperlative();
                     if (s6 === peg$FAILED) {
                       s6 = peg$parsecomparison();
                     }
@@ -10411,51 +10411,6 @@ module.exports = /*
                                                                     }
                                                                   }
                                                                 }
-                                                                if (s2 === peg$FAILED) {
-                                                                  if (input.substr(peg$currPos, 2) === peg$c1113) {
-                                                                    s2 = peg$c1113;
-                                                                    peg$currPos += 2;
-                                                                  } else {
-                                                                    s2 = peg$FAILED;
-                                                                    if (peg$silentFails === 0) { peg$fail(peg$c1114); }
-                                                                  }
-                                                                  if (s2 === peg$FAILED) {
-                                                                    if (input.substr(peg$currPos, 3) === peg$c1115) {
-                                                                      s2 = peg$c1115;
-                                                                      peg$currPos += 3;
-                                                                    } else {
-                                                                      s2 = peg$FAILED;
-                                                                      if (peg$silentFails === 0) { peg$fail(peg$c1116); }
-                                                                    }
-                                                                    if (s2 === peg$FAILED) {
-                                                                      if (input.substr(peg$currPos, 2) === peg$c1117) {
-                                                                        s2 = peg$c1117;
-                                                                        peg$currPos += 2;
-                                                                      } else {
-                                                                        s2 = peg$FAILED;
-                                                                        if (peg$silentFails === 0) { peg$fail(peg$c1118); }
-                                                                      }
-                                                                      if (s2 === peg$FAILED) {
-                                                                        if (input.substr(peg$currPos, 5) === peg$c1119) {
-                                                                          s2 = peg$c1119;
-                                                                          peg$currPos += 5;
-                                                                        } else {
-                                                                          s2 = peg$FAILED;
-                                                                          if (peg$silentFails === 0) { peg$fail(peg$c1120); }
-                                                                        }
-                                                                        if (s2 === peg$FAILED) {
-                                                                          if (input.substr(peg$currPos, 4) === peg$c1121) {
-                                                                            s2 = peg$c1121;
-                                                                            peg$currPos += 4;
-                                                                          } else {
-                                                                            s2 = peg$FAILED;
-                                                                            if (peg$silentFails === 0) { peg$fail(peg$c1122); }
-                                                                          }
-                                                                        }
-                                                                      }
-                                                                    }
-                                                                  }
-                                                                }
                                                               }
                                                             }
                                                           }
@@ -10487,7 +10442,7 @@ module.exports = /*
                       s2 = peg$parse_();
                       if (s2 !== peg$FAILED) {
                         peg$savedPos = s0;
-                        s1 = peg$c1123(s1);
+                        s1 = peg$c1113(s1);
                         s0 = s1;
                       } else {
                         peg$currPos = s0;
@@ -10513,44 +10468,44 @@ module.exports = /*
 
       s0 = peg$currPos;
       s1 = peg$currPos;
-      if (input.substr(peg$currPos, 2) === peg$c1113) {
-        s2 = peg$c1113;
+      if (input.substr(peg$currPos, 2) === peg$c1114) {
+        s2 = peg$c1114;
         peg$currPos += 2;
       } else {
         s2 = peg$FAILED;
-        if (peg$silentFails === 0) { peg$fail(peg$c1114); }
+        if (peg$silentFails === 0) { peg$fail(peg$c1115); }
       }
       if (s2 === peg$FAILED) {
-        if (input.substr(peg$currPos, 3) === peg$c1115) {
-          s2 = peg$c1115;
+        if (input.substr(peg$currPos, 3) === peg$c1116) {
+          s2 = peg$c1116;
           peg$currPos += 3;
         } else {
           s2 = peg$FAILED;
-          if (peg$silentFails === 0) { peg$fail(peg$c1116); }
+          if (peg$silentFails === 0) { peg$fail(peg$c1117); }
         }
         if (s2 === peg$FAILED) {
-          if (input.substr(peg$currPos, 2) === peg$c1117) {
-            s2 = peg$c1117;
+          if (input.substr(peg$currPos, 2) === peg$c1118) {
+            s2 = peg$c1118;
             peg$currPos += 2;
           } else {
             s2 = peg$FAILED;
-            if (peg$silentFails === 0) { peg$fail(peg$c1118); }
+            if (peg$silentFails === 0) { peg$fail(peg$c1119); }
           }
           if (s2 === peg$FAILED) {
-            if (input.substr(peg$currPos, 5) === peg$c1119) {
-              s2 = peg$c1119;
+            if (input.substr(peg$currPos, 5) === peg$c1120) {
+              s2 = peg$c1120;
               peg$currPos += 5;
             } else {
               s2 = peg$FAILED;
-              if (peg$silentFails === 0) { peg$fail(peg$c1120); }
+              if (peg$silentFails === 0) { peg$fail(peg$c1121); }
             }
             if (s2 === peg$FAILED) {
-              if (input.substr(peg$currPos, 4) === peg$c1121) {
-                s2 = peg$c1121;
+              if (input.substr(peg$currPos, 4) === peg$c1122) {
+                s2 = peg$c1122;
                 peg$currPos += 4;
               } else {
                 s2 = peg$FAILED;
-                if (peg$silentFails === 0) { peg$fail(peg$c1122); }
+                if (peg$silentFails === 0) { peg$fail(peg$c1123); }
               }
             }
           }
@@ -11458,9 +11413,9 @@ module.exports = /*
         "believed": { infinitive: "to believe", variant: "ed" },
         "believe": { infinitive: "to believe", variant: "default" },
      
-        "is": { infinitive: "to be", variant: "default" },
-        "are": { infinitive: "to be", variant: "default" },
-        "am": { infinitive: "to be", variant: "default" },
+        "is": { infinitive: "to be", variant: 3 },
+        "are": { infinitive: "to be", variant: 2 },
+        "am": { infinitive: "to be", variant: 1 },
         "being": { infinitive: "to be", variant: "ing" },
         "been": { infinitive: "to be", variant: "ed" },
     };
