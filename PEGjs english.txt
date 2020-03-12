@@ -1026,6 +1026,11 @@ complement
 
 
 adverb
+= $("not " directAdverb)
+/ directAdverb
+
+
+directAdverb
 = a:$(
   "accidentally"
 / "actually"
@@ -1127,15 +1132,16 @@ verb
         form: v
     };
 }
-// $[^ \t\r\n\"\(\)\[\]\'\.\;]+
+
 
 be
 = v:$(
   ("is" / "are" / "am" / "being" / "been")
-) _ { 
+) _ a:adverb* _ { 
 	return {
     	type: "Verb",
         verb: verbDef[v],
+        adverb: a,
         form: v
     };
 }

@@ -366,7 +366,7 @@ function initJS() {
     a man has to work.
     there are (a man and a woman) who have to work.
     for many problems there is at least a solution.
-    there is a woman's man.
+    there is a [woman]'s man.
     a solution is more good than a problem.
     it is not impossible that a woman is more good than a man.
     is it provable that a man is more bad than a woman?
@@ -396,7 +396,7 @@ function initJS() {
     a man wants to find a solution to each of these problems.
     a man finds nothing but solutions.
     one always finds at least 1 solution to a problem.
-    you get the man's solution.
+    you get the [man]'s solution.
     this solution looks good.
     this solution looks more good than mine.
     you should not have to find a solution.
@@ -405,7 +405,8 @@ function initJS() {
     one can quickly find a solution to a problem.
     a solution can always be found.
     this one feels like the best solution.
-    is there a "dog"?
+    is there a [dog]?
+    the [lion] is not always [hungry].
     
     `);
     console.log(x);

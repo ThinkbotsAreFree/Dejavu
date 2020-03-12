@@ -493,12 +493,18 @@ function stringify(node) {
     if (node.type === "Verb") {
 
         result = ' '+stringify(node.aux)+' ';
-        if (Array.isArray(node.adverb)) result += node.adverb.map(stringify).join(' ');
+
+        if (node.verb.infinitive !== "to be")
+            if (Array.isArray(node.adverb)) result += node.adverb.map(stringify).join(' ');
+
         result += ' '+stringify(node.auxr)+' ';
 
-        if (node.verb.infinitive === "to be")
+        if (node.verb.infinitive === "to be") {
+
             result += ' '+conjugation[node.verb.infinitive][variantToConjugationBe[node.verb.variant]]+' ';
-        else
+            if (Array.isArray(node.adverb)) result += node.adverb.map(stringify).join(' ')+' ';
+
+        } else
             result += ' '+conjugation[node.verb.infinitive][variantToConjugation[node.verb.variant]]+' ';
         
         return result;
@@ -637,7 +643,7 @@ function stringify(node) {
     if (node.type === "Ownership") {
 
         var g = (node.owner[node.owner.length-1] === 's') ? "'" : "'s"
-        return ' '+node.owner+g+' '+node.owned+' ';
+        return ' '+stringify(node.owner).trim()+g+' '+stringify(node.owned)+' ';
     }
 
 
