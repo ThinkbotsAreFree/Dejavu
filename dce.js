@@ -588,6 +588,44 @@ function stringify(node) {
 
 
 
+    if (node.type === "Description") {
+
+        if (node.numberCategory === "singular") {
+
+            if (node.sign === "positive")
+
+                result += node.distant ? "that is " : "this is ";
+
+            else { // negative
+
+                result += node.distant ? "that isn't " : "this isn't ";
+            }
+
+        } else { // plural
+
+            if (node.sign === "positive")
+
+                result += node.distant ? "those are " : "these are ";
+
+            else { // negative
+
+                result += node.distant ? "those aren't " : "these aren't ";
+            }
+        }
+
+        if (Array.isArray(node.adverb)) result += node.adverb.map(stringify).join(' ');
+        else if (node.adverb) result += stringify(node.adverb);
+
+        result += ' '+stringify(node.target)+' ';
+
+        if (Array.isArray(node.complement)) result += node.complement.map(stringify).join(' ');
+        else if (node.complement) result += stringify(node.complement);
+
+        return result;
+    }
+
+
+
     if (node.type === "NothingBut") {
 
         return ' nothing but '+stringify(node.what)+' ';

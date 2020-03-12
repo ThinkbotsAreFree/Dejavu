@@ -367,7 +367,7 @@ function initJS() {
     there are (a man and a woman) who have to work.
     for many problems there is at least a solution.
     there is a [woman]'s man.
-    a solution is more good than a problem.
+    a solution is better than a problem.
     it is not impossible that a woman is more good than a man.
     is it provable that a man is more bad than a woman?
     this man is the smallest man.
@@ -398,7 +398,7 @@ function initJS() {
     one always finds at least 1 solution to a problem.
     you get the [man]'s solution.
     this solution looks good.
-    this solution looks more good than mine.
+    this solution looks better than mine.
     you should not have to find a solution.
     it is not provable that there is always a solution.
     (the solution to a problem) is itself.
@@ -407,6 +407,7 @@ function initJS() {
     this one feels like the best solution.
     is there a [dog]?
     the [lion] is not always [hungry].
+    this is [ska].
     
     `);
     console.log(x);

@@ -323,6 +323,20 @@ itemContent
         followedByDeterminer: e == "there is no " || e == "there are no " ? false : true
     };
 }
+
+/ e:("this isn't " / "that isn't " / "this is " / "that is " /
+	 "these aren't " / "those aren't " / "these are " / "those are ") _ a:adverb* target:item _ comp:complement* _ {
+	return {
+    	type: "Description",
+        target: target,
+        adverb: a,
+        complement: comp,
+        distant: e == "that ins't " || e == "that is " || e == "those aren't " || e == "those are ",
+        numberCategory: e == "this ins't " || e == "that isn't " || e == "this is " || e == "that is " ? "singular" : "plural",
+        sign: e == "this is " || e == "that is " || e == "these are " || e == "those are " ? "positive" : "negative"
+    };
+}
+
 / "nothing but" _ w:item {
 	return {
     	type: "NothingBut",
