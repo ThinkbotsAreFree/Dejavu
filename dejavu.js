@@ -409,6 +409,7 @@ function initJS() {
     the [lion] is not always [hungry].
     this is [ska].
     I am young.
+    I have a [computer].
     
     `);
     console.log(x);

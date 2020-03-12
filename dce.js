@@ -354,6 +354,11 @@ var verbDef = {
     "believed": { infinitive: "to believe", variant: "ed" },
     "believe": { infinitive: "to believe", variant: "default" },
  
+    "has": { infinitive: "to have", variant: "third" },
+    "have": { infinitive: "to have", variant: "default" },
+    "having": { infinitive: "to have", variant: "ing" },
+    "had": { infinitive: "to have", variant: "ed" },
+ 
     "is": { infinitive: "to be", variant: 3 },
     "are": { infinitive: "to be", variant: 2 },
     "am": { infinitive: "to be", variant: 1 },
