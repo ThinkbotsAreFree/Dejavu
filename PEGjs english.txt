@@ -476,7 +476,9 @@ itemContent
     };
 }
 
-/ pp:$("its " _
+/ pp:$(
+  "my" _
+/ "its " _
 / "his " _
 / "her " _
 / "his/her " _
@@ -599,6 +601,7 @@ itemContent
 / "him" / "her"
 / "us"
 / "them"
+
 
 
 

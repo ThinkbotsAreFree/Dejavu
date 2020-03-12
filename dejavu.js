@@ -47,6 +47,8 @@ const cn = require("./consnet.js")(vorpal, newId);
 
 const dce = require("./dce.js");
 
+const mom = require("./forum.js");
+
 console.log("[Dejavu]".brightMagenta);
 
 
@@ -410,6 +412,7 @@ function initJS() {
     this is [ska].
     I am young.
     I have a [computer].
+    I have a [lion] in my [garden].
     
     `);
     console.log(x);
