@@ -2,17 +2,22 @@ const parser = require("./consnet-parser.js");
 
 
 
-module.exports = function(vorpal, newId) {
+module.exports = function (vorpal, newId) {
 
 
 
     function Consnet(opt) {
 
         this.net = {
-            pair:  {},
-            left:  {},
+            pair: {},
+            left: {},
             right: {},
             value: {}
+        };
+
+        this.actor = {
+            lobeName: "unspecified",
+            lobuleName: "unspecified"
         };
 
         opt = opt || {};
@@ -24,9 +29,16 @@ module.exports = function(vorpal, newId) {
 
 
 
-    Consnet.prototype.perform = function(fact) {
+    Consnet.prototype.newCellId = function (prefix) {
 
-        for (var f=0; f<fact.length; f++) {
+        return this.actor.lobeName + '.' + this.actor.lobuleName + '.' + newId(prefix);
+    }
+
+
+
+    Consnet.prototype.perform = function (fact) {
+
+        for (var f = 0; f < fact.length; f++) {
 
             Consnet.prototype.process.call(this, fact[f]);
         }
@@ -34,7 +46,7 @@ module.exports = function(vorpal, newId) {
 
 
 
-    Consnet.prototype.show = function(data) {
+    Consnet.prototype.show = function (data) {
 
         if (this.enableLog) {
             vorpal.log(stringify(data));
@@ -44,7 +56,7 @@ module.exports = function(vorpal, newId) {
 
 
 
-    Consnet.prototype.dump = function(data) {
+    Consnet.prototype.dump = function (data) {
 
         if (this.enableLog) {
             vorpal.log(codify(this.net));
@@ -54,17 +66,17 @@ module.exports = function(vorpal, newId) {
 
 
 
-    Consnet.prototype.pair = function(data) {
+    Consnet.prototype.pair = function (data) {
 
-        if (data.length !== 2) throw new Error("Invalid number of arguments (expected 2): got "+data.length);
-        if (typeof data[0] !== "string") throw new Error("Expected identifier: got "+data[0].type);
-        if (data[1].type !== "pair") throw new Error("Expected pair: got "+(data[1].type || "identifier"));
+        if (data.length !== 2) throw new Error("Invalid number of arguments (expected 2): got " + data.length);
+        if (typeof data[0] !== "string") throw new Error("Expected identifier: got " + data[0].type);
+        if (data[1].type !== "pair") throw new Error("Expected pair: got " + (data[1].type || "identifier"));
 
         var l = this.process.call(this, data[1].left),
             r = this.process.call(this, data[1].right);
-    
+
         return this.newPair(l, r, data[0]);
-    
+
     };
 
 
@@ -78,7 +90,7 @@ module.exports = function(vorpal, newId) {
 
 
 
-    Consnet.prototype.execute = function(cmd) {
+    Consnet.prototype.execute = function (cmd) {
 
         var fact = parser.parse(cmd, this.actor);
 
@@ -87,25 +99,25 @@ module.exports = function(vorpal, newId) {
 
 
 
-    Consnet.prototype.process = function(data) {
+    Consnet.prototype.process = function (data) {
 
         if (data.type === "pair") {
 
             var l = this.process.call(this, data.left),
                 r = this.process.call(this, data.right);
-            
+
             return this.newPair(l, r);
         }
 
         if (data.type === "structure") {
 
-            if (!this.authorizedCommands.includes(data.head)) throw new Error("Uknown command: "+data.head);
+            if (!this.authorizedCommands.includes(data.head)) throw new Error("Uknown command: " + data.head);
             return this[data.head].call(this, data.content);
         }
 
         if (data.type === "value") {
 
-            var vid = newId('v');
+            var vid = this.newCellId('v');
             this.net.value[vid] = data.value;
             return vid;
         }
@@ -115,9 +127,9 @@ module.exports = function(vorpal, newId) {
 
 
 
-    Consnet.prototype.newPair = function(left, right, name) {
+    Consnet.prototype.newPair = function (left, right, name) {
 
-        var id = name || newId('p');
+        var id = name || this.newCellId('p');
 
         if (this.net.pair[id]) return;
 
@@ -129,7 +141,7 @@ module.exports = function(vorpal, newId) {
         };
 
         if (this.net.pair[left]) {
-            
+
             this.net.pair[left].leftOf.push(id);
         }
 
@@ -149,11 +161,11 @@ module.exports = function(vorpal, newId) {
 
 
 
-    Consnet.prototype.merge = function(cn2) {
+    Consnet.prototype.merge = function (cn2) {
 
-        var code = codify(this.net)+' '+codify(cn2.net);
+        var code = codify(this.net) + ' ' + codify(cn2.net);
 
-        var tmp = new Consnet({enableLog: false});
+        var tmp = new Consnet({ enableLog: false });
 
         tmp.execute(code);
 
@@ -162,21 +174,21 @@ module.exports = function(vorpal, newId) {
 
 
 
-    Consnet.prototype.linkItemsToGroup = function(group, link, itemList) {
+    Consnet.prototype.linkItemsToGroup = function (group, link, itemList) {
 
-        for (var i = 0; i<itemList.length; i++)
+        for (var i = 0; i < itemList.length; i++)
             this.execute(`[${link} [${group} ${itemList[i]}]]`);
     };
 
 
 
-    Consnet.prototype.findItemsInGroup = function(group, link, itemsFound, strategy) {
+    Consnet.prototype.findItemsInGroup = function (group, link, itemsFound, strategy) {
 
         var result = [];
 
         var listPairsWithGroupOnLeft = this.net.left[group];
 
-        for (var lpwgol=0; lpwgol<listPairsWithGroupOnLeft.length; lpwgol++) {
+        for (var lpwgol = 0; lpwgol < listPairsWithGroupOnLeft.length; lpwgol++) {
 
             var pairWithGroupOnLeft = listPairsWithGroupOnLeft[lpwgol];
 
@@ -190,12 +202,12 @@ module.exports = function(vorpal, newId) {
 
             var listPairsItsOnRightOf = this.net.pair[pairWithGroupOnLeft].rightOf;
 
-            for (var lpioro=0; lpioro<listPairsItsOnRightOf.length; lpioro++) {
+            for (var lpioro = 0; lpioro < listPairsItsOnRightOf.length; lpioro++) {
 
                 var potentialLink = this.net.pair[listPairsItsOnRightOf[lpioro]];
 
                 if (potentialLink.left === link)
-                
+
                     result.push(candidate);
             }
         }
@@ -204,11 +216,11 @@ module.exports = function(vorpal, newId) {
 
 
 
-    Consnet.prototype.findItemsInGroupsMulti = function(criteria, strategy) {
+    Consnet.prototype.findItemsInGroupsMulti = function (criteria, strategy) {
 
         var itemsFound = false;
 
-        for (var c=0; c<criteria.length; c++) {
+        for (var c = 0; c < criteria.length; c++) {
 
             var found = this.findItemsInGroup(
                 criteria[c].group,
@@ -224,37 +236,37 @@ module.exports = function(vorpal, newId) {
 
 
 
-    Consnet.prototype.findItemsInGroupsIntersection = function(criteria) {
+    Consnet.prototype.findItemsInGroupsIntersection = function (criteria) {
 
         return this.findItemsInGroupsMulti(criteria, "intersection");
     };
 
 
 
-    Consnet.prototype.findItemsInGroupsUnion = function(criteria) {
+    Consnet.prototype.findItemsInGroupsUnion = function (criteria) {
 
         return this.findItemsInGroupsMulti(criteria, "union");
     };
 
 
 
-    Consnet.prototype.chainItems = function(itemList, link) {
+    Consnet.prototype.chainItems = function (itemList, link) {
 
         if (itemList.length < 2) return;
 
-        for (var i=1; i<itemList.length; i++)
-            this.execute(`[${link} [${itemList[i-1]} ${itemList[i]}]]`);
+        for (var i = 1; i < itemList.length; i++)
+            this.execute(`[${link} [${itemList[i - 1]} ${itemList[i]}]]`);
     };
 
 
 
-        // todo path
+    // todo path
 
 
 
-    Consnet.prototype.delete = function(target, depth) {
+    Consnet.prototype.delete = function (target, depth) {
 
-        vorpal.log("deleting "+target);
+        vorpal.log("deleting " + target);
         depth = depth || 0;
 
         if (this.net.pair[target]) {
@@ -272,10 +284,10 @@ module.exports = function(vorpal, newId) {
 
             if (depth > 0) { // forward deleting
 
-                this.delete(l, depth-1);
-                this.delete(r, depth-1);
+                this.delete(l, depth - 1);
+                this.delete(r, depth - 1);
             }
-            
+
             delete this.net.pair[target];
         }
 
@@ -287,12 +299,12 @@ module.exports = function(vorpal, newId) {
         if (depth < 0) { // backward deleting
 
             var lo = this.net.left[target];
-            if (lo) for (let o=0; o<lo.length; o++) this.delete(lo[o], depth-1);
+            if (lo) for (let o = 0; o < lo.length; o++) this.delete(lo[o], depth - 1);
 
             var ro = this.net.right[target];
-            if (ro) for (let o=0; o<ro.length; o++) this.delete(ro[o], depth-1);
+            if (ro) for (let o = 0; o < ro.length; o++) this.delete(ro[o], depth - 1);
         }
-        
+
     };
 
 
@@ -308,14 +320,14 @@ module.exports = function(vorpal, newId) {
             switch (net.type) {
 
                 case "pair":
-                    return '['+stringify(net.left)+' '+stringify(net.right)+']';
+                    return '[' + stringify(net.left) + ' ' + stringify(net.right) + ']';
 
                 case "structure":
-                    return stringify(net.head)+'('+stringify(net.content)+')';
-                
+                    return stringify(net.head) + '(' + stringify(net.content) + ')';
+
                 case "value":
                     return JSON.stringify(net.value);
-                
+
                 default:
                     return net;
             }
@@ -332,10 +344,10 @@ module.exports = function(vorpal, newId) {
 
         for (var p in mem.pair) {
 
-            result += "pair( "+p+' ';
+            result += "pair( " + p + ' ';
             l = mem.value[mem.pair[p].left] ? JSON.stringify(mem.value[mem.pair[p].left]) : mem.pair[p].left;
             r = mem.value[mem.pair[p].right] ? JSON.stringify(mem.value[mem.pair[p].right]) : mem.pair[p].right;
-            result += '['+l+' '+r+']';
+            result += '[' + l + ' ' + r + ']';
             result += " )\n";
         }
 
@@ -351,8 +363,6 @@ module.exports = function(vorpal, newId) {
         stringify: stringify,
 
         codify: codify,
-
-        normalize: function(x) { return stringify(parser.parse(x)); },
 
         Consnet: Consnet
 

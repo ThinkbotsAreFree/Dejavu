@@ -12,7 +12,7 @@ form
 = pair
 / structure
 / json_value
-/ prism_chain
+/ wildcard
 / lobeLobuleId
 / lobuleId
 / id
@@ -29,7 +29,7 @@ pair
 
 
 structure
-= head:word '(' _* c:structure_content* _* ')' _* {
+= head:structHead '(' _* c:structure_content* _* ')' _* {
 	return {
     	type: "structure",
     	head: head,
@@ -51,11 +51,11 @@ _
 = [ \t\r\n]
 
 
-prism_chain
-= w:($(_* '<' word '>' _*))+ _* {
+wildcard
+= '<' c:[^ \t\r\n[\]\(\)\{\}\<\>\.]+ '>' _* {
 	return {
-    	type: "prism",
-        chain: w.map(prism => prism.replace(/[<>]/g,'').trim())
+    	type: "wildcard",
+        id: c.join('')
     };
 }
 
@@ -78,7 +78,7 @@ id
 }
 
 
-word
+structHead
 = id:[^ \t\r\n\[\]\(\)\{\}\<\>\.]+ {
 	return id.join('');
 }

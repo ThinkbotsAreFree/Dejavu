@@ -1,50 +1,6 @@
 
 # mind
 
-idgen: 3
+idgen: 6
 
 indisc: {"category":{},"message":{},"notifier":{}}
-
--- consnet
-{
-    "net": {
-        "pair": {
-            "p1": {
-                "left": "system.user.b",
-                "right": "system.user.c",
-                "leftOf": [],
-                "rightOf": [
-                    "p2"
-                ]
-            },
-            "p2": {
-                "left": "system.user.a",
-                "right": "p1",
-                "leftOf": [],
-                "rightOf": []
-            }
-        },
-        "left": {
-            "system.user.b": [
-                "p1"
-            ],
-            "system.user.a": [
-                "p2"
-            ]
-        },
-        "right": {
-            "system.user.c": [
-                "p1"
-            ],
-            "p1": [
-                "p2"
-            ]
-        },
-        "value": {}
-    },
-    "actor": {
-        "lobuleName": "user",
-        "lobeName": "system"
-    }
-}
--- consnet
