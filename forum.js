@@ -74,7 +74,7 @@ module.exports = function(sys) {
 
     function getNotifications(user) {
 
-        return notifier[user].map(m => JSON.parse(JSON.stringify(forum.message[m])));
+        return notifier[user].map(m => forum.message[m]);
     }
 
 

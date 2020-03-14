@@ -1,175 +1,50 @@
-# brain
 
-IDGEN: 303
-
-INDISC: {"category":{},"message":{},"notifier":{}}
-
-
-## lobule
-
-name: lobule1
-lobe: default
-initializer: defaultInitializer
-serializer:  defaultSerializer
-
--- description
-lobule1
--- description
-
-observedOutputs: 
-
-observedMetaOutputs: 
-
-output:
-currentValue = {"net":{"pair":{},"left":{},"right":{},"value":{}}}
-futureValue = {"net":{"pair":{},"left":{},"right":{},"value":{}}}
-observedBy = []
-
-metaInput: 
-historyLength = 10
-
-metaOutput:
-currentValue = {"net":{"pair":{"p290":{"left":"incrX","right":"incrX","leftOf":[],"rightOf":["p291"]},"p291":{"left":"NextEvent","right":"p290","leftOf":[],"rightOf":[]},"p292":{"left":"ActivationChain","right":"incrX","leftOf":[],"rightOf":["p293"]},"p293":{"left":"Abstraction","right":"p292","leftOf":[],"rightOf":[]},"p294":{"left":"ActivationChain","right":"incrX","leftOf":[],"rightOf":["p295"]},"p295":{"left":"Abstraction","right":"p294","leftOf":[],"rightOf":[]}},"left":{"incrX":["p290"],"NextEvent":["p291"],"ActivationChain":["p292","p294"],"Abstraction":["p293","p295"]},"right":{"incrX":["p290","p292","p294"],"p290":["p291"],"p292":["p293"],"p294":["p295"]},"value":{}}}
-futureValue = {"net":{"pair":{"p290":{"left":"incrX","right":"incrX","leftOf":[],"rightOf":["p291"]},"p291":{"left":"NextEvent","right":"p290","leftOf":[],"rightOf":[]},"p292":{"left":"ActivationChain","right":"incrX","leftOf":[],"rightOf":["p293"]},"p293":{"left":"Abstraction","right":"p292","leftOf":[],"rightOf":[]},"p294":{"left":"ActivationChain","right":"incrX","leftOf":[],"rightOf":["p295"]},"p295":{"left":"Abstraction","right":"p294","leftOf":[],"rightOf":[]}},"left":{"incrX":["p290"],"NextEvent":["p291"],"ActivationChain":["p292","p294"],"Abstraction":["p293","p295"]},"right":{"incrX":["p290","p292","p294"],"p290":["p291"],"p292":["p293"],"p294":["p295"]},"value":{}}}
-observedBy = []
-
-prisms: 
-- setX0
-- incrX
-- incrX
-
-### stateHistory
-
-#### state
-
-net:
-- pair( p272 [b c] )
-- pair( p273 [a p272] )
-
-x: 126
-
-#### state
-
-net:
-- pair( p272 [b c] )
-- pair( p273 [a p272] )
-
-x: 124
-
-#### state
-
-net:
-- pair( p272 [b c] )
-- pair( p273 [a p272] )
-
-x: 122
-
-#### state
-
-net:
-- pair( p272 [b c] )
-- pair( p273 [a p272] )
-
-x: 120
-
-#### state
-
-x: 118
-enableLog: false
-
-#### state
-
-x: 116
-enableLog: false
-
-#### state
-
-x: 114
-
-#### state
-
-x: 112
-
-#### state
-
-x: 110
-
-
-    
-
-## lobule
-
-name: lobule2
-lobe: default
-initializer: defaultInitializer
-serializer:  defaultSerializer
-
--- description
-lobule2
--- description
-
-observedOutputs: 
-
-observedMetaOutputs: 
-
-output:
-currentValue = {"net":{"pair":{},"left":{},"right":{},"value":{}}}
-futureValue = {"net":{"pair":{},"left":{},"right":{},"value":{}}}
-observedBy = []
-
-metaInput: 
-historyLength = 10
-
-metaOutput:
-currentValue = {"net":{"pair":{"p296":{"left":"ActivationChain","right":"decrX","leftOf":[],"rightOf":["p297"]},"p297":{"left":"Abstraction","right":"p296","leftOf":[],"rightOf":[]}},"left":{"ActivationChain":["p296"],"Abstraction":["p297"]},"right":{"decrX":["p296"],"p296":["p297"]},"value":{}}}
-futureValue = {"net":{"pair":{"p296":{"left":"ActivationChain","right":"decrX","leftOf":[],"rightOf":["p297"]},"p297":{"left":"Abstraction","right":"p296","leftOf":[],"rightOf":[]}},"left":{"ActivationChain":["p296"],"Abstraction":["p297"]},"right":{"decrX":["p296"],"p296":["p297"]},"value":{}}}
-observedBy = []
-
-prisms: 
-- setX0
-- decrX
-
-### stateHistory
-
-#### state
-
-x: -62
-
-#### state
-
-x: -61
-
-#### state
-
-x: -60
-
-#### state
-
-x: -59
-
-#### state
-
-x: -58
-
-#### state
-
-x: -57
-
-#### state
-
-x: -56
-
-#### state
-
-x: -55
-
-#### state
-
-x: -54
-
-#### state
-
-x: -53
-
-
-    
+# mind
+
+idgen: 3
+
+indisc: {"category":{},"message":{},"notifier":{}}
+
+-- consnet
+{
+    "net": {
+        "pair": {
+            "p1": {
+                "left": "system.user.b",
+                "right": "system.user.c",
+                "leftOf": [],
+                "rightOf": [
+                    "p2"
+                ]
+            },
+            "p2": {
+                "left": "system.user.a",
+                "right": "p1",
+                "leftOf": [],
+                "rightOf": []
+            }
+        },
+        "left": {
+            "system.user.b": [
+                "p1"
+            ],
+            "system.user.a": [
+                "p2"
+            ]
+        },
+        "right": {
+            "system.user.c": [
+                "p1"
+            ],
+            "p1": [
+                "p2"
+            ]
+        },
+        "value": {}
+    },
+    "actor": {
+        "lobuleName": "user",
+        "lobeName": "system"
+    }
+}
+-- consnet

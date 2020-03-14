@@ -80,7 +80,7 @@ module.exports = function(vorpal, newId) {
 
     Consnet.prototype.execute = function(cmd) {
 
-        var fact = parser.parse(cmd);
+        var fact = parser.parse(cmd, this.actor);
 
         this.perform.call(this, fact);
     };

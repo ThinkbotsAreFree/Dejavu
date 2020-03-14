@@ -2,13 +2,13 @@
     "name": "dejavu",
     "version": "0.0.1",
     "license": "undefined",
-    "main": "dejavu.js",
+    "main": "main.js",
     "repository": {
         "type": "git",
         "url": "https://github.com/ThinkbotsAreFree/dejavu.git"
     },
     "scripts": {
-        "start": "node dejavu.js"
+        "start": "node main.js"
     },
     "dependencies": {
         "colors": "*",
