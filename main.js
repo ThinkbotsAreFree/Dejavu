@@ -22,7 +22,6 @@ sys.dce = require("./dce.js");
 
 
 sys.lobe = {};
-sys.mind = {};
 
 sys.prism = require("./prism.js")(sys);
 
@@ -32,6 +31,8 @@ sys.mom = require("./forum.js")(sys);
 sys.graph = require("./graph.js")(sys);
 
 require("./init-serial.js")(sys);
+require("./lobule.js")(sys);
+require("./execution.js")(sys);
 
 console.log("[Dejavu]".brightMagenta);
 
@@ -44,7 +45,7 @@ tryF = function (fun) {
             fun.call(this, args, callback);
             vorpal.log('');
         } catch (e) {
-            systemLog.error(e);
+            sys.log.error(e);
             callback();
         }
     }
@@ -80,7 +81,7 @@ vorpal
 
         var json = JSON.stringify(here, null, 4);
 
-        systemLog.success("Path found: sys" + args.path.map(p => '.' + p).join(''));
+        sys.log.success("Path found: sys" + args.path.map(p => '.' + p).join(''));
         this.log(args.options.stringify ? json : here);
 
         callback();
@@ -143,25 +144,25 @@ vorpal
 
 
 
-vorpal.command('save mind [filepath]', "Saves the whole mind to memory.eno or to a specified file.")
+vorpal.command('save brain [filepath]', "Saves the whole brain to memory.eno or to a specified file.")
     .action(tryF(function (args, callback) {
         var brainSerialized = sys.serialize();
         args.filepath = args.filepath || "memory.eno";
         fs.writeFileSync(args.filepath, brainSerialized, "utf8");
 
-        systemLog.success("Saved as " + args.filepath);
+        sys.log.success("Saved as " + args.filepath);
         callback();
     }));
 
 
 
-vorpal.command('load mind [filepath]', "Loads a whole mind from memory.eno or from a specified file.")
+vorpal.command('load brain [filepath]', "Loads a whole brain from memory.eno or from a specified file.")
     .option('-s, --silent', 'Hides the success message.')
     .action(tryF(function (args, callback) {
         args.filepath = args.filepath || "memory.eno";
         var fileContent = fs.readFileSync(args.filepath, 'utf8');
         sys.initialize(enolib.parse(fileContent));
-        if (!args.options.silent) systemLog.success("Loaded " + args.filepath);
+        if (!args.options.silent) sys.log.success("Loaded " + args.filepath);
         callback();
     }));
 
@@ -169,20 +170,30 @@ vorpal.command('load mind [filepath]', "Loads a whole mind from memory.eno or fr
 
 vorpal.write = vorpal.log;
 
-var systemLog = new Signale({
+systemLog = new Signale({
     stream: vorpal,
     scope: "system"
 });
 
+sys.log = {
+    success: function () { systemLog.success.apply(this, arguments); },
+    error: function () { systemLog.error.apply(this, arguments); },
+};
 
 
-vorpal.exec("load mind --silent").then(function (data) {
 
-    systemLog.success("Ready");
+vorpal.exec("load brain --silent").then(function (data) {
+
+    sys.log.success("Ready");
 });
 
 
 
 vorpal.delimiter('i›').show();
+
+
+
+//new sys.Lobule("system", ["setX0", "incrX", "incrX"], "testL0");
+//new sys.Lobule("system", ["setX0", "decrX", "decrX"], "testL1");
 
 

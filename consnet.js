@@ -12,7 +12,8 @@ module.exports = function (vorpal, newId) {
             pair: {},
             left: {},
             right: {},
-            value: {}
+            value: {},
+            lobe: {}
         };
 
         this.actor = {
@@ -32,6 +33,19 @@ module.exports = function (vorpal, newId) {
     Consnet.prototype.newCellId = function (prefix) {
 
         return this.actor.lobeName + '.' + this.actor.lobuleName + '.' + newId(prefix);
+    }
+
+
+
+    Consnet.prototype.fullId = function (id) {
+
+        var split = id.split('.');
+
+        var cellName = split[split.length-1];
+        var lobuleName = split[split.length-2] || this.actor.lobuleName;
+        var lobeName = split[split.length-3] || this.actor.lobeName;
+
+        return lobeName+'.'+lobuleName+'.'+cellName;
     }
 
 
@@ -117,7 +131,7 @@ module.exports = function (vorpal, newId) {
 
         if (data.type === "value") {
 
-            var vid = this.newCellId('v');
+            var vid = this.newCellId('V');
             this.net.value[vid] = data.value;
             return vid;
         }
@@ -129,7 +143,7 @@ module.exports = function (vorpal, newId) {
 
     Consnet.prototype.newPair = function (left, right, name) {
 
-        var id = name || this.newCellId('p');
+        var id = name || this.newCellId('P');
 
         if (this.net.pair[id]) return;
 
@@ -148,6 +162,9 @@ module.exports = function (vorpal, newId) {
         if (!this.net.left[left]) this.net.left[left] = [];
         this.net.left[left].push(id);
 
+        /*if (!this.net.rightOf[left]) this.net.rightOf[left] = [];
+        this.net.rightOf[left].push(right);*/
+
         if (this.net.pair[right]) {
 
             this.net.pair[right].rightOf.push(id);
@@ -155,6 +172,24 @@ module.exports = function (vorpal, newId) {
 
         if (!this.net.right[right]) this.net.right[right] = [];
         this.net.right[right].push(id);
+
+        /*if (!this.net.leftOf[right]) this.net.leftOf[right] = [];
+        this.net.leftOf[right].push(left);*/
+
+        if (!this.net.lobe[this.actor.lobeName])
+            this.net.lobe[this.actor.lobeName] = {};
+
+        if (!this.net.lobe[this.actor.lobeName][this.actor.lobuleName])
+            this.net.lobe[this.actor.lobeName][this.actor.lobuleName] = [];
+
+        if (!this.net.lobe[this.actor.lobeName][this.actor.lobuleName].includes(id))
+            this.net.lobe[this.actor.lobeName][this.actor.lobuleName].push(id);
+
+        if (!this.net.lobe[this.actor.lobeName][this.actor.lobuleName].includes(left))
+            this.net.lobe[this.actor.lobeName][this.actor.lobuleName].push(left);
+
+        if (!this.net.lobe[this.actor.lobeName][this.actor.lobuleName].includes(right))
+            this.net.lobe[this.actor.lobeName][this.actor.lobuleName].push(right);
 
         return id;
     };
@@ -264,7 +299,37 @@ module.exports = function (vorpal, newId) {
 
 
 
-    Consnet.prototype.delete = function (target, depth) {
+    Consnet.prototype.getLeft = function (item) {
+
+        return this.net.right[this.fullId(item)].map(pair => this.net.pair[pair].left);
+    }
+
+
+
+    Consnet.prototype.getRight = function (item) {
+
+        return this.net.left[this.fullId(item)].map(pair => this.net.pair[pair].right);
+    }
+
+
+
+    Consnet.prototype.getLeftValue = function (item) {
+
+        return this.net.right[this.fullId(item)].map(pair => this.net.value[this.net.pair[pair].left]);
+    }
+
+
+
+    Consnet.prototype.getRightValue = function (item) {
+
+        return this.net.left[this.fullId(item)].map(pair => this.net.value[this.net.pair[pair].right]);
+    }
+
+
+
+    Consnet.prototype.delete = function (id, depth) {
+
+        var target = this.fullId(id);
 
         vorpal.log("deleting " + target);
         depth = depth || 0;

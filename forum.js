@@ -29,7 +29,7 @@ module.exports = function(sys) {
 
     function newTopic(user, category, msg) {
 
-        var id = sys.newId('m');
+        var id = sys.newId('M');
 
         forum.message[id] = {
             id: id,
@@ -47,7 +47,7 @@ module.exports = function(sys) {
 
     function newReply(user, target, msg) {
 
-        var id = sys.newId('m');
+        var id = sys.newId('M');
         
         forum.message[id] = {
             id: id,

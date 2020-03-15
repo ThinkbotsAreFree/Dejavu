@@ -1,6 +1,73 @@
 
-# mind
+# brain
 
-idgen: 6
+idgen: 23
 
 indisc: {"category":{},"message":{},"notifier":{}}
+
+lobule:
+name = testL0
+lobe = system
+pchain = setX0 incrX incrX
+description = testL0 (no description)
+
+lobule:
+name = testL1
+lobe = system
+pchain = setX0 decrX decrX
+description = testL1 (no description)
+
+-- consnet
+{
+    "net": {
+        "pair": {
+            "system.user.P17": {
+                "left": "system.user.b",
+                "right": "system.user.c",
+                "leftOf": [],
+                "rightOf": [
+                    "system.user.P18"
+                ]
+            },
+            "system.user.P18": {
+                "left": "system.user.a",
+                "right": "system.user.P17",
+                "leftOf": [],
+                "rightOf": []
+            }
+        },
+        "left": {
+            "system.user.b": [
+                "system.user.P17"
+            ],
+            "system.user.a": [
+                "system.user.P18"
+            ]
+        },
+        "right": {
+            "system.user.c": [
+                "system.user.P17"
+            ],
+            "system.user.P17": [
+                "system.user.P18"
+            ]
+        },
+        "value": {},
+        "lobe": {
+            "system": {
+                "user": [
+                    "system.user.P17",
+                    "system.user.b",
+                    "system.user.c",
+                    "system.user.P18",
+                    "system.user.a"
+                ]
+            }
+        }
+    },
+    "actor": {
+        "lobeName": "unspecified",
+        "lobuleName": "unspecified"
+    }
+}
+-- consnet
