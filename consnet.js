@@ -2,6 +2,10 @@ const parser = require("./consnet-parser.js");
 
 
 
+function isEven(n) { return n % 2 == 0; }
+
+
+
 module.exports = function (vorpal, newId) {
 
 
@@ -54,7 +58,8 @@ module.exports = function (vorpal, newId) {
 
         for (var f = 0; f < fact.length; f++) {
 
-            Consnet.prototype.process.call(this, fact[f]);
+            var result = Consnet.prototype.process.call(this, fact[f]);
+            if (this.enableLog) vorpal.log(result);
         }
     };
 
@@ -82,7 +87,7 @@ module.exports = function (vorpal, newId) {
 
     Consnet.prototype.pair = function (data) {
 
-        if (data.length !== 2) throw new Error("Invalid number of arguments (expected 2): got " + data.length);
+        if (data.length !== 2) throw new Error("Invalid number of arguments: expected 2, got " + data.length);
         if (typeof data[0] !== "string") throw new Error("Expected identifier: got " + data[0].type);
         if (data[1].type !== "pair") throw new Error("Expected pair: got " + (data[1].type || "identifier"));
 
@@ -95,11 +100,72 @@ module.exports = function (vorpal, newId) {
 
 
 
+    Consnet.prototype.link = function (data) {
+
+        if (data.length < 3) throw new Error("Invalid number of arguments: expected at least 3, got " + data.length);
+
+        return this.linkItemsToGroup(
+            data[0],
+            data[1],
+            data.slice(2)
+        );
+    };
+
+
+
+    Consnet.prototype.find = function (data) {
+
+        if (data.length !== 2) throw new Error("Invalid number of arguments: expected 2, got " + data.length);
+
+        return this.findItemsInGroup(
+            data[0],
+            data[1]
+        );
+    };
+
+
+
+    Consnet.prototype.union = function (data) {
+
+        if (!isEven(data.length)) throw new Error("Invalid number of arguments: expected even number of args, got " + data.length);
+
+        var args = [];
+
+        while (data.length > 0) args.push({
+            group: data.shift(),
+            link: data.shift()
+        });
+
+        return this.findItemsInGroupsUnion(args);
+    };
+
+
+
+    Consnet.prototype.intersection = function (data) {
+
+        if (!isEven(data.length)) throw new Error("Invalid number of arguments: expected even number of args, got " + data.length);
+
+        var args = [];
+
+        while (data.length > 0) args.push({
+            group: data.shift(),
+            link: data.shift()
+        });
+
+        return this.findItemsInGroupsIntersection(args);
+    };
+
+
+
     Consnet.prototype.authorizedCommands = [
         "perform",
         "show",
         "dump",
-        "pair"
+        "pair",
+        "link",
+        "find",
+        "union",
+        "intersection"
     ];
 
 

@@ -1,7 +1,7 @@
 
 # brain
 
-idgen: 23
+idgen: 41
 
 indisc: {"category":{},"message":{},"notifier":{}}
 
@@ -34,6 +34,118 @@ description = testL1 (no description)
                 "right": "system.user.P17",
                 "leftOf": [],
                 "rightOf": []
+            },
+            "system.user.P24": {
+                "left": "system.user.family",
+                "right": "system.user.dad",
+                "leftOf": [],
+                "rightOf": [
+                    "system.user.P25"
+                ]
+            },
+            "system.user.P25": {
+                "left": "system.user.Member",
+                "right": "system.user.P24",
+                "leftOf": [],
+                "rightOf": []
+            },
+            "system.user.P26": {
+                "left": "system.user.family",
+                "right": "system.user.mum",
+                "leftOf": [],
+                "rightOf": [
+                    "system.user.P27"
+                ]
+            },
+            "system.user.P27": {
+                "left": "system.user.Member",
+                "right": "system.user.P26",
+                "leftOf": [],
+                "rightOf": []
+            },
+            "system.user.P28": {
+                "left": "system.user.family",
+                "right": "system.user.sis",
+                "leftOf": [],
+                "rightOf": [
+                    "system.user.P29"
+                ]
+            },
+            "system.user.P29": {
+                "left": "system.user.Member",
+                "right": "system.user.P28",
+                "leftOf": [],
+                "rightOf": []
+            },
+            "system.user.P30": {
+                "left": "system.user.family",
+                "right": "system.user.bro",
+                "leftOf": [],
+                "rightOf": [
+                    "system.user.P31"
+                ]
+            },
+            "system.user.P31": {
+                "left": "system.user.Member",
+                "right": "system.user.P30",
+                "leftOf": [],
+                "rightOf": []
+            },
+            "system.user.P33": {
+                "left": "system.user.friends",
+                "right": "system.user.sis",
+                "leftOf": [],
+                "rightOf": [
+                    "system.user.P34"
+                ]
+            },
+            "system.user.P34": {
+                "left": "system.user.Member",
+                "right": "system.user.P33",
+                "leftOf": [],
+                "rightOf": []
+            },
+            "system.user.P35": {
+                "left": "system.user.friends",
+                "right": "system.user.bro",
+                "leftOf": [],
+                "rightOf": [
+                    "system.user.P36"
+                ]
+            },
+            "system.user.P36": {
+                "left": "system.user.Member",
+                "right": "system.user.P35",
+                "leftOf": [],
+                "rightOf": []
+            },
+            "system.user.P37": {
+                "left": "system.user.friends",
+                "right": "system.user.cat",
+                "leftOf": [],
+                "rightOf": [
+                    "system.user.P38"
+                ]
+            },
+            "system.user.P38": {
+                "left": "system.user.Member",
+                "right": "system.user.P37",
+                "leftOf": [],
+                "rightOf": []
+            },
+            "system.user.P39": {
+                "left": "system.user.friends",
+                "right": "system.user.dog",
+                "leftOf": [],
+                "rightOf": [
+                    "system.user.P40"
+                ]
+            },
+            "system.user.P40": {
+                "left": "system.user.Member",
+                "right": "system.user.P39",
+                "leftOf": [],
+                "rightOf": []
             }
         },
         "left": {
@@ -42,6 +154,28 @@ description = testL1 (no description)
             ],
             "system.user.a": [
                 "system.user.P18"
+            ],
+            "system.user.family": [
+                "system.user.P24",
+                "system.user.P26",
+                "system.user.P28",
+                "system.user.P30"
+            ],
+            "system.user.Member": [
+                "system.user.P25",
+                "system.user.P27",
+                "system.user.P29",
+                "system.user.P31",
+                "system.user.P34",
+                "system.user.P36",
+                "system.user.P38",
+                "system.user.P40"
+            ],
+            "system.user.friends": [
+                "system.user.P33",
+                "system.user.P35",
+                "system.user.P37",
+                "system.user.P39"
             ]
         },
         "right": {
@@ -50,6 +184,50 @@ description = testL1 (no description)
             ],
             "system.user.P17": [
                 "system.user.P18"
+            ],
+            "system.user.dad": [
+                "system.user.P24"
+            ],
+            "system.user.P24": [
+                "system.user.P25"
+            ],
+            "system.user.mum": [
+                "system.user.P26"
+            ],
+            "system.user.P26": [
+                "system.user.P27"
+            ],
+            "system.user.sis": [
+                "system.user.P28",
+                "system.user.P33"
+            ],
+            "system.user.P28": [
+                "system.user.P29"
+            ],
+            "system.user.bro": [
+                "system.user.P30",
+                "system.user.P35"
+            ],
+            "system.user.P30": [
+                "system.user.P31"
+            ],
+            "system.user.P33": [
+                "system.user.P34"
+            ],
+            "system.user.P35": [
+                "system.user.P36"
+            ],
+            "system.user.cat": [
+                "system.user.P37"
+            ],
+            "system.user.P37": [
+                "system.user.P38"
+            ],
+            "system.user.dog": [
+                "system.user.P39"
+            ],
+            "system.user.P39": [
+                "system.user.P40"
             ]
         },
         "value": {},
@@ -60,14 +238,39 @@ description = testL1 (no description)
                     "system.user.b",
                     "system.user.c",
                     "system.user.P18",
-                    "system.user.a"
+                    "system.user.a",
+                    "system.user.P24",
+                    "system.user.family",
+                    "system.user.dad",
+                    "system.user.P25",
+                    "system.user.Member",
+                    "system.user.P26",
+                    "system.user.mum",
+                    "system.user.P27",
+                    "system.user.P28",
+                    "system.user.sis",
+                    "system.user.P29",
+                    "system.user.P30",
+                    "system.user.bro",
+                    "system.user.P31",
+                    "system.user.P33",
+                    "system.user.friends",
+                    "system.user.P34",
+                    "system.user.P35",
+                    "system.user.P36",
+                    "system.user.P37",
+                    "system.user.cat",
+                    "system.user.P38",
+                    "system.user.P39",
+                    "system.user.dog",
+                    "system.user.P40"
                 ]
             }
         }
     },
     "actor": {
-        "lobeName": "unspecified",
-        "lobuleName": "unspecified"
+        "lobuleName": "user",
+        "lobeName": "system"
     }
 }
 -- consnet
