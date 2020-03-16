@@ -48,7 +48,7 @@ Motivation              entity      action
 Interface               action      entity
 WayToDo                 action      action
 Purpose                 action      object
-Capacity                event       object
+Ability                 event       object
 
 
 

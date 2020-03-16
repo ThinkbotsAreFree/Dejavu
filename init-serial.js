@@ -22,7 +22,7 @@ module.exports = function (sys) {
 
             new sys.Lobule(
                 fieldset.entry("lobe").requiredStringValue(),
-                fieldset.entry("pchain").requiredStringValue(),
+                fieldset.entry("pchain").requiredStringValue().split(' '),
                 fieldset.entry("name").requiredStringValue(),
                 fieldset.entry("description").requiredStringValue()
             );

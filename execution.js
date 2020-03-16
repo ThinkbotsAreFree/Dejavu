@@ -21,6 +21,7 @@ module.exports = function (sys) {
 
                 for (var prism of lobule.pchain) {
 
+                    //sys.log.success(prism);
                     effect = sys.prism[prism](sys.consnet, effect);
                 }
             }
